@@ -27,6 +27,16 @@ public class SmtV20File implements SmtV20Expression {
         this.setTopLevelExpressions(new LinkedList<>());
     }
 
+    public SmtV20File declareFunction(String name, String outputType, String... parameterTypes) {
+        this.getTopLevelExpressions().add(new SmtV20DeclareFunction(name, outputType, parameterTypes));
+        return this;
+    }
+
+    public SmtV20File defineSort(String name) {
+        this.getTopLevelExpressions().add(new SmtV20DefineSort(name));
+        return this;
+    }
+
     @Override
     public String toSmtV20() {
         StringBuilder sb = new StringBuilder();
