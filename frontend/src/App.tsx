@@ -3,7 +3,7 @@ import StructuralInductionProofs from "./pages/StructuralInductionProofs";
 
 function App() {
   return (
-      <div className="p-d-flex p-jc-center p-mt-5">
+      <div className="p-mt-5">
         <StructuralInductionProofs />
       </div>
   );
