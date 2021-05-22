@@ -3,17 +3,18 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TestComponent } from './test/test.component';
+import {CalendarModule} from "primeng/calendar";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
     AppComponent,
-    TestComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+	imports: [
+		BrowserModule,
+		BrowserAnimationsModule,
+		AppRoutingModule
+	],
   providers: [],
   bootstrap: [AppComponent]
 })
