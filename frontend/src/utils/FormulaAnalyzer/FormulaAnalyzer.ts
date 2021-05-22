@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 class FormulaAnalyzer {
 
     formula: string;
@@ -6,34 +8,48 @@ class FormulaAnalyzer {
         this.formula = formula.replace(' ','');
     }
 
-    getFunctions(): {[key: string]: FunctionDescription} {
+    getFunctions(): FunctionDescription[] {
 
         return getFunctions(this.formula);
 
     }
 
-
-
 }
 
-export function getFunctions(input: string): {[key: string]: FunctionDescription} {
+export function getFunctions(input: string): FunctionDescription[] {
 
 
     const intermediatResult = getTopLevelFunctionSections(input);
-    let result: {[key: string]: FunctionDescription} = {};
+    let result: FunctionDescription[] = [];
 
     for(const [name, parts] of Object.entries(intermediatResult)) {
-        result[name] = {
-            parameterCount: (parts.inside.replace(/\(.*\)/g, '').match(/,/g)?.length ?? 0) + 1,
-        };
+        for(const singleInside of parts.inside) {
+            result.push({
+                name,
+                parameterCount: (singleInside.replace(/\(.*\)/g, '').match(/,/g)?.length ?? 0) + 1,
+            });
 
-        result = {
-            ...result,
-            ...getFunctions(parts.inside),
-        };
+            result = [
+                ...result,
+                ...getFunctions(singleInside),
+            ];
+        }
     }
 
-    return result;
+    const alreadyContained: FunctionDescription[] = [];
+
+    return result.filter((maybeNewElement) => {
+        const isContained = alreadyContained.some((alreadyContainedElement) => _.isEqual(maybeNewElement, alreadyContainedElement));
+        if(!isContained)
+            alreadyContained.push(maybeNewElement);
+
+        return !isContained;
+    }).sort((element, otherElement) => {
+        if(element.name !== otherElement.name)
+            return element.name.localeCompare(otherElement.name);
+
+        return element.parameterCount - otherElement.parameterCount;
+    });
 }
 
 export function getTopLevelFunctionSections(input: string): FunctionParts {
@@ -62,7 +78,11 @@ export function getTopLevelFunctionSections(input: string): FunctionParts {
             level--;
 
             if(level === 0) {
-                result[currentFunctionName] = {inside: currentInside};
+                if(result[currentFunctionName])
+                    result[currentFunctionName].inside.push(currentInside)
+                else
+                    result[currentFunctionName] = {inside: [currentInside]};
+
                 currentFunctionName = '';
                 currentInside = '';
                 continue;
@@ -83,12 +103,13 @@ export function getTopLevelFunctionSections(input: string): FunctionParts {
     return result;
 }
 
-export interface FunctionDescription {
+export type FunctionDescription = {
+    name: string;
     parameterCount: number;
 }
 
 interface FunctionParts {
-    [key: string]: {inside: string}
+    [key: string]: {inside: string[]}
 }
 
 export interface ParameterDescription {
