@@ -19,10 +19,10 @@ class FormulaAnalyzer {
 export function getFunctions(input: string): FunctionDescription[] {
 
 
-    const intermediatResult = getTopLevelFunctionSections(input);
+    const intermediateResult = getTopLevelFunctionSections(input);
     let result: FunctionDescription[] = [];
 
-    for(const [name, parts] of Object.entries(intermediatResult)) {
+    for(const [name, parts] of Object.entries(intermediateResult)) {
         for(const singleInside of parts.inside) {
             result.push({
                 name,
