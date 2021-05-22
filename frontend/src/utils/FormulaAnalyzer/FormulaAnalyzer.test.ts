@@ -1,4 +1,4 @@
-import FormulaAnalyzer, {getTopLevelFunctionSections} from "../../utils/FormulaAnalyzer/FormulaAnalyzer";
+import FormulaAnalyzer, {getTopLevelFunctionSections} from "./FormulaAnalyzer";
 
 describe('FormulaAnayzer', () => {
     const simpleExample = 'c(e)';
