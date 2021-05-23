@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~12.0.1",
+    "@angular/cdk": "^12.0.1",
     "@angular/common": "~12.0.1",
     "@angular/compiler": "~12.0.1",
     "@angular/core": "~12.0.1",
@@ -19,8 +20,9 @@
     "@angular/platform-browser-dynamic": "~12.0.1",
     "@angular/router": "~12.0.1",
     "lodash": "^4.17.21",
+    "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",
-    "primeng": "*",
+    "primeng": "12.0.0-rc.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"
