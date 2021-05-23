@@ -11,6 +11,7 @@ import { FunctionDefinitionComponent } from './components/function-definition/fu
 import { FieldsetModule } from 'primeng/fieldset';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
 	declarations: [AppComponent, StructuralInductionProverComponent, FunctionDefinitionComponent],
@@ -23,6 +24,8 @@ import { InputTextModule } from 'primeng/inputtext';
 		FieldsetModule,
 		ButtonModule,
 		InputTextModule,
+		FormsModule,
+		ReactiveFormsModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],

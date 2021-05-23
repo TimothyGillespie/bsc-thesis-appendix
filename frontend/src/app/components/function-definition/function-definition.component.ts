@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FullFunctionDescription } from '../structural-induction-prover/structural-induction-prover.component';
 
 @Component({
 	selector: 'app-function-definition',
@@ -6,11 +8,7 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./function-definition.component.scss'],
 })
 export class FunctionDefinitionComponent implements OnInit {
-	typeDropdownOptions = [
-		{ label: 'Integer', value: 'Int' },
-		{ label: 'Binary Tree', value: 'BTree' },
-		{ label: 'Non-Empty Binary Tree', value: 'NEBTree' },
-	];
+	@Input('formGroup') formGroup!: FormGroup;
 
 	constructor() {}
 

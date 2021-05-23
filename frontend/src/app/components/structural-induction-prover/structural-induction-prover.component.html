@@ -1,14 +1,44 @@
-<form onSubmit="handleSubmit(onSubmit)">
+<form onSubmit="handleSubmit(onSubmit)" [formGroup]="formGroup">
 	<div class="p-fluid">
 		<p-fieldset legend="Statement" styleClass="p-mt-2" [toggleable]="true">
 			<span class="p-mt-3 p-field">
 				<label for="statement">Statement</label>
-				<input id="statement" pInputText />
+				<input id="statement" pInputText formControlName="statement" />
 			</span>
 		</p-fieldset>
 
 		<p-fieldset legend="Function Definitions" styleClass="p-mt-2" [toggleable]="true">
-			<app-function-definition></app-function-definition>
+			<div>
+				<p-accordion formArrayName="functionDefinitions">
+					<ng-container *ngFor="let funcDefControl of functionDefinitions.controls; let i1 = index">
+						<p-accordionTab [header]="getFunctionDefHeader(funcDefControl.value)">
+							<div class="p-grid">
+								<div class="p-col-5">
+									<ng-container
+										*ngFor="let parameterType of getParameterTypes(funcDefControl); let i2 = index"
+									>
+										<p-dropdown
+											[options]="typeDropdownOptions"
+											styleClass="p-mt-2"
+											[formControl]="parameterType"
+										></p-dropdown>
+									</ng-container>
+								</div>
+								<div class="p-col-2 p-d-flex p-justify-center p-align-center" [style.fontSize]="'33pt'">
+									&#x27FC;
+								</div>
+								<div class="p-col-5">
+									<p-dropdown
+										[options]="typeDropdownOptions"
+										[formControlName]="i1 + '.returnType'"
+										class="p-mt-2"
+									></p-dropdown>
+								</div>
+							</div>
+						</p-accordionTab>
+					</ng-container>
+				</p-accordion>
+			</div>
 		</p-fieldset>
 
 		<p-fieldset legend="Variable Definitions" styleClass="p-mt-2" [toggleable]="true"> </p-fieldset>
