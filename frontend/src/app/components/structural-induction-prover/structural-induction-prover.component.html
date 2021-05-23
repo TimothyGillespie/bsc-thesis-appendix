@@ -1,17 +1,16 @@
-<form onSubmit=handleSubmit(onSubmit)>
-  <div class="p-fluid">
-    <p-fieldset legend="Statement" styleClass="p-mt-2" [toggleable]="true">
-      <span class="p-mt-3 p-field">
-      <label for="statement">Statement</label>
-      <input id="statement" pInputText/>
-      </span>
-    </p-fieldset>
+<form onSubmit="handleSubmit(onSubmit)">
+	<div class="p-fluid">
+		<p-fieldset legend="Statement" styleClass="p-mt-2" [toggleable]="true">
+			<span class="p-mt-3 p-field">
+				<label for="statement">Statement</label>
+				<input id="statement" pInputText />
+			</span>
+		</p-fieldset>
 
-    <p-fieldset legend="Function Definitions" styleClass="p-mt-2" [toggleable]="true">
-      <app-function-definition></app-function-definition>
-    </p-fieldset>
+		<p-fieldset legend="Function Definitions" styleClass="p-mt-2" [toggleable]="true">
+			<app-function-definition></app-function-definition>
+		</p-fieldset>
 
-    <p-fieldset legend="Variable Definitions" styleClass="p-mt-2" [toggleable]="true">
-    </p-fieldset>
-  </div>
+		<p-fieldset legend="Variable Definitions" styleClass="p-mt-2" [toggleable]="true"> </p-fieldset>
+	</div>
 </form>
