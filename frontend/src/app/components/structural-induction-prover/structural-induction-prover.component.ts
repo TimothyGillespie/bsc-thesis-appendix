@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import FormulaAnalyzer, { FunctionDescription } from '../../../util/FormulaAnalyzer/FormulaAnalyzer';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import * as _ from 'lodash';
+import { MenuItem } from 'primeng/api';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-structural-induction-prover',
@@ -10,13 +12,21 @@ import * as _ from 'lodash';
 	styleUrls: ['./structural-induction-prover.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StructuralInductionProverComponent implements OnInit {
+export class StructuralInductionProverComponent implements OnInit, OnDestroy {
 	typeDropdownOptions = [
 		{ label: 'Please select a type', value: null },
 		{ label: 'Integer', value: 'Int' },
 		{ label: 'Binary Tree', value: 'BTree' },
 		{ label: 'Non-Empty Binary Tree', value: 'NEBTree' },
 	];
+
+	subscriptions: Subscription[] = [];
+
+	functionTabsMenuItems: MenuItem[] = [
+		{ label: 'Typing', command: () => (this.funcDefShow = 'typing') },
+		{ label: 'Value', command: () => (this.funcDefShow = 'value') },
+	];
+	funcDefShow = 'typing';
 
 	formGroup = this.fb.group({
 		statement: this.fb.control(''),
@@ -29,7 +39,7 @@ export class StructuralInductionProverComponent implements OnInit {
 	constructor(private fb: FormBuilder, private cd: ChangeDetectorRef) {}
 
 	ngOnInit(): void {
-		this.formGroup
+		let subscriptionToAdd = this.formGroup
 			.get('statement')
 			?.valueChanges.pipe(
 				map(input => new FormulaAnalyzer(input).getFunctions()),
@@ -42,7 +52,9 @@ export class StructuralInductionProverComponent implements OnInit {
 				this.updateFuncDefs(newFunctionDefForm);
 			});
 
-		this.funcDefs.valueChanges
+		if (subscriptionToAdd !== undefined) this.subscriptions.push(subscriptionToAdd);
+
+		subscriptionToAdd = this.funcDefs.valueChanges
 			.pipe(filter(element => !(element === null && element === undefined)))
 			.subscribe(values => {
 				this.savedFunctionDefinitions.unshift(...values);
@@ -58,6 +70,12 @@ export class StructuralInductionProverComponent implements OnInit {
 					return found === undefined;
 				});
 			});
+
+		if (subscriptionToAdd !== undefined) this.subscriptions.push(subscriptionToAdd);
+	}
+
+	ngOnDestroy() {
+		this.subscriptions.forEach(singleSubscription => singleSubscription.unsubscribe());
 	}
 
 	updateFuncDefs(newFuncDefs: FormGroup[]): void {

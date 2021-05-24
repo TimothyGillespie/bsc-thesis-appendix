@@ -11,6 +11,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 @NgModule({
 	declarations: [AppComponent, StructuralInductionProverComponent],
@@ -25,6 +26,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 		InputTextModule,
 		FormsModule,
 		ReactiveFormsModule,
+		TabMenuModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],
