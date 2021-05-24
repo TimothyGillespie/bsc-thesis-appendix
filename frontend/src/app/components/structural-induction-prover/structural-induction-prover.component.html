@@ -3,7 +3,7 @@
 		<p-fieldset legend="Statement" styleClass="p-mt-2" [toggleable]="true">
 			<span class="p-mt-3 p-field">
 				<label for="statement">Statement</label>
-				<input id="statement" pInputText formControlName="statement" />
+				<input id="statement" pInputText [pKeyFilter]="allowedValuesForFormulae" formControlName="statement" />
 			</span>
 		</p-fieldset>
 	</form>

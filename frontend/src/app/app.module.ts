@@ -13,6 +13,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 @NgModule({
 	declarations: [AppComponent, StructuralInductionProverComponent],
@@ -29,6 +30,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 		ReactiveFormsModule,
 		TabMenuModule,
 		OverlayPanelModule,
+		KeyFilterModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],

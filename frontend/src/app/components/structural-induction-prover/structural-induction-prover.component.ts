@@ -20,6 +20,8 @@ export class StructuralInductionProverComponent implements OnInit, OnDestroy {
 		{ label: 'Non-Empty Binary Tree', value: 'NEBTree' },
 	];
 
+	allowedValuesForFormulae = /^[A-Za-z0-9\\(\\),\\*\\+-]+$/;
+
 	subscriptions: Subscription[] = [];
 
 	functionTabsMenuItems: MenuItem[] = [
