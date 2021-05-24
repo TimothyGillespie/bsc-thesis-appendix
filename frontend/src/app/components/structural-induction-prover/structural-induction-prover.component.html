@@ -1,0 +1,46 @@
+<div class="p-fluid">
+	<form [formGroup]="formGroup">
+		<p-fieldset legend="Statement" styleClass="p-mt-2" [toggleable]="true">
+			<span class="p-mt-3 p-field">
+				<label for="statement">Statement</label>
+				<input id="statement" pInputText formControlName="statement" />
+			</span>
+		</p-fieldset>
+	</form>
+	<p-fieldset legend="Function Definitions" styleClass="p-mt-2" [toggleable]="true">
+		<p-accordion *ngFor="let group of funcDefs.controls; let i1 = index">
+			<ng-container [formGroup]="group">
+				<p-accordionTab [header]="getFunctionDefHeader(group.value)">
+					<div class="p-grid">
+						<div class="p-col-4">
+							<ng-container
+								formArrayName="parameterTypes"
+								*ngFor="let parameterType of group.get('parameterTypes').controls; let i2 = index"
+							>
+								<div class="p-grid">
+									<div class="p-col-2 p-d-flex p-align-center">{{ i2 + 1 }}.</div>
+									<div class="p-col-10">
+										<p-dropdown
+											[options]="typeDropdownOptions"
+											styleClass="p-mt-2"
+											[formControl]="parameterType"
+										></p-dropdown>
+									</div>
+								</div>
+							</ng-container>
+						</div>
+						<div class="p-col-2 p-d-flex p-justify-center p-align-center" [style.fontSize]="'33pt'">
+							&#x27FC;
+						</div>
+						<div class="p-col-5 p-d-flex p-align-center">
+							<p-dropdown [options]="typeDropdownOptions" formControlName="returnType"></p-dropdown>
+						</div>
+					</div>
+				</p-accordionTab>
+			</ng-container>
+		</p-accordion>
+	</p-fieldset>
+</div>
+<pre>
+	{{ this.funcDefs.value | json }}
+</pre>
