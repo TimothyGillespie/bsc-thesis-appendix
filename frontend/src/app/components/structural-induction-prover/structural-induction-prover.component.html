@@ -43,15 +43,50 @@
 							</div>
 						</div>
 					</ng-container>
-
 					<ng-container *ngIf="funcDefShow === 'value'">
-						Value
+						<div class="p-grid">
+							<div class="p-d-flex p-align-center p-justify-center p-col-2">
+								{{ group.value.name }}
+							</div>
+							<div class="p-col-1 p-d-flex p-justify-center p-justify-center">
+								<button
+									type="text"
+									pButton
+									[style.width]="'auto'"
+									label="="
+									(click)="op.toggle($event)"
+								></button>
+							</div>
+							<div class="p-col-6">
+								<input pInputText />
+								<input pInputText class="p-mt-4" />
+								<input pInputText class="p-mt-4" />
+							</div>
+							<div class="p-col-3">
+								<div class="p-inputgroup">
+									<span class="p-inputgroup-addon">if</span><input pInputText />
+								</div>
+								<div class="p-inputgroup p-mt-4">
+									<span class="p-inputgroup-addon">if</span><input pInputText />
+								</div>
+								<div class="p-inputgroup p-mt-4">
+									<span class="p-inputgroup-addon">if</span><input pInputText />
+								</div>
+							</div>
+						</div>
+
+						<div class="p-d-flex p-justify-center p-mt-3">
+							<
+						</div>
 					</ng-container>
 				</p-accordionTab>
 			</ng-container>
 		</p-accordion>
 	</p-fieldset>
 </div>
-<pre>
-	{{ this.funcDefs.value | json }}
-</pre>
+
+<p-overlayPanel #op>
+	<ng-template pTemplate>
+		Content
+	</ng-template>
+</p-overlayPanel>

@@ -12,6 +12,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
 	declarations: [AppComponent, StructuralInductionProverComponent],
@@ -27,6 +28,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 		FormsModule,
 		ReactiveFormsModule,
 		TabMenuModule,
+		OverlayPanelModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],
