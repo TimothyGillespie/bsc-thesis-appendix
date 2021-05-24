@@ -58,19 +58,22 @@
 								></button>
 							</div>
 							<div class="p-col-6">
-								<input pInputText />
-								<input pInputText class="p-mt-4" />
-								<input pInputText class="p-mt-4" />
+								<input pInputText [pKeyFilter]="allowedValuesForFormulae" />
+								<input pInputText [pKeyFilter]="allowedValuesForFormulae" class="p-mt-4" />
+								<input pInputText [pKeyFilter]="allowedValuesForFormulae" class="p-mt-4" />
 							</div>
 							<div class="p-col-3">
 								<div class="p-inputgroup">
-									<span class="p-inputgroup-addon">if</span><input pInputText />
+									<span class="p-inputgroup-addon">if</span
+									><input [pKeyFilter]="allowedValuesForFormulae" pInputText />
 								</div>
 								<div class="p-inputgroup p-mt-4">
-									<span class="p-inputgroup-addon">if</span><input pInputText />
+									<span class="p-inputgroup-addon">if</span
+									><input [pKeyFilter]="allowedValuesForFormulae" pInputText />
 								</div>
 								<div class="p-inputgroup p-mt-4">
-									<span class="p-inputgroup-addon">if</span><input pInputText />
+									<span class="p-inputgroup-addon">if</span
+									><input [pKeyFilter]="allowedValuesForFormulae" pInputText />
 								</div>
 							</div>
 						</div>

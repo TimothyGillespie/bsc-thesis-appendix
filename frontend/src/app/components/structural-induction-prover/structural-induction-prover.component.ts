@@ -95,6 +95,7 @@ export class StructuralInductionProverComponent implements OnInit, OnDestroy {
 				parameterCount: functionDescription.parameterCount,
 				parameterTypes: new Array(functionDescription.parameterCount).fill(null),
 				returnType: null,
+				valueDefinition: [],
 			};
 			this.savedFunctionDefinitions.push(fullDescription);
 		}
@@ -104,6 +105,7 @@ export class StructuralInductionProverComponent implements OnInit, OnDestroy {
 			parameterCount: this.fb.control(fullDescription.parameterCount),
 			parameterTypes: this.fb.array(fullDescription.parameterTypes),
 			returnType: this.fb.control(fullDescription.returnType),
+			valueDefinition: this.fb.array(fullDescription.valueDefinition),
 		});
 	}
 
@@ -134,4 +136,17 @@ export type FullFunctionDescription = {
 	parameterCount: number;
 	parameterTypes: Array<string | null>;
 	returnType: string | null;
+	valueDefinition: ValueDefinitions[];
 };
+
+export type ValueDefinitions = {
+	operation: '=' | '>' | '<' | '>=' | '<=';
+	definition: SingularDefinitionElement | DefinitionElement[];
+};
+
+export type DefinitionElement = {
+	conditionalDefinition: string[];
+	elseDefinition: string[];
+};
+
+export type SingularDefinitionElement = string;
