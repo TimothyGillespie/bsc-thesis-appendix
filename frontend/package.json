@@ -5,8 +5,9 @@
 		"ng": "ng",
 		"start": "ng serve",
 		"build": "ng build",
-		"watch": "ng build --watch --configuration development",
-		"test": "ng test"
+		"test": "jest",
+		"test:watch": "jest --watch",
+		"test:cc": "jest --coverage"
 	},
 	"private": true,
 	"dependencies": {
@@ -19,6 +20,7 @@
 		"@angular/platform-browser": "~12.0.1",
 		"@angular/platform-browser-dynamic": "~12.0.1",
 		"@angular/router": "~12.0.1",
+		"@briebug/jest-schematic": "^3.1.0",
 		"angular-required": "^1.1.0",
 		"lodash": "^4.17.21",
 		"primeflex": "^2.0.0",
@@ -29,18 +31,14 @@
 		"zone.js": "~0.11.4"
 	},
 	"devDependencies": {
+		"@angular-builders/jest": "12.0.0",
 		"@angular-devkit/build-angular": "~12.0.1",
 		"@angular/cli": "~12.0.1",
 		"@angular/compiler-cli": "~12.0.1",
-		"@types/jasmine": "~3.6.0",
+		"@types/jest": "^26.0.23",
 		"@types/lodash": "^4.14.170",
 		"@types/node": "^12.11.1",
-		"jasmine-core": "~3.7.0",
-		"karma": "~6.3.0",
-		"karma-chrome-launcher": "~3.1.0",
-		"karma-coverage": "~2.0.3",
-		"karma-jasmine": "~4.0.0",
-		"karma-jasmine-html-reporter": "^1.5.0",
+		"jest": "26.6.3",
 		"prettier": "^1.19.1",
 		"prettierrc": "*",
 		"ts-node": "^9.1.1",
