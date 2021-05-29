@@ -1,6 +1,6 @@
 import { standardInfixOperators, topLevelFunctionIsInfix } from './getTopLevelFunctions';
 
-describe('topLevelFunctionIsInfix', () => {
+describe('topLevelFunctionIsInfix()', () => {
 	const testCases = [
 		['3 + 2', true],
 		['depth(e,x) + size(e,x)', true],
