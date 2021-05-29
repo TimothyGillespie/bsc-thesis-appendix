@@ -1,6 +1,7 @@
 import FormulaAnalyzer, { getTopLevelFunctionSections } from './FormulaAnalyzer';
 
 describe('FormulaAnayzer', () => {
+	const zeroArityFunctionExample = 'x()';
 	const simpleExample = 'c(e)';
 	const mixedInconsistentExample = 'depth(c(t,e),x,e)size(e,v)';
 	const normalExample = 'depth(c(t,e)) = size(c(t,e))';
@@ -10,6 +11,15 @@ describe('FormulaAnayzer', () => {
 		'depth(c(a,c(d,x,g,c(f,c(x,y,z))))) + size(x,y,z) = size(c(a,c(d,c(f,c(x,y,z)))))';
 
 	describe('getFunctions()', () => {
+		it('Zero arity example: ' + zeroArityFunctionExample, () => {
+			expect(new FormulaAnalyzer(zeroArityFunctionExample).getFunctions()).toEqual([
+				{
+					name: 'x',
+					parameterCount: 0,
+				},
+			]);
+		});
+
 		it('Simple example: ' + simpleExample, () => {
 			expect(new FormulaAnalyzer(simpleExample).getFunctions()).toEqual([
 				{
@@ -143,6 +153,12 @@ describe('FormulaAnayzer', () => {
 			expect(getTopLevelFunctionSections(mixedParameterCountExample)).toEqual({
 				depth: { inside: ['c(a,c(d,x,g,c(f,c(x,y,z))))'] },
 				size: { inside: ['x,y,z', 'c(a,c(d,c(f,c(x,y,z))))'] },
+			});
+		});
+
+		it('Zero arity example: ' + zeroArityFunctionExample, () => {
+			expect(getTopLevelFunctionSections(zeroArityFunctionExample)).toEqual({
+				x: { inside: [] },
 			});
 		});
 	});
