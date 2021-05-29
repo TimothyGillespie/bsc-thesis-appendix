@@ -1,3 +1,5 @@
+import { FunctionDescription } from '../../FormulaAnalyzer/FormulaAnalyzer';
+
 export const standardInfixOperators: InfixOperator[] = [
 	{ symbol: '+', priority: 1 },
 	{ symbol: '-', priority: 1 },
@@ -128,8 +130,6 @@ export function topLevelFunctionIsPrefix(expression: string): boolean {
 }
 
 export function getTopLevelPrefixOperator(expression: string): PrefixOperatorInstance | null {
-	if (!topLevelFunctionIsPrefix(expression)) return null;
-
 	let level = 0;
 	let functionContentStarted = false;
 	const trimmedExpression = expression.trim();
@@ -175,6 +175,29 @@ export function getTopLevelPrefixOperator(expression: string): PrefixOperatorIns
 	return null;
 }
 
+export function getFunctionTree(
+	expression: string,
+	infixOperators: InfixOperator[] = standardInfixOperators,
+): FunctionTreeNode {
+	let topLevelOperatorInstance: PrefixOperatorInstance;
+	if (topLevelFunctionIsInfix(expression, infixOperators)) {
+		const intermediateInfix = getTopLevelInfixOperator(expression, infixOperators)!;
+		topLevelOperatorInstance = {
+			symbol: intermediateInfix.operator.symbol,
+			parameters: [intermediateInfix.left, intermediateInfix.right],
+		};
+	} else if (topLevelFunctionIsPrefix(expression)) {
+		topLevelOperatorInstance = getTopLevelPrefixOperator(expression)!;
+	} else {
+		topLevelOperatorInstance = { symbol: expression.trim(), parameters: [] };
+	}
+
+	return {
+		symbol: topLevelOperatorInstance.symbol,
+		parameters: topLevelOperatorInstance.parameters.map(singleParameter => getFunctionTree(singleParameter)),
+	};
+}
+
 export function getOperator(symbol: string): InfixOperator | undefined {
 	return standardInfixOperators.find(item => item.symbol === symbol);
 }
@@ -199,6 +222,11 @@ type OperatorFound = {
 	operator: InfixOperator;
 	startIndex: number;
 	endIndex: number;
+};
+
+type FunctionTreeNode = {
+	symbol: string;
+	parameters: FunctionTreeNode[];
 };
 
 function* enumerate(iterable: Iterable<any>) {
