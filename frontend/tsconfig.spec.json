@@ -5,7 +5,6 @@
 		"outDir": "./out-tsc/spec",
 		"types": ["jest", "node"]
 	},
-	"esModuleInterop": true,
 	"emitDecoratorMetadata": true,
 	"files": ["setup-jest.ts", "src/polyfills.ts"],
 	"include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
