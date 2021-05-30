@@ -26,6 +26,7 @@ class FunctionGraph {
 
 		if (found === undefined) {
 			this.nodeList.push(node);
+			this.orderNodeList();
 		}
 	}
 
@@ -46,11 +47,32 @@ class FunctionGraph {
 
 		if (found === undefined) {
 			this.adjacencyList.push(new DirectedEdge(parentNode, childNode, parameterIndex));
+			this.orderAdjacencyList();
 		}
 	}
 
 	clone(): FunctionGraph {
 		return _.cloneDeep(this);
+	}
+
+	protected orderNodeList() {
+		this.nodeList.sort(sortFunctionNode);
+	}
+
+	protected orderAdjacencyList() {
+		this.adjacencyList.sort((a, b) => {
+			const comparisonParentNodes = sortFunctionNode(a.parentNode, b.parentNode);
+			if (comparisonParentNodes !== 0) {
+				return comparisonParentNodes;
+			}
+
+			const comparisionChildNode = sortFunctionNode(a.childNode, b.childNode);
+			if (comparisionChildNode !== 0) {
+				return comparisionChildNode;
+			}
+
+			return (a.parameterIndex ?? -1) - (b.parameterIndex ?? -1);
+		});
 	}
 }
 
@@ -74,6 +96,12 @@ export class DirectedEdge {
 		this.childNode = childNode;
 		this.parameterIndex = parameterIndex;
 	}
+}
+
+function sortFunctionNode(a: FunctionNode, b: FunctionNode) {
+	if (a !== b) return a.symbol.localeCompare(b.symbol);
+
+	return a.parameterCount - b.parameterCount;
 }
 
 export default FunctionGraph;
