@@ -1,4 +1,5 @@
-import { getFunctionTree, getOperator, getTopLevelInfixOperator, standardInfixOperators } from './getTopLevelFunctions';
+import standardInfixOperators from '../standardInfixOperator';
+import { getFunctionTree } from './getFunctionTree';
 
 describe('getFunctionTree()', () => {
 	const testCases = [

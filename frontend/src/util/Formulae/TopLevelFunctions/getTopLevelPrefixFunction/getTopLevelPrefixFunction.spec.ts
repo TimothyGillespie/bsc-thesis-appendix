@@ -1,11 +1,6 @@
-import {
-	getOperator,
-	getTopLevelInfixOperator,
-	getTopLevelPrefixOperator,
-	standardInfixOperators,
-} from './getTopLevelFunctions';
+import getTopLevelPrefixFunction from './getTopLevelPrefixFunction';
 
-describe('getTopLevelPrefixOperator()', () => {
+describe('getTopLevelPrefixFunction()', () => {
 	const testCases = [
 		['3 + 2', null],
 		['mul(c(3 + 2))', { symbol: 'mul', parameters: ['c(3 + 2)'] }],
@@ -15,7 +10,7 @@ describe('getTopLevelPrefixOperator()', () => {
 	testCases.forEach(value => {
 		const [input, expectation] = value;
 		it(`Returns ${JSON.stringify(expectation)} for ${input}`, () => {
-			expect(getTopLevelPrefixOperator(typeof input === 'string' ? input : '')).toStrictEqual(expectation);
+			expect(getTopLevelPrefixFunction(typeof input === 'string' ? input : '')).toStrictEqual(expectation);
 		});
 	});
 });

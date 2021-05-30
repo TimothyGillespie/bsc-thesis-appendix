@@ -1,6 +1,6 @@
-import { standardInfixOperators, topLevelFunctionIsInfix, topLevelFunctionIsPrefix } from './getTopLevelFunctions';
+import isTopLevelFunctionPrefix from './isTopLevelFunctionPrefix';
 
-describe('topLevelFunctionIsPrefix()', () => {
+describe('isTopLevelFunctionPrefix()', () => {
 	const testCases = [
 		['3 + 2', false],
 		['depth(e,x) + size(e,x)', false],
@@ -12,7 +12,7 @@ describe('topLevelFunctionIsPrefix()', () => {
 	testCases.forEach(value => {
 		const [input, expectation] = value;
 		it(`Returns ${expectation} for ${input}`, () => {
-			expect(topLevelFunctionIsPrefix(typeof input === 'string' ? input : '')).toEqual(expectation);
+			expect(isTopLevelFunctionPrefix(typeof input === 'string' ? input : '')).toEqual(expectation);
 		});
 	});
 });
