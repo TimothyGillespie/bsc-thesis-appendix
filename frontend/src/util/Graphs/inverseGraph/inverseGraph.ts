@@ -1,8 +1,8 @@
 import _ from 'lodash';
-import { FunctionGraph } from '../graph';
+import FunctionGraph from '../FunctionGraph';
 
 function inverseGraph(graph: FunctionGraph): FunctionGraph {
-	const resultGraph = _.cloneDeep(graph);
+	const resultGraph = graph.clone();
 
 	resultGraph.adjacencyList = resultGraph.adjacencyList.map(singleEdge => {
 		const parentNode = singleEdge.childNode;
