@@ -1,4 +1,4 @@
-import { InfixOperator, InfixOperatorInstance, OperatorFound } from '../../formula-types';
+import { InfixOperator, InfixOperatorInstance, OperatorFound } from '../../formula';
 import enumerate from '../../../enumerate';
 
 function getTopLevelInfixFunction(expression: string, operators: InfixOperator[]): InfixOperatorInstance | null {

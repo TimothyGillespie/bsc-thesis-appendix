@@ -1,4 +1,4 @@
-import { PrefixOperatorInstance } from '../../formula-types';
+import { PrefixOperatorInstance } from '../../formula';
 import enumerate from '../../../enumerate';
 
 function getTopLevelPrefixFunction(expression: string): PrefixOperatorInstance | null {

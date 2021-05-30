@@ -1,4 +1,4 @@
-import { InfixOperator } from '../../formula-types';
+import { InfixOperator } from '../../formula';
 import standardInfixOperators from '../../standardInfixOperator';
 import enumerate from '../../../enumerate';
 

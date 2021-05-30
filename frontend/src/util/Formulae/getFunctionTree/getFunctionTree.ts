@@ -1,4 +1,4 @@
-import { FunctionTreeNode, InfixOperator, PrefixOperatorInstance } from '../formula-types';
+import { FunctionTreeNode, InfixOperator, PrefixOperatorInstance } from '../formula';
 import standardInfixOperators from '../standardInfixOperator';
 import isTopLevelFunctionInfix from '../TopLevelFunctions/isTopLevelFunctionInfix/isTopLevelFunctionInfix';
 import isTopLevelFunctionPrefix from '../TopLevelFunctions/isTopLevelFunctionPrefix/isTopLevelFunctionPrefix';
