@@ -24,3 +24,8 @@ export type FunctionTreeNode = {
 	symbol: string;
 	parameters: FunctionTreeNode[];
 };
+
+export type FunctionIdentifier = {
+	symbol: string;
+	parameterCount: number;
+};
