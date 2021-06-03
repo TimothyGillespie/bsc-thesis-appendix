@@ -1,8 +1,8 @@
 import { getFunctionTree } from '../../Formulae/getFunctionTree/getFunctionTree';
 import FunctionGraph, { FunctionNode } from '../FunctionGraph';
-import fromFunctionTree from './fromFunctionTree';
+import createGraphFromFunctionTree from './createGraphFromFunctionTree';
 
-describe('fromFunctionTree()', () => {
+describe('createGraphFromFunctionTree()', () => {
 	const simpleExample = '3 + 2';
 	it(`Simple example: "${simpleExample}"`, () => {
 		const tree = getFunctionTree(simpleExample);
@@ -20,7 +20,7 @@ describe('fromFunctionTree()', () => {
 		expectedGraph.addEdge(plus, three, 0);
 		expectedGraph.addEdge(plus, two, 1);
 
-		expect(fromFunctionTree(tree)).toEqual(expectedGraph);
+		expect(createGraphFromFunctionTree(tree)).toEqual(expectedGraph);
 	});
 
 	const thesisExample = 'size(c(x,y)) = 1 + edgeCount(c(y, a))';
@@ -62,10 +62,10 @@ describe('fromFunctionTree()', () => {
 
 		expectedGraph.addEdge(edgeCount, c, 0);
 
-		// Why is duplicate but with different parameter index here
+		// y is duplicate but with different parameter index here
 		expectedGraph.addEdge(c, y, 0);
 		expectedGraph.addEdge(c, a, 1);
 
-		expect(fromFunctionTree(tree)).toEqual(expectedGraph);
+		expect(createGraphFromFunctionTree(tree)).toEqual(expectedGraph);
 	});
 });

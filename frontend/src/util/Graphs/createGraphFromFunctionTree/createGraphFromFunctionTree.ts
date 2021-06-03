@@ -2,15 +2,15 @@ import { FunctionTreeNode } from '../../Formulae/formula';
 import FunctionGraph, { FunctionNode } from '../FunctionGraph';
 import enumerate from '../../enumerate';
 
-function fromFunctionTree(tree: FunctionTreeNode): FunctionGraph {
+function createGraphFromFunctionTree(tree: FunctionTreeNode): FunctionGraph {
 	const graph = new FunctionGraph();
 
-	_fromFunctionTreeRecursion(tree, graph);
+	_createGraphFromFunctionTree(tree, graph);
 
 	return graph;
 }
 
-function _fromFunctionTreeRecursion(
+function _createGraphFromFunctionTree(
 	tree: FunctionTreeNode,
 	graph: FunctionGraph,
 	parameterIndex: number = -1,
@@ -24,8 +24,8 @@ function _fromFunctionTreeRecursion(
 	}
 
 	for (const [index, childNode] of enumerate(tree.parameters)) {
-		_fromFunctionTreeRecursion(childNode, graph, index, newNode);
+		_createGraphFromFunctionTree(childNode, graph, index, newNode);
 	}
 }
 
-export default fromFunctionTree;
+export default createGraphFromFunctionTree;
