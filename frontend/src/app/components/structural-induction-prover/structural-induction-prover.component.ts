@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import FormulaAnalyzer, { FunctionDescription } from '../../../util/FormulaAnalyzer/FormulaAnalyzer';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
+import { FunctionIdentifier } from '../../../util/Formulae/formula';
+import getIdentifiersFromExpressionString from '../../../util/Formulae/getIdentifiersFromExpressionString/getIdentifiersFromExpressionString';
 
 @Component({
 	selector: 'app-structural-induction-prover',
@@ -44,7 +45,7 @@ export class StructuralInductionProverComponent implements OnInit, OnDestroy {
 		let subscriptionToAdd = this.formGroup
 			.get('statement')
 			?.valueChanges.pipe(
-				map(input => new FormulaAnalyzer(input).getFunctions()),
+				map(input => getIdentifiersFromExpressionString(input)),
 				distinctUntilChanged((previous, current) => _.isEqual(previous, current)),
 				map(functionDefinitionsToLoad =>
 					functionDefinitionsToLoad.map(definition => this.createFunctionDefinitionFormGroup(definition)),
@@ -87,11 +88,11 @@ export class StructuralInductionProverComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	createFunctionDefinitionFormGroup(functionDescription: FunctionDescription): FormGroup {
+	createFunctionDefinitionFormGroup(functionDescription: FunctionIdentifier): FormGroup {
 		let fullDescription = this.findSavedFunctionDefinition(functionDescription);
 		if (fullDescription === null) {
 			fullDescription = {
-				name: functionDescription.name,
+				name: functionDescription.symbol,
 				parameterCount: functionDescription.parameterCount,
 				parameterTypes: new Array(functionDescription.parameterCount).fill(null),
 				returnType: null,
@@ -109,9 +110,11 @@ export class StructuralInductionProverComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	findSavedFunctionDefinition(functionDescription: FunctionDescription): FullFunctionDescription | null {
+	findSavedFunctionDefinition(functionDescription: FunctionIdentifier): FullFunctionDescription | null {
 		const maybeFound = this.savedFunctionDefinitions.find(item => {
-			return item.name === functionDescription.name && item.parameterCount === functionDescription.parameterCount;
+			return (
+				item.name === functionDescription.symbol && item.parameterCount === functionDescription.parameterCount
+			);
 		});
 
 		return maybeFound ? maybeFound : null;
