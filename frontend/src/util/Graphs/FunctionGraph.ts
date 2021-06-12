@@ -21,6 +21,31 @@ class FunctionGraph {
 		return result;
 	}
 
+	getChildrenOfNode(node: FunctionNode): FunctionNode[] {
+		const result: FunctionNode[] = [];
+		this.adjacencyList.forEach(singleEdge => {
+			if (_.isEqual(singleEdge.parentNode, node)) {
+				result.push(singleEdge.childNode);
+			}
+		});
+
+		return result;
+	}
+
+	getAdjacentNodes(node: FunctionNode): FunctionNode[] {
+		return _.unionWith(this.getChildrenOfNode(node), this.getParentsOfNode(node), _.isEqual);
+	}
+
+	getNodes(): FunctionNode[] {
+		const result: FunctionNode[] = [];
+		this.adjacencyList.forEach(edge => {
+			result.push(edge.childNode);
+			result.push(edge.parentNode);
+		});
+
+		return _.uniqWith(result, _.isEqual);
+	}
+
 	addNode(node: FunctionNode) {
 		const found = this.nodeList.find(singleNode => _.isEqual(singleNode, node));
 
