@@ -99,6 +99,16 @@ describe('getFunctionTree()', () => {
 		],
 	];
 
+	it('bug1', () => {
+		// bug
+		console.log(JSON.stringify(getFunctionTree('(depth_with_condition(c(x,y)) <= size(c(x,y))) and (depth_with_max(c(x,y)) = depth_with_condition(c(x,y)))')));
+	})
+
+	it('bug2', () => {
+		// bug
+		console.log(JSON.stringify(getFunctionTree('depth_with_condition(c(x,y)) <= size(c(x,y))')));
+	})
+
 	testCases.forEach(value => {
 		const [input, expectation] = value;
 		it(`Returns ${JSON.stringify(expectation)} for ${input}`, () => {
