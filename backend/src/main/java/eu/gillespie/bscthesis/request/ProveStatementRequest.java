@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 @ToString
 public class ProveStatementRequest {
-//    @SerializedName("statement_tree")
-//    StatementTree statementTree;
+    @SerializedName("statement_tree")
+    StatementTree statementTree;
 
     @SerializedName("function_definitions")
     List<FunctionDefinition> functionDefinitions;
