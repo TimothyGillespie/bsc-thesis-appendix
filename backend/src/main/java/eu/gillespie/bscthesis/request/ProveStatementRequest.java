@@ -12,7 +12,7 @@ import java.util.List;
 @ToString
 public class ProveStatementRequest {
     @SerializedName("statement_tree")
-    StatementTree statementTree;
+    StatementTreeVertex statementTree;
 
     @SerializedName("function_definitions")
     List<FunctionDefinition> functionDefinitions;

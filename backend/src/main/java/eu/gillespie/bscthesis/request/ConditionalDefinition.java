@@ -6,8 +6,8 @@ import lombok.ToString;
 @ToString
 public class ConditionalDefinition {
     @SerializedName("condition")
-    String condition;
+    StatementTreeVertex condition;
 
     @SerializedName("then")
-    String then;
+    StatementTreeVertex then;
 }

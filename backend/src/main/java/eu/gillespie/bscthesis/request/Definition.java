@@ -14,5 +14,5 @@ public class Definition {
     List<ConditionalDefinition> conditional;
 
     @SerializedName("otherwise")
-    String otherwise;
+    StatementTreeVertex otherwise;
 }

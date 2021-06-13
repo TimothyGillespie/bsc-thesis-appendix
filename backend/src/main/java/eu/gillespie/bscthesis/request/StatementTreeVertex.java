@@ -6,11 +6,11 @@ import lombok.ToString;
 import java.util.List;
 
 @ToString
-public class StatementTree {
+public class StatementTreeVertex {
     @SerializedName("symbol")
     String symbol;
 
     @SerializedName("parameters")
-    List<StatementTree> parameters;
+    List<StatementTreeVertex> parameters;
 
 }
