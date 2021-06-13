@@ -23,6 +23,7 @@ public class Application extends WebApplication {
     @Override
     protected void setupConfig(Config config) {
         config.addEnvFile(".env");
+        config.set("http.server.port", "3333");
     }
 
     @Override
