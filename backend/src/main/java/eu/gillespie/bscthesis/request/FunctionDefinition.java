@@ -10,19 +10,14 @@ import java.util.List;
 
 @ToString
 public class FunctionDefinition {
-    @SerializedName("name")
     String name;
 
-    @SerializedName("arity")
     Integer arity;
 
-    @SerializedName("input_types")
     List<String> inputTypes;
 
-    @SerializedName("output_type")
     String outputType;
 
-    @SerializedName("definition")
     Definition definition;
 
 }

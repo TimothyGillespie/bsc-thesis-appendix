@@ -8,10 +8,8 @@ import java.util.List;
 
 @ToString
 public class StatementTreeVertex {
-    @SerializedName("symbol")
     String symbol;
 
-    @SerializedName("parameters")
     List<StatementTreeVertex> parameters;
 
 }

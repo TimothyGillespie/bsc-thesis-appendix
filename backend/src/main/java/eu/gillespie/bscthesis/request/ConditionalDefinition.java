@@ -9,10 +9,8 @@ import lombok.ToString;
 @ToString
 @Getter
 public class ConditionalDefinition {
-    @SerializedName("condition")
     StatementTreeVertex condition;
 
-    @SerializedName("then")
     StatementTreeVertex then;
 
 }

@@ -8,13 +8,10 @@ import java.util.List;
 
 @ToString
 public class Definition {
-    @SerializedName("input_variable")
     List<String> inputVariable;
 
-    @SerializedName("conditional")
     List<ConditionalDefinition> conditional;
 
-    @SerializedName("otherwise")
     StatementTreeVertex otherwise;
 
 }
