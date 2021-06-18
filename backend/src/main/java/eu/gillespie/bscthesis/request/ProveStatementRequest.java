@@ -15,29 +15,11 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class ProveStatementRequest implements SmtV20Expression {
+public class ProveStatementRequest {
     @SerializedName("statement_tree")
     StatementTreeVertex statementTree;
 
     @SerializedName("function_definitions")
     List<FunctionDefinition> functionDefinitions;
 
-
-    @Override
-    public String toSmtV20() {
-        SmtV20File file = new SmtV20File();
-
-        List<SmtV20TopLevelExpression> topLevelExpressions = new LinkedList<>(this.functionDefinitions);
-
-        SmtV20Assert statement = new SmtV20Assert();
-        statement.setAssertion(statementTree);
-        statement.setName("statement");
-        topLevelExpressions.add(statement);
-
-        file.setTopLevelExpressions(topLevelExpressions);
-        file.setSmtCoreMinimize(true);
-        file.setProduceUnsatCores(true);
-
-        return file.toSmtV20();
-    }
 }

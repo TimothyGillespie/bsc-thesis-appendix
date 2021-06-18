@@ -7,15 +7,11 @@ import lombok.ToString;
 import java.util.List;
 
 @ToString
-public class StatementTreeVertex implements SmtV20AssertableExpression {
+public class StatementTreeVertex {
     @SerializedName("symbol")
     String symbol;
 
     @SerializedName("parameters")
     List<StatementTreeVertex> parameters;
 
-    @Override
-    public String toSmtV20() {
-        return null;
-    }
 }

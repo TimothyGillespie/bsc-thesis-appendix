@@ -9,7 +9,7 @@ import lombok.ToString;
 import java.util.List;
 
 @ToString
-public class FunctionDefinition implements SmtV20TopLevelExpression {
+public class FunctionDefinition {
     @SerializedName("name")
     String name;
 
@@ -25,15 +25,4 @@ public class FunctionDefinition implements SmtV20TopLevelExpression {
     @SerializedName("definition")
     Definition definition;
 
-    @Override
-    public String toSmtV20() {
-        StringBuilder sb = new StringBuilder();
-        SmtV20DeclareFunction function = new SmtV20DeclareFunction(this.name, this.outputType, this.inputTypes.toArray(new String[]{}));
-
-        sb.append(function.toSmtV20());
-        sb.append("\\n");
-
-
-        return sb.toString();
-    }
 }

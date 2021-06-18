@@ -8,16 +8,11 @@ import lombok.ToString;
 
 @ToString
 @Getter
-public class ConditionalDefinition implements SmtV20AssertableExpression {
+public class ConditionalDefinition {
     @SerializedName("condition")
     StatementTreeVertex condition;
 
     @SerializedName("then")
     StatementTreeVertex then;
 
-
-    @Override
-    public String toSmtV20() {
-        return null;
-    }
 }
