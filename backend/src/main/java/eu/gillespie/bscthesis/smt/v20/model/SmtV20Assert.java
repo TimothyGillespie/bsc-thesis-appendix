@@ -2,26 +2,24 @@ package eu.gillespie.bscthesis.smt.v20.model;
 
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20AssertableExpression;
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class SmtV20Assert implements SmtV20AssertableExpression {
 
     String name = null;
-    SmtV20AssertableExpression assertion = null;
+    String assertion = null;
 
     @Override
     public String toSmtV20() {
-
-    }
-
-    @Override
-    public String toSmtV20(String name) {
         if(this.getName() == null)
-            return String.format("(assert %s)", this.getAssertion().toSmtV20());
+            return String.format("(assert %s)", this.getAssertion());
 
-        return String.format("(assert (%s) :named %s)", this.getAssertion().toSmtV20(), this.getName());
+        return String.format("(assert (%s) :named %s)", this.getAssertion(), this.getName());
     }
+
 }
