@@ -18,8 +18,6 @@ public class SmtV20File implements SmtV20Expression {
     boolean produceUnsatCores = false;
     boolean smtCoreMinimize = false;
 
-    @Setter(AccessLevel.PRIVATE)
-    @Getter(AccessLevel.PRIVATE)
     List<SmtV20TopLevelExpression> topLevelExpressions;
 
 

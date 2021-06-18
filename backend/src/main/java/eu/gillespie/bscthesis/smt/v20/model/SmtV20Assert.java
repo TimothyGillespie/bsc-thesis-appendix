@@ -7,13 +7,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SmtV20Assert implements SmtV20TopLevelExpression {
+public class SmtV20Assert implements SmtV20AssertableExpression {
 
     String name = null;
     SmtV20AssertableExpression assertion = null;
 
     @Override
     public String toSmtV20() {
+
+    }
+
+    @Override
+    public String toSmtV20(String name) {
         if(this.getName() == null)
             return String.format("(assert %s)", this.getAssertion().toSmtV20());
 
