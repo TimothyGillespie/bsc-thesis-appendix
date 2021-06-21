@@ -1,0 +1,7 @@
+(declare-fun depth (BTree BTree) Int)
+(declare-fun size (BTree BTree) Int)
+(declare-fun cuv () BTree)
+(declare-fun u () BTree)
+(declare-fun v () BTree)
+(declare-fun c (BTree BTree) BTree)
+(declare-fun max (Int Int) Int)

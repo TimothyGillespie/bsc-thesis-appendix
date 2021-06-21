@@ -1,4 +1,4 @@
-package eu.gillespie.bscthesis.tests.smt.v20.model;
+package eu.gillespie.bscthesis.tests.tosmtv20conversion;
 
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20File;
 import eu.gillespie.bscthesis.tests.shared.ComparisonUtil;

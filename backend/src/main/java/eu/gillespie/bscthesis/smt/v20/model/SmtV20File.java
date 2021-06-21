@@ -3,12 +3,16 @@ package eu.gillespie.bscthesis.smt.v20.model;
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20Expression;
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
 
 import java.util.LinkedList;
 import java.util.List;
 
+@Accessors(chain = true)
 @Getter
 @Setter
 public class SmtV20File implements SmtV20Expression {
@@ -33,6 +37,10 @@ public class SmtV20File implements SmtV20Expression {
     public SmtV20File defineSort(String name) {
         this.getTopLevelExpressions().add(new SmtV20DefineSort(name));
         return this;
+    }
+
+    public boolean addTopLevelExpression(SmtV20TopLevelExpression topLevelExpression) {
+        return this.getTopLevelExpressions().add(topLevelExpression);
     }
 
     @Override

@@ -1,11 +1,11 @@
 package eu.gillespie.bscthesis.converter.tosmt.v20;
 
-import eu.gillespie.bscthesis.request.FunctionDefinition;
-import eu.gillespie.bscthesis.request.ProveStatementRequest;
-import eu.gillespie.bscthesis.request.StatementTreeVertex;
-import eu.gillespie.bscthesis.smt.v20.model.SmtV20Assert;
+import eu.gillespie.bscthesis.request.*;
+import eu.gillespie.bscthesis.smt.v20.model.SmtV20ForAll;
+import eu.gillespie.bscthesis.smt.v20.model.SmtV20NamedAssert;
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20DeclareFunction;
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20File;
+import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20Expression;
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression;
 
 import java.util.*;
@@ -28,6 +28,96 @@ public class ToSmtV20Converter {
         SmtV20File file = new SmtV20File();
         this.file.setProduceUnsatCores(true);
         this.file.setSmtCoreMinimize(true);
+    }
+
+    public static List<SmtV20DeclareFunction> generateFunctionDeclarations(ProveStatementRequest request) {
+        return request.getFunctionDefinitions().stream().map((singleDefinition) -> new SmtV20DeclareFunction(
+                singleDefinition.getName(),
+                singleDefinition.getOutputType(),
+                singleDefinition.getInputTypes().toArray(new String[] {})
+        )).collect(Collectors.toList());
+    }
+
+    public static List<SmtV20Expression> generateFunctionDefinitions(FunctionDefinition functionDefinition) {
+        LinkedList<SmtV20Expression> result = new LinkedList<>();
+        Map<String, String> bindings = null;
+        if(functionDefinition.getDefinition() != null && functionDefinition.getDefinition().getInputVariable() != null && functionDefinition.getDefinition().getInputVariable().size() > 0) {
+            if(functionDefinition.getInputTypes().size() != functionDefinition.getDefinition().getInputVariable().size())
+                throw new RuntimeException("Non equal list length of parameters and input types");
+
+            bindings = new HashMap<>();
+            for(int i = 0; i < functionDefinition.getInputTypes().size(); i++) {
+                bindings.put(functionDefinition.getDefinition().getInputVariable().get(i), functionDefinition.getInputTypes().get(i));
+            }
+        }
+
+        LinkedList<StatementTreeVertex> usedConditions = new LinkedList<>();
+        if(functionDefinition.getDefinition() != null) {
+            int i = 1;
+            for (ConditionalDefinition conditional : functionDefinition.getDefinition().getConditional()) {
+                StatementTreeVertex conditionTree = conditional.getCondition();
+                StatementTreeVertex thenTree = new StatementTreeVertex(
+                        "=",
+                        Arrays.asList(
+                                new StatementTreeVertex(
+                                        functionDefinition.getName(),
+                                        functionDefinition.getDefinition().getInputVariable().stream().map((inputVariable) -> new StatementTreeVertex(inputVariable, Collections.emptyList())).collect(Collectors.toList())
+                                ),
+                                conditional.getThen()
+                        )
+                );
+
+                usedConditions.add(conditionTree);
+                StatementTreeVertex compositionalTree = new StatementTreeVertex(
+                        "=>",
+                        Arrays.asList(conditionTree, thenTree)
+                );
+
+                result.add(
+                        new SmtV20NamedAssert(
+                            String.format("%sArity%dNumber%d", functionDefinition.getName(), functionDefinition.getArity(), i),
+                            new SmtV20ForAll(
+                                compositionalTree,
+                                bindings
+                            )
+                        )
+                );
+
+                i++;
+            }
+        }
+
+        StatementTreeVertex elseCompositional = new StatementTreeVertex(
+            "=>",
+            Arrays.asList(
+                new StatementTreeVertex(
+                    "not",
+                    usedConditions
+                ),
+                new StatementTreeVertex(
+                    "=",
+                    Arrays.asList(
+                            new StatementTreeVertex(
+                                    functionDefinition.getName(),
+                                    functionDefinition.getDefinition().getInputVariable().stream().map((inputVariable) -> new StatementTreeVertex(inputVariable, Collections.emptyList())).collect(Collectors.toList())
+                            ),
+                            functionDefinition.getDefinition().getOtherwise()
+                    )
+                )
+            )
+        );
+
+        result.add(
+                new SmtV20NamedAssert(
+                    String.format("%sArity%dElse", functionDefinition.getName(), functionDefinition.getArity()),
+                    new SmtV20ForAll(
+                        elseCompositional,
+                        bindings
+                    )
+                )
+        );
+
+        return result;
     }
 
     public String convert(ProveStatementRequest request) {
@@ -67,8 +157,8 @@ public class ToSmtV20Converter {
 
         for(FunctionDefinition singleFuncDef : functionDefinitions) {
 
-            SmtV20Assert assertion = new SmtV20Assert();
-            assertion.setName(singleFuncDef.getName() + "Otherwise");
+//            SmtV20NamedAssert assertion = new SmtV20NamedAssert();
+//            assertion.setName();
 //            assertion.setAssertion(toSmtV20ExpressionString(singleFuncDef.getDefinition().getOtherwise()));
         }
 

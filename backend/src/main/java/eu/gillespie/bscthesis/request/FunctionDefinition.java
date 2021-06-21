@@ -1,21 +1,19 @@
 package eu.gillespie.bscthesis.request;
 
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @ToString
 @Getter
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class FunctionDefinition {
-    String name;
-
-    Integer arity;
-
-    List<String> inputTypes;
-
-    String outputType;
-
+    @NonNull String name;
+    @NonNull Integer arity;
+    @NonNull List<String> inputTypes = new LinkedList<>();
+    @NonNull String outputType;
     Definition definition;
 
 }

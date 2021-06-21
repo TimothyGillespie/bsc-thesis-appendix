@@ -1,18 +1,16 @@
 package eu.gillespie.bscthesis.request;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import java.util.LinkedList;
+import lombok.*;
+import lombok.experimental.Accessors;
 import java.util.List;
 
+@Accessors(chain = true)
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 public class ProveStatementRequest {
-    StatementTreeVertex statementTree;
-
-    List<FunctionDefinition> functionDefinitions;
+    @NonNull StatementTreeVertex statementTree;
+    @NonNull List<FunctionDefinition> functionDefinitions;
 
 }
