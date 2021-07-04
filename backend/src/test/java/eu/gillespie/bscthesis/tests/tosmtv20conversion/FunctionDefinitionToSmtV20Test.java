@@ -1,10 +1,7 @@
 package eu.gillespie.bscthesis.tests.tosmtv20conversion;
 
 import eu.gillespie.bscthesis.converter.tosmt.v20.ToSmtV20Converter;
-import eu.gillespie.bscthesis.request.ConditionalDefinition;
-import eu.gillespie.bscthesis.request.Definition;
-import eu.gillespie.bscthesis.request.FunctionDefinition;
-import eu.gillespie.bscthesis.request.StatementTreeVertex;
+import eu.gillespie.bscthesis.request.*;
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20NamedAssert;
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20Expression;
 import eu.gillespie.bscthesis.tests.shared.ComparisonUtil;
@@ -23,7 +20,7 @@ class FunctionDefinitionToSmtV20Test {
         assertEquals(
                 ComparisonUtil.stripNewLines(FileLoader.load("smt/v20/provestatementrequest/functionDefinitionsWithInputVariableAndConditional.smt2")),
                 ComparisonUtil.stripNewLines(
-                        ToSmtV20Converter.generateFunctionDefinitions(
+                        (new ToSmtV20Converter()).generateFunctionDefinitions(
                             new FunctionDefinition(
                                     "max",
                                     2,
@@ -47,8 +44,66 @@ class FunctionDefinitionToSmtV20Test {
                                                 )
 
                                         )).otherwise(new StatementTreeVertex("b", Collections.emptyList())).build()
-                            )
+                            ),
+                             null
                     ).stream().map(SmtV20Expression::toSmtV20).collect(Collectors.joining())
+                )
+        );
+    }
+
+    @Test
+    void correctConversionToSmtV20SimpleForConstructorInput() {
+        assertEquals(
+                ComparisonUtil.stripNewLines(FileLoader.load("smt/v20/provestatementrequest/functionDefinitionsWithInputConstructorAndConditional.smt2")),
+                ComparisonUtil.stripNewLines(
+                        (new ToSmtV20Converter()).generateFunctionDefinitions(
+                                new FunctionDefinition(
+                                        "depth",
+                                        1,
+                                        Collections.singletonList("BTree"),
+                                        "Int",
+                                        Definition.builder()
+                                                .inputConstructor(new InputConstructor("c", 2, Arrays.asList("a", "b")))
+                                                .conditional(Collections.singletonList(
+                                                        new ConditionalDefinition(
+                                                                new StatementTreeVertex(
+                                                                        ">",
+                                                                        Arrays.asList(
+                                                                                new StatementTreeVertex("depth", Collections.singletonList(new StatementTreeVertex("a", Collections.emptyList()))),
+                                                                                new StatementTreeVertex("depth", Collections.singletonList(new StatementTreeVertex("b", Collections.emptyList())))
+                                                                        )
+                                                                ),
+                                                                new StatementTreeVertex(
+                                                                        "depth",
+                                                                        Collections.singletonList(
+                                                                                new StatementTreeVertex(
+                                                                                        "a",
+                                                                                        Collections.emptyList()
+                                                                                )
+                                                                        )
+                                                                )
+                                                        )
+
+                                                )).otherwise(
+                                                new StatementTreeVertex(
+                                                        "depth",
+                                                        Collections.singletonList(
+                                                                new StatementTreeVertex(
+                                                                        "b",
+                                                                        Collections.emptyList()
+                                                                )
+                                                        )
+                                                )
+                                        ).build()
+                                ),
+                                new FunctionDefinition(
+                                        "c",
+                                        2,
+                                        Arrays.asList("BTree", "BTree"),
+                                        "BTree",
+                                        null
+                                )
+                        ).stream().map(SmtV20Expression::toSmtV20).collect(Collectors.joining())
                 )
         );
     }

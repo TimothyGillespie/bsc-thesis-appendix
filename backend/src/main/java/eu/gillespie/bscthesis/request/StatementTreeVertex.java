@@ -1,5 +1,6 @@
 package eu.gillespie.bscthesis.request;
 
+import com.rits.cloning.Cloner;
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20Expression;
 import lombok.*;
 import lombok.experimental.Delegate;
@@ -13,10 +14,10 @@ import java.util.Objects;
 @Getter
 @Setter
 @AllArgsConstructor
+@EqualsAndHashCode
 public class StatementTreeVertex implements SmtV20Expression {
     @NonNull String symbol;
 
-    @Delegate
     @NonNull List<StatementTreeVertex> parameters;
 
     public StatementTreeVertex(String symbol) {
@@ -42,5 +43,17 @@ public class StatementTreeVertex implements SmtV20Expression {
         }
 
         return sb.toString();
+    }
+
+    public boolean containsOrEquals(StatementTreeVertex tree) {
+        return this.equals(tree) || this.contains(tree);
+    }
+
+    public boolean contains(StatementTreeVertex tree) {
+        return this.getParameters().stream().anyMatch(x -> x.containsOrEquals(tree));
+    }
+
+    public StatementTreeVertex getClone() {
+        return new Cloner().deepClone(this);
     }
 }

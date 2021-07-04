@@ -5,19 +5,21 @@ import eu.gillespie.bscthesis.smt.v20.model.SmtV20ForAll;
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20NamedAssert;
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20DeclareFunction;
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20File;
-import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20Expression;
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression;
+import lombok.NonNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ToSmtV20Converter {
 
-
-    HashSet<SmtV20TopLevelExpression> topLevelExpressions = new HashSet<>();
     SmtV20File file;
-    HashMap<String, Set<String>> symbolsOfType = new HashMap<>();
+    HashMap<String, StatementTreeVertex> constructorMapping;
 
+
+    public void generateConstructorMapping() {
+
+    }
 
     public static String toSmtV20(ProveStatementRequest request) {
         ToSmtV20Converter instance = new ToSmtV20Converter();
@@ -26,8 +28,10 @@ public class ToSmtV20Converter {
 
     public ToSmtV20Converter() {
         SmtV20File file = new SmtV20File();
-        this.file.setProduceUnsatCores(true);
-        this.file.setSmtCoreMinimize(true);
+        this.constructorMapping = new HashMap<>();
+        file.setProduceUnsatCores(true);
+        file.setSmtCoreMinimize(true);
+        this.file = file;
     }
 
     public static List<SmtV20DeclareFunction> generateFunctionDeclarations(ProveStatementRequest request) {
@@ -38,18 +42,48 @@ public class ToSmtV20Converter {
         )).collect(Collectors.toList());
     }
 
-    public static List<SmtV20Expression> generateFunctionDefinitions(FunctionDefinition functionDefinition) {
-        LinkedList<SmtV20Expression> result = new LinkedList<>();
-        Map<String, String> bindings = null;
-        if(functionDefinition.getDefinition() != null && functionDefinition.getDefinition().getInputVariable() != null && functionDefinition.getDefinition().getInputVariable().size() > 0) {
-            if(functionDefinition.getInputTypes().size() != functionDefinition.getDefinition().getInputVariable().size())
-                throw new RuntimeException("Non equal list length of parameters and input types");
 
-            bindings = new HashMap<>();
-            for(int i = 0; i < functionDefinition.getInputTypes().size(); i++) {
-                bindings.put(functionDefinition.getDefinition().getInputVariable().get(i), functionDefinition.getInputTypes().get(i));
-            }
+    public HashMap<String, String> getParameterTypeBinding(@NonNull FunctionDefinition functionDefinition, FunctionDefinition constructorFunction) {
+        FunctionDefinition functionDefinitionToObtainInputTypesOf = constructorFunction != null ? constructorFunction : functionDefinition;
+        List<String> inputTypes = functionDefinitionToObtainInputTypesOf.getInputTypes();
+        List<String> inputVariables = new LinkedList<>();
+
+
+        Definition definition = functionDefinition.getDefinition();
+        if(definition == null)
+            throw new RuntimeException("No definition exists on function definition");
+
+        if(constructorFunction == null)
+            inputVariables = definition.getInputVariable();
+
+        if(constructorFunction != null && definition.getInputConstructor() != null)
+            inputVariables = definition.getInputConstructor().getBoundVariables();
+
+        return getParameterTypeBinding(inputVariables, inputTypes);
+
+    }
+
+    public HashMap<String, String> getParameterTypeBinding(List<String> inputVariable, List<String> inputTypes) {
+        inputVariable = inputVariable == null ? new LinkedList<>() : inputVariable;
+        inputTypes = inputTypes == null ? new LinkedList<>() : inputTypes;
+        if(inputVariable.size() != inputTypes.size())
+            throw new RuntimeException("Non equal list length of parameters and input types");
+
+        if(inputVariable.size() == 0)
+            return null;
+
+        HashMap<String, String> bindings = new HashMap<>();
+        for(int i = 0; i < inputTypes.size(); i++) {
+            bindings.put(inputVariable.get(i), inputTypes.get(i));
         }
+        return bindings;
+    }
+
+    public HashSet<SmtV20NamedAssert> generateFunctionDefinitions(@NonNull FunctionDefinition functionDefinition, FunctionDefinition inputConstructor) {
+        HashSet<SmtV20NamedAssert> result = new HashSet<>();
+
+        HashMap<String, String> bindings = getParameterTypeBinding(functionDefinition, inputConstructor);
+
 
         LinkedList<StatementTreeVertex> usedConditions = new LinkedList<>();
         if(functionDefinition.getDefinition() != null) {
@@ -61,7 +95,9 @@ public class ToSmtV20Converter {
                         Arrays.asList(
                                 new StatementTreeVertex(
                                         functionDefinition.getName(),
-                                        functionDefinition.getDefinition().getInputVariable().stream().map((inputVariable) -> new StatementTreeVertex(inputVariable, Collections.emptyList())).collect(Collectors.toList())
+                                        inputConstructor != null
+                                                ? Collections.singletonList(new StatementTreeVertex(inputConstructor.getName(), functionDefinition.getDefinition().getInputConstructor().getBoundVariables().stream().map(inputVariable -> new StatementTreeVertex(inputVariable, Collections.emptyList())).collect(Collectors.toList())))
+                                                : functionDefinition.getDefinition().getInputVariable().stream().map((inputVariable) -> new StatementTreeVertex(inputVariable, Collections.emptyList())).collect(Collectors.toList())
                                 ),
                                 conditional.getThen()
                         )
@@ -99,7 +135,10 @@ public class ToSmtV20Converter {
                     Arrays.asList(
                             new StatementTreeVertex(
                                     functionDefinition.getName(),
-                                    functionDefinition.getDefinition().getInputVariable().stream().map((inputVariable) -> new StatementTreeVertex(inputVariable, Collections.emptyList())).collect(Collectors.toList())
+                                    inputConstructor != null
+                                            ? Collections.singletonList(new StatementTreeVertex(inputConstructor.getName(), functionDefinition.getDefinition().getInputConstructor().getBoundVariables().stream().map(inputVariable -> new StatementTreeVertex(inputVariable, Collections.emptyList())).collect(Collectors.toList())))
+                                            : functionDefinition.getDefinition().getInputVariable().stream().map((inputVariable) -> new StatementTreeVertex(inputVariable, Collections.emptyList())).collect(Collectors.toList())
+
                             ),
                             functionDefinition.getDefinition().getOtherwise()
                     )
@@ -122,10 +161,10 @@ public class ToSmtV20Converter {
 
     public String convert(ProveStatementRequest request) {
 
-        topLevelExpressions = getTopLevelExpressionSetFor(request.getFunctionDefinitions());
+        List<SmtV20TopLevelExpression> topLevelExpressions = getTopLevelExpressions(request.getFunctionDefinitions());
+        topLevelExpressions.addAll(generateFunctionDefinitions(request.getFunctionDefinitions()));
 
-
-//        file.setTopLevelExpressions(topLevelExpressions);
+        file.setTopLevelExpressions(topLevelExpressions);
         return file.toSmtV20();
     }
 
@@ -137,39 +176,28 @@ public class ToSmtV20Converter {
         );
     }
 
-    public String toSmtV20ExpressionString(StatementTreeVertex tree, Map<String, String> typeBinding) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("(");
-        sb.append(tree.getSymbol());
-        for(StatementTreeVertex singleParameter : tree.getParameters()) {
-            sb.append(toSmtV20ExpressionString(singleParameter, typeBinding));
-        }
-        sb.append(")");
-
-        return sb.toString();
+    public LinkedList<SmtV20TopLevelExpression> getTopLevelExpressions(Collection<FunctionDefinition> functionDefinitions) {
+        LinkedList<SmtV20TopLevelExpression> result = new LinkedList<>(getDeclareFunction(functionDefinitions));
+        result.addAll(generateFunctionDefinitions(functionDefinitions));
+        return result;
     }
 
-    public HashSet<SmtV20TopLevelExpression> getTopLevelExpressionSetFor(Collection<FunctionDefinition> functionDefinitions) {
-        HashSet<SmtV20TopLevelExpression> topLevelExpressions = functionDefinitions
-                .stream()
-                .map(ToSmtV20Converter::toSmtV20DeclareFunction)
+
+    public HashSet<SmtV20DeclareFunction> getDeclareFunction(Collection<FunctionDefinition> functionDefinitions) {
+        return functionDefinitions
+            .stream()
+            .map(ToSmtV20Converter::toSmtV20DeclareFunction)
+            .collect(Collectors.toCollection(HashSet::new));
+    }
+
+    public HashSet<SmtV20NamedAssert> generateFunctionDefinitions(Collection<FunctionDefinition> functionDefinitions) {
+        return functionDefinitions.stream()
+                .map(x -> this.generateFunctionDefinitions(
+                        x,
+                        functionDefinitions.stream().filter(y -> y.equals(x)).findFirst().orElseThrow(RuntimeException::new)
+                ))
+                .flatMap(HashSet::stream)
                 .collect(Collectors.toCollection(HashSet::new));
-
-        for(FunctionDefinition singleFuncDef : functionDefinitions) {
-
-//            SmtV20NamedAssert assertion = new SmtV20NamedAssert();
-//            assertion.setName();
-//            assertion.setAssertion(toSmtV20ExpressionString(singleFuncDef.getDefinition().getOtherwise()));
-        }
-
-        return topLevelExpressions;
-    }
-
-    private void generateSymbolsOfType(Collection<FunctionDefinition> functionDefinitions) {
-        for(FunctionDefinition singleDefinition : functionDefinitions) {
-            Set<String> foundTypes = symbolsOfType.getOrDefault(singleDefinition.getOutputType(), new HashSet<>());
-            foundTypes.add(String.format("%s/%d", singleDefinition.getName(), singleDefinition.getArity()));
-        }
     }
 
 }

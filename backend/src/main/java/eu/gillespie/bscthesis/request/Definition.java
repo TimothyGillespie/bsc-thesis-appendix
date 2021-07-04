@@ -11,8 +11,11 @@ import java.util.List;
 @Getter
 @Builder
 public class Definition {
+
     List<String> inputVariable = null;
+    InputConstructor inputConstructor = null;
     // inputConstructor
     List<ConditionalDefinition> conditional = new LinkedList<>();
     StatementTreeVertex otherwise;
+
 }

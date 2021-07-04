@@ -9,9 +9,14 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class FunctionDefinition {
+
+    @EqualsAndHashCode.Include
     @NonNull String name;
+    @EqualsAndHashCode.Include
     @NonNull Integer arity;
+
     @NonNull List<String> inputTypes = new LinkedList<>();
     @NonNull String outputType;
     Definition definition;
