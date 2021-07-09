@@ -10,6 +10,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 public class ProveStatementRequest {
+    @NonNull String constructorSymbol;
     @NonNull StatementTreeVertex statementTree;
     @NonNull List<FunctionDefinition> functionDefinitions;
 

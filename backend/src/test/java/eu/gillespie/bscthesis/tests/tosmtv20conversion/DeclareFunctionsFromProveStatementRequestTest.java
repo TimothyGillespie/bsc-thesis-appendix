@@ -22,6 +22,7 @@ class DeclareFunctionsFromProveStatementRequestTest {
         StatementTreeVertex xTree = new StatementTreeVertex("x", Collections.emptyList());
 
         ProveStatementRequest request = new ProveStatementRequest(
+                "c",
                 xTree,
                 Arrays.asList(
                         new FunctionDefinition("depth", 2, Arrays.asList("BTree", "BTree"), "Int", Definition.builder().conditional(Collections.emptyList()).otherwise(xTree).build()),

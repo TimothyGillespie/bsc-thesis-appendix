@@ -14,21 +14,15 @@ import java.util.stream.Collectors;
 public class ToSmtV20Converter {
 
     SmtV20File file;
-    HashMap<String, StatementTreeVertex> constructorMapping;
-
-
-    public void generateConstructorMapping() {
-
-    }
 
     public static String toSmtV20(ProveStatementRequest request) {
         ToSmtV20Converter instance = new ToSmtV20Converter();
+        List<SmtV20TopLevelExpression> topLevelExpressions = new LinkedList<>();
         return instance.convert(request);
     }
 
     public ToSmtV20Converter() {
         SmtV20File file = new SmtV20File();
-        this.constructorMapping = new HashMap<>();
         file.setProduceUnsatCores(true);
         file.setSmtCoreMinimize(true);
         this.file = file;
@@ -82,6 +76,9 @@ public class ToSmtV20Converter {
     public HashSet<SmtV20NamedAssert> generateFunctionDefinitions(@NonNull FunctionDefinition functionDefinition, FunctionDefinition inputConstructor) {
         HashSet<SmtV20NamedAssert> result = new HashSet<>();
 
+        if(functionDefinition.getDefinition() == null) {
+            return result;
+        }
         HashMap<String, String> bindings = getParameterTypeBinding(functionDefinition, inputConstructor);
 
 
@@ -123,14 +120,11 @@ public class ToSmtV20Converter {
             }
         }
 
-        StatementTreeVertex elseCompositional = new StatementTreeVertex(
-            "=>",
-            Arrays.asList(
-                new StatementTreeVertex(
-                    "not",
-                    usedConditions
-                ),
-                new StatementTreeVertex(
+        StatementTreeVertex elseCompositional;
+
+
+        if(usedConditions.isEmpty()) {
+            elseCompositional = new StatementTreeVertex(
                     "=",
                     Arrays.asList(
                             new StatementTreeVertex(
@@ -142,9 +136,31 @@ public class ToSmtV20Converter {
                             ),
                             functionDefinition.getDefinition().getOtherwise()
                     )
-                )
-            )
-        );
+            );
+        } else {
+            elseCompositional = new StatementTreeVertex(
+                    "=>",
+                    Arrays.asList(
+                            new StatementTreeVertex(
+                                    "not",
+                                    usedConditions
+                            ),
+                            new StatementTreeVertex(
+                                    "=",
+                                    Arrays.asList(
+                                            new StatementTreeVertex(
+                                                    functionDefinition.getName(),
+                                                    inputConstructor != null
+                                                            ? Collections.singletonList(new StatementTreeVertex(inputConstructor.getName(), functionDefinition.getDefinition().getInputConstructor().getBoundVariables().stream().map(inputVariable -> new StatementTreeVertex(inputVariable, Collections.emptyList())).collect(Collectors.toList())))
+                                                            : functionDefinition.getDefinition().getInputVariable().stream().map((inputVariable) -> new StatementTreeVertex(inputVariable, Collections.emptyList())).collect(Collectors.toList())
+
+                                            ),
+                                            functionDefinition.getDefinition().getOtherwise()
+                                    )
+                            )
+                    )
+            );
+        }
 
         result.add(
                 new SmtV20NamedAssert(
@@ -162,7 +178,6 @@ public class ToSmtV20Converter {
     public String convert(ProveStatementRequest request) {
 
         List<SmtV20TopLevelExpression> topLevelExpressions = getTopLevelExpressions(request.getFunctionDefinitions());
-        topLevelExpressions.addAll(generateFunctionDefinitions(request.getFunctionDefinitions()));
 
         file.setTopLevelExpressions(topLevelExpressions);
         return file.toSmtV20();
@@ -194,7 +209,9 @@ public class ToSmtV20Converter {
         return functionDefinitions.stream()
                 .map(x -> this.generateFunctionDefinitions(
                         x,
-                        functionDefinitions.stream().filter(y -> y.equals(x)).findFirst().orElseThrow(RuntimeException::new)
+                        x.getDefinition() != null && x.getDefinition().getInputConstructor() != null
+                            ? functionDefinitions.stream().filter(y -> y.getName().equals(x.getDefinition().getInputConstructor().getName()) && y.getArity().equals(x.getDefinition().getInputConstructor().getArity())).findFirst().orElseThrow(RuntimeException::new)
+                            : null
                 ))
                 .flatMap(HashSet::stream)
                 .collect(Collectors.toCollection(HashSet::new));

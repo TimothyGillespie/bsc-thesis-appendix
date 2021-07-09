@@ -10,8 +10,8 @@ import org.javawebstack.httpserver.router.annotation.verbs.Post;
 public class Z3Controller extends HttpController {
 
     @Post("z3")
-    public Z3Response handle(Exchange exchange, @Body Z3Request request) {
-        return new Z3Response();
+    public Z3Request handle(Exchange exchange, @Body Z3Request request) {
+        return exchange.body(Z3Request.class);
     }
 
 }
