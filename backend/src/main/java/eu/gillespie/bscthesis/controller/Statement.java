@@ -7,12 +7,15 @@ import org.javawebstack.httpserver.Exchange;
 import org.javawebstack.httpserver.router.annotation.params.Body;
 import org.javawebstack.httpserver.router.annotation.verbs.Post;
 
+import static eu.gillespie.bscthesis.tosmtv20.ConvertRequestToSmtKt.convertToSmtV20String;
+
 public class Statement extends HttpController {
 
     @Post("/statement/prove")
     public String proveStatementhandle(Exchange exchange, @Body ProveStatementRequest request) {
         request = exchange.body(ProveStatementRequest.class);
-        return ToSmtV20Converter.toSmtV20(request);
+
+        return convertToSmtV20String(request);
     }
 
 }

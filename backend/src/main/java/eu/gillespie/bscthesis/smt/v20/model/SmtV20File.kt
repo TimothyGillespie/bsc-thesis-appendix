@@ -1,60 +1,51 @@
-package eu.gillespie.bscthesis.smt.v20.model;
+package eu.gillespie.bscthesis.smt.v20.model
 
-import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20Expression;
-import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-import lombok.experimental.SuperBuilder;
+import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20Expression
+import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression
+import eu.gillespie.bscthesis.smt.v20.model.SmtV20File
+import eu.gillespie.bscthesis.smt.v20.model.SmtV20DeclareFunction
+import eu.gillespie.bscthesis.smt.v20.model.SmtV20DefineSort
+import lombok.Getter
+import lombok.Setter
+import lombok.experimental.Accessors
+import java.lang.StringBuilder
+import java.util.LinkedList
 
-import java.util.LinkedList;
-import java.util.List;
+class SmtV20File(
+    var produceUnsatCores: Boolean = false,
+    var smtCoreMinimize: Boolean = false,
+    var topLevelExpressions: MutableList<SmtV20TopLevelExpression> = LinkedList(),
+) : SmtV20Expression {
 
-@Accessors(chain = true)
-@Getter
-@Setter
-public class SmtV20File implements SmtV20Expression {
-
-    private static final String optionTemplate = "(set-option %s %s)\n";
-
-    boolean produceUnsatCores = false;
-    boolean smtCoreMinimize = false;
-
-    List<SmtV20TopLevelExpression> topLevelExpressions;
-
-
-    public SmtV20File() {
-        this.setTopLevelExpressions(new LinkedList<>());
+    fun declareFunction(name: String?, outputType: String?, vararg parameterTypes: String?): SmtV20File {
+        this.topLevelExpressions.add(SmtV20DeclareFunction(name, outputType, *parameterTypes))
+        return this
     }
 
-    public SmtV20File declareFunction(String name, String outputType, String... parameterTypes) {
-        this.getTopLevelExpressions().add(new SmtV20DeclareFunction(name, outputType, parameterTypes));
-        return this;
+    fun defineSort(name: String?): SmtV20File {
+        this.topLevelExpressions.add(SmtV20DefineSort(name))
+        return this
     }
 
-    public SmtV20File defineSort(String name) {
-        this.getTopLevelExpressions().add(new SmtV20DefineSort(name));
-        return this;
+    fun addTopLevelExpression(topLevelExpression: SmtV20TopLevelExpression): Boolean {
+        return this.topLevelExpressions.add(topLevelExpression)
     }
 
-    public boolean addTopLevelExpression(SmtV20TopLevelExpression topLevelExpression) {
-        return this.getTopLevelExpressions().add(topLevelExpression);
+    override fun toSmtV20(): String {
+        val sb = StringBuilder()
+        sb.append(String.format(optionTemplate, ":produce-unsat-cores", this.produceUnsatCores.toString()))
+        sb.append(String.format(optionTemplate, ":smt.core.minimize", this.smtCoreMinimize.toString()))
+        for (singleTopLevelExpression in topLevelExpressions) sb.append(singleTopLevelExpression.toSmtV20())
+            .append("\n")
+        sb.append("(exit)")
+        return sb.toString()
     }
 
-    @Override
-    public String toSmtV20() {
-        StringBuilder sb = new StringBuilder();
+    companion object {
+        private const val optionTemplate = "(set-option %s %s)\n"
+    }
 
-        sb.append(String.format(optionTemplate, ":produce-unsat-cores", String.valueOf(this.isProduceUnsatCores())));
-        sb.append(String.format(optionTemplate, ":smt.core.minimize", String.valueOf(this.isSmtCoreMinimize())));
-
-        for(SmtV20TopLevelExpression singleTopLevelExpression : topLevelExpressions)
-            sb.append(singleTopLevelExpression.toSmtV20())
-                    .append("\n");
-
-        sb.append("(exit)");
-        return sb.toString();
+    init {
+        this.topLevelExpressions = LinkedList<SmtV20TopLevelExpression>()
     }
 }

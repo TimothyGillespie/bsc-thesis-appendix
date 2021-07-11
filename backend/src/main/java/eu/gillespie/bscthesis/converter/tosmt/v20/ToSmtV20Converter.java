@@ -210,7 +210,7 @@ public class ToSmtV20Converter {
                 .map(x -> this.generateFunctionDefinitions(
                         x,
                         x.getDefinition() != null && x.getDefinition().getInputConstructor() != null
-                            ? functionDefinitions.stream().filter(y -> y.getName().equals(x.getDefinition().getInputConstructor().getName()) && y.getArity().equals(x.getDefinition().getInputConstructor().getArity())).findFirst().orElseThrow(RuntimeException::new)
+                            ? functionDefinitions.stream().filter(y -> y.getName().equals(x.getDefinition().getInputConstructor().getName()) && y.getArity() == x.getDefinition().getInputConstructor().getArity()).findFirst().orElseThrow(RuntimeException::new)
                             : null
                 ))
                 .flatMap(HashSet::stream)

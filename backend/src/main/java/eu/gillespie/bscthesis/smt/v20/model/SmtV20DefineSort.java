@@ -16,6 +16,6 @@ public class SmtV20DefineSort implements SmtV20TopLevelExpression {
 
     @Override
     public String toSmtV20() {
-        return String.format("(define-sort %s)", this.getName());
+        return String.format("(declare-sort %s)", this.getName());
     }
 }

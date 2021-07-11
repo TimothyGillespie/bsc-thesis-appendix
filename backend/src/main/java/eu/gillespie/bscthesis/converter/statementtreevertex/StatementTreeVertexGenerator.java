@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 
 public class StatementTreeVertexGenerator {
     public static StatementTreeVertex embedTree(@NonNull StatementTreeVertex treeToEmbed, @NonNull String parentSymbol, @NonNull Collection<StatementTreeVertex> parametersBefore, @NonNull Collection<StatementTreeVertex> parametersAfter) {
-        List<StatementTreeVertex> parameters = parametersBefore.stream().map(StatementTreeVertex::getClone).collect(Collectors.toList());
-        parameters.add(treeToEmbed.getClone());
-        parameters.addAll(parametersAfter.stream().map(StatementTreeVertex::getClone).collect(Collectors.toList()));
+        List<StatementTreeVertex> parameters = parametersBefore.stream().map(StatementTreeVertex::createClone).collect(Collectors.toList());
+        parameters.add(treeToEmbed.createClone());
+        parameters.addAll(parametersAfter.stream().map(StatementTreeVertex::createClone).collect(Collectors.toList()));
 
         return new StatementTreeVertex(parentSymbol, parameters);
     }
@@ -24,7 +24,7 @@ public class StatementTreeVertexGenerator {
     }
 
     public static StatementTreeVertex join(String parentSymbol, StatementTreeVertex a, StatementTreeVertex b) {
-        return new StatementTreeVertex(parentSymbol, Arrays.asList(a.getClone(), b.getClone()));
+        return new StatementTreeVertex(parentSymbol, Arrays.asList(a.createClone(), b.createClone()));
     }
 
     public static StatementTreeVertex joinWithCondition(StatementTreeVertex condition, @NonNull StatementTreeVertex then) {
