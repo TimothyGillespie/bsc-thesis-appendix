@@ -3,6 +3,7 @@ package eu.gillespie.bscthesis.tosmtv20
 import eu.gillespie.bscthesis.request.ProveStatementRequest
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20CheckSat
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20File
+import eu.gillespie.bscthesis.smt.v20.model.SmtV20GetUnsatCore
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression
 import java.util.*
 
@@ -33,6 +34,8 @@ fun convertRequestToSmtV20List(request: ProveStatementRequest): List<SmtV20TopLe
 
     result.add(generateStatementToProof(request))
     result.add(SmtV20CheckSat())
+
+    result.add(SmtV20GetUnsatCore())
 
     return result
 }
