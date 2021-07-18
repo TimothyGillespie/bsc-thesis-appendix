@@ -13,7 +13,6 @@ fun convertRequestToSmtV20List(request: ProveStatementRequest): List<SmtV20TopLe
 
     val constructorInstantiation = generateConstructorInstantiation(request)
     val inductiveProperties = generateInductiveProperties(request, constructorInstantiation)
-    instantiateRequest(request, constructorInstantiation)
 
     val result = LinkedList<SmtV20TopLevelExpression>()
 
@@ -32,7 +31,7 @@ fun convertRequestToSmtV20List(request: ProveStatementRequest): List<SmtV20TopLe
     result.addAll(generateAdditionalConstraints(request))
     result.add(SmtV20CheckSat())
 
-    result.add(generateStatementToProof(request))
+    result.add(generateStatementToProof(request, constructorInstantiation))
     result.add(SmtV20CheckSat())
 
     result.add(SmtV20GetUnsatCore())
