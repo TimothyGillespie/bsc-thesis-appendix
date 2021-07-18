@@ -6,7 +6,10 @@ import eu.gillespie.bscthesis.smt.v20.model.SmtV20NamedAssert
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression
 import eu.gillespie.bscthesis.statementtreetransform.replaceInTree
 
-fun generateStatementToProof(request: ProveStatementRequest, constructorInstantiation: Map<String, ConstructorInstantiation>): SmtV20TopLevelExpression {
+fun generateInductiveBasis(
+    request: ProveStatementRequest,
+    constructorInstantiation: Map<String, ConstructorInstantiation>
+): SmtV20TopLevelExpression {
     var results = mutableSetOf<StatementTreeVertex>(request.statementTree.createClone())
     var newResults = mutableSetOf<StatementTreeVertex>()
 
@@ -14,17 +17,17 @@ fun generateStatementToProof(request: ProveStatementRequest, constructorInstanti
     for(currentConstructorDef in request.constructorDefinitions) {
         for(singleTree in results) {
             for( singleConstructorFunc in currentConstructorDef.functions) {
-                if(singleConstructorFunc.arity == 0)
+                if(singleConstructorFunc.arity != 0)
                     continue
 
                 val respectiveInstantiation = constructorInstantiation[singleConstructorFunc.symbol]
                 if(respectiveInstantiation != null)
                     newResults.add(
                         replaceInTree(
-                        singleTree,
-                        currentConstructorDef.term,
-                        StatementTreeVertex(respectiveInstantiation.constructor)
-                    )
+                            singleTree,
+                            currentConstructorDef.term,
+                            StatementTreeVertex(respectiveInstantiation.constructor)
+                        )
                     )
             }
         }
@@ -36,13 +39,10 @@ fun generateStatementToProof(request: ProveStatementRequest, constructorInstanti
     val resultList = results.toList();
 
     return SmtV20NamedAssert(
-        "statementToProve",
-        StatementTreeVertex(
-            "not",
-            if(results.size >= 2)
-                listOf(StatementTreeVertex("and", resultList))
-            else
-                resultList
-        )
+        "inductiveBasis",
+        if(results.size >= 2)
+            StatementTreeVertex("and", resultList)
+        else
+            resultList.first()
     )
 }

@@ -31,6 +31,9 @@ fun convertRequestToSmtV20List(request: ProveStatementRequest): List<SmtV20TopLe
     result.addAll(generateAdditionalConstraints(request))
     result.add(SmtV20CheckSat())
 
+    result.add(generateInductiveBasis(request, constructorInstantiation))
+    result.add(SmtV20CheckSat())
+
     result.add(generateStatementToProof(request, constructorInstantiation))
     result.add(SmtV20CheckSat())
 
@@ -42,7 +45,7 @@ fun convertRequestToSmtV20List(request: ProveStatementRequest): List<SmtV20TopLe
 fun convertToSmtV20String(request: ProveStatementRequest): String {
     val file = SmtV20File()
     file.produceUnsatCores = true
-    file.smtCoreMinimize = true
+    file.smtCoreMinimize = false
 
     file.topLevelExpressions = convertRequestToSmtV20List(request).toMutableList()
 

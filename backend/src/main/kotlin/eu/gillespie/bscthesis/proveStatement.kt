@@ -20,8 +20,10 @@ fun proveStatement(request: ProveStatementRequest): ProveStatementResponse {
 
     file.delete()
 
-    val satifiability = response.subList(0,4).map { it == "sat" }
-    val unsatCore = response.get(4).removePrefix("(").removeSuffix(")").split(" ")
+    val countOfCheckSats = 5
+
+    val satifiability = response.subList(0,countOfCheckSats).map { it == "sat" }
+    val unsatCore = response.get(countOfCheckSats).removePrefix("(").removeSuffix(")").split(" ")
 
     return ProveStatementResponse(satifiability, unsatCore)
 }
