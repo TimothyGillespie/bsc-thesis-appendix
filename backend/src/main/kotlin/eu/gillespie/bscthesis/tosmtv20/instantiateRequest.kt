@@ -8,8 +8,17 @@ fun instantiateRequest(request: ProveStatementRequest, constructorInstantiation:
     instantiateStatementTree(request, constructorInstantiation)
 }
 
-fun instantiateStatementTree(request: ProveStatementRequest, constructorInstantiation: Map<String, ConstructorInstantiation>) {
+fun instantiateByConstructorTerm(tree :StatementTreeVertex, request: ProveStatementRequest, constructorInstantiation: Map<String, ConstructorInstantiation>): StatementTreeVertex {
+    var resultTree = tree.createClone()
     constructorInstantiation.forEach { (key, value) ->
-        request.statementTree = replaceInTree(request.statementTree, key, StatementTreeVertex(value.constructor))
+        request.constructorDefinitions.forEach {
+            if(it.functions.find { function -> function.symbol == key} != null)
+                resultTree = replaceInTree(resultTree, it.term, StatementTreeVertex(value.constructor))
+        }
     }
+    return resultTree
+}
+
+fun instantiateStatementTree(request: ProveStatementRequest, constructorInstantiation: Map<String, ConstructorInstantiation>) {
+    request.statementTree = instantiateByConstructorTerm(request.statementTree, request, constructorInstantiation)
 }

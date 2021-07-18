@@ -10,15 +10,20 @@ fun generateInductiveProperties(request: ProveStatementRequest, constructorInsta
     val result = HashSet<StatementTreeVertex>()
     val statementTree = request.statementTree.createClone()
 
-    for((name, instantiation) in constructorInstantiation) {
+    for((constructorFunctionSymbol, instantiation) in constructorInstantiation) {
         for (instantiatedParameter in instantiation.parameters) {
-            result.add(replaceInTree(
-                statementTree,
-                name,
-                StatementTreeVertex(instantiatedParameter)
-            ))
+            request.constructorDefinitions.forEach {
+                if (it.functions.find { function -> function.symbol == constructorFunctionSymbol } != null)
+                    result.add(
+                        replaceInTree(
+                            statementTree,
+                            it.term,
+                            StatementTreeVertex(instantiatedParameter)
+                        )
+                    )
+            }
         }
     }
 
-    return result.map { SmtV20NamedAssert(null, it) }
+    return result.mapIndexed { i, it -> SmtV20NamedAssert("inductionAssumption$i", it) }
 }

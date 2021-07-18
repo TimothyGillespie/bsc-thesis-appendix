@@ -8,14 +8,14 @@ import eu.gillespie.bscthesis.statementtreetransform.replaceInTree
 import java.lang.RuntimeException
 
 fun getSortSpecificConstraints(request: ProveStatementRequest, constructorInstantiation: Map<String, ConstructorInstantiation>): List<SmtV20TopLevelExpression> {
-    return extractAllCustomTypes(request).map { getSortSpecificConstraints(it, request, constructorInstantiation) }.flatMap { it }
+    return extractAllCustomTypes(request).map { getSortSpecificConstraints(it, request, constructorInstantiation) }.flatten()
 }
 
 fun getSortSpecificConstraints(sort: String, request: ProveStatementRequest, constructorInstantiation: Map<String, ConstructorInstantiation>): List<SmtV20TopLevelExpression> {
-    when(sort) {
-        "NAryTree" -> return loadNAryTreeConstraints(request, constructorInstantiation)
-        "NonEmptyNAryTree" -> return loadNonEmptyNAryTreeConstraints(request, constructorInstantiation)
-        else -> throw RuntimeException("Unknown sort ${sort} was given")
+    return when(sort) {
+        "NAryTree" -> loadNAryTreeConstraints(request, constructorInstantiation)
+        "NonEmptyNAryTree" -> loadNonEmptyNAryTreeConstraints(request, constructorInstantiation)
+        else -> throw RuntimeException("Unknown sort $sort was given")
     }
 }
 

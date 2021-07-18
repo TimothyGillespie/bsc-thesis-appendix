@@ -1,6 +1,5 @@
 package eu.gillespie.bscthesis.tosmtv20
 
-import eu.gillespie.bscthesis.request.FunctionDefinition
 import eu.gillespie.bscthesis.request.InputConstructor
 import eu.gillespie.bscthesis.request.StatementTreeVertex
 import eu.gillespie.bscthesis.statementtreetransform.replaceInTree

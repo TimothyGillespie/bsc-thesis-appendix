@@ -1,77 +1,69 @@
 package eu.gillespie.bscthesis.tosmtv20
 
-import eu.gillespie.bscthesis.model.ConstructorFunction
-import eu.gillespie.bscthesis.request.FunctionDefinition
+import eu.gillespie.bscthesis.model.ConstructorDefinition
 import eu.gillespie.bscthesis.request.ProveStatementRequest
 import java.lang.RuntimeException
 
 fun validateRequest(request: ProveStatementRequest) {
-    // This is the current scope; constructors are still defined as List as we might want to allow multiple later
-    validateExactlyOneConstructorDefinitionsExists(request)
-    request.constructors.forEach { validateSingleConstructorDefinition(it, request) }
+    request.constructorDefinitions.forEach { validateSingleConstructorDefinition(it, request) }
 
     validateFunctionAndConstructorDefinitionsAreUnique(request)
-    request.functionDefinitions.forEach { validateSingleFunctionDefinition(it, request) }
+
+    getListOfAllDefinitionsWithDetails(request).forEach { validateSingleFunctionDefinition(it, request) }
+    validateOnlyInputConstructorOrInputVariablesIsDefined(request)
 }
 
-fun validateExactlyOneConstructorDefinitionsExists(request: ProveStatementRequest) {
-    if(request.constructors.size != 1)
-        throw RuntimeException("Only the case for exactly one defined constructor is supported!")
-}
-
-fun validateSingleConstructorDefinition(constructorDefinition: ConstructorFunction, request: ProveStatementRequest) {
+fun validateSingleConstructorDefinition(constructorDefinition: ConstructorDefinition, request: ProveStatementRequest) {
     // no conditions yet
 }
 
 fun validateFunctionAndConstructorDefinitionsAreUnique(request: ProveStatementRequest) {
     val set = request.functionDefinitions.map { it.name }.toMutableSet()
-    set.addAll(request.constructors.map { it.symbol })
+    val constructorFunctions = getListOfConstructorFunctionsWithDetails(request)
+    set.addAll(constructorFunctions.map { it.symbol })
 
-    if(set.size != request.functionDefinitions.size + request.constructors.size)
+    if(set.size != request.functionDefinitions.size + constructorFunctions.size)
         throw RuntimeException("Function and/or constructor definitions are duplicated! (There may only be one function of each name)")
 }
 
-fun validateSingleFunctionDefinition(functionDefinition: FunctionDefinition, request: ProveStatementRequest) {
-    validateFunctionsWithConstructorInputAreFlat(functionDefinition)
-    validateInputConstructorIsDefined(functionDefinition, request)
-    validateArityOfInputTypesAndInputVariablesIsEqual(functionDefinition)
-    validateOnlyInputConstructorOrInputVariablesIsDefined(functionDefinition)
+fun validateSingleFunctionDefinition(definition: DefinitionWithDetails, request: ProveStatementRequest) {
+    validateFunctionsWithConstructorInputAreFlat(definition)
+    validateInputConstructorIsDefined(definition, request)
+    validateArityOfInputTypesAndInputVariablesIsEqual(definition)
 }
 
-fun validateFunctionsWithConstructorInputAreFlat(functionDefinition: FunctionDefinition) {
-    if(!hasInputConstructor(functionDefinition))
+fun validateFunctionsWithConstructorInputAreFlat(definition: DefinitionWithDetails) {
+    if(definition !is InputConstructorDefinitionWithDetails)
         return
 
-    if(functionDefinition.inputTypes.size != 1)
-        throw RuntimeException("The defined function ${functionDefinition.name}/${functionDefinition.arity} must have arity 1, because it uses an input constructor")
+    if(definition.details.inputTypes.size != 1)
+        throw RuntimeException("The defined function ${definition.details.name}/${definition.details.arity} must have arity 1, because it uses an input constructor")
 
 }
 
-fun validateInputConstructorIsDefined(functionDefinition: FunctionDefinition, request: ProveStatementRequest) {
-    if(!hasInputConstructor(functionDefinition))
+fun validateInputConstructorIsDefined(definition: DefinitionWithDetails, request: ProveStatementRequest) {
+    if(definition !is InputConstructorDefinitionWithDetails)
         return
 
-    val inputConstructor = functionDefinition.definition!!.inputConstructor
-
-    val found = request.constructors.find {
-        inputConstructor?.name == it.symbol
-                && inputConstructor.arity == it.arity
-                && functionDefinition.inputTypes.first() == it.type
-    }
+    val found = getInputConstructor(definition, request)
 
     if(found == null)
-        throw RuntimeException("The constructor ${inputConstructor?.name}/${inputConstructor?.arity} of type ${functionDefinition.inputTypes.first()} is not defined")
+        throw RuntimeException("The constructor ${definition.inputConstructor.name}/${definition.inputConstructor.arity} of type ${definition.details.inputTypes.first()} is not defined")
 }
 
-fun validateArityOfInputTypesAndInputVariablesIsEqual(functionDefinition: FunctionDefinition) {
-    if(!hasInputVariables(functionDefinition))
+fun validateArityOfInputTypesAndInputVariablesIsEqual(definition: DefinitionWithDetails) {
+    if(definition !is InputVariablesDefinitionWithDetails)
         return
 
-    if(functionDefinition.definition!!.inputVariable!!.size != functionDefinition.inputTypes.size)
-        throw RuntimeException("The defined function ${functionDefinition.name}/${functionDefinition.arity} has a different arity than it's input variables (arity ${functionDefinition.definition!!.inputVariable!!.size})")
+    if(definition.inputVariables.size != definition.details.inputTypes.size)
+        throw RuntimeException("The defined function ${definition.details.name}/${definition.details.arity} has a different arity than it's input variables (arity ${definition.inputVariables.size})")
 }
 
-fun validateOnlyInputConstructorOrInputVariablesIsDefined(functionDefinition: FunctionDefinition) {
-    if(hasInputVariables(functionDefinition) && hasInputConstructor(functionDefinition))
-        throw RuntimeException("Function definition for ${functionDefinition.name}/${functionDefinition.arity} contains both input_constructor and input_variables. It may use at most one.")
+fun validateOnlyInputConstructorOrInputVariablesIsDefined(request: ProveStatementRequest) {
+    request.functionDefinitions.forEach { functionDefinition ->
+        functionDefinition.definition.forEachIndexed { index, definition ->
+            if (definition.inputConstructor != null && definition.inputVariable != null)
+               throw RuntimeException("The ${index + 1}. definition for ${functionDefinition.name}/${functionDefinition.arity} contains both input_constructor and input_variables. It may use at most one.")
+        }
+    }
 }

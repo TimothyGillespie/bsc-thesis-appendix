@@ -1,6 +1,5 @@
 package eu.gillespie.bscthesis.controller;
 
-import eu.gillespie.bscthesis.converter.tosmt.v20.ToSmtV20Converter;
 import eu.gillespie.bscthesis.request.ProveStatementRequest;
 import eu.gillespie.bscthesis.response.ProveStatementResponse;
 import org.javawebstack.framework.HttpController;

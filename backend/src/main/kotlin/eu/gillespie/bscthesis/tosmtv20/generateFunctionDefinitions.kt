@@ -5,7 +5,7 @@ import eu.gillespie.bscthesis.smt.v20.model.SmtV20ForAll
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20NamedAssert
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20AssertableExpression
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression
-import java.lang.RuntimeException
+import java.lang.IllegalStateException
 
 fun generateFunctionDefinitions(request: ProveStatementRequest, constructorInstantiations: Map<String, ConstructorInstantiation>): List<SmtV20TopLevelExpression> {
     return request.functionDefinitions
@@ -18,39 +18,44 @@ fun generateDefinitionsForSingleFunctionDefinition(
     request: ProveStatementRequest,
     constructorInstantiations: Map<String, ConstructorInstantiation>
 ): List<SmtV20TopLevelExpression> {
-    if(functionDefinition.definition == null)
-        return listOf()
+    val listOfDefinitions = getListOfDefinitionsWithDetails(functionDefinition)
+    return listOfDefinitions.mapIndexed { i, it -> generateDefinitionForSingleDefinitionWithDetails(it, request, constructorInstantiations, i + 1)} .flatten()
+}
 
-    if(hasInputConstructor(functionDefinition))
-        return generateDefinitionsWithInputConstructor(functionDefinition, request, constructorInstantiations)
+fun generateDefinitionForSingleDefinitionWithDetails(definitionWithDetails: DefinitionWithDetails, request: ProveStatementRequest, constructorInstantiations: Map<String, ConstructorInstantiation>, definitionCount: Int): List<SmtV20TopLevelExpression> {
+    if(definitionWithDetails is InputConstructorDefinitionWithDetails)
+        return generateDefinitionsWithInputConstructor(definitionWithDetails, request, constructorInstantiations, definitionCount)
 
-    if(hasInputVariables(functionDefinition))
-        return generateDefinitionsWithInputVariables(functionDefinition, request)
+    if(definitionWithDetails is InputVariablesDefinitionWithDetails)
+        return generateDefinitionsWithInputVariables(definitionWithDetails, request, definitionCount)
 
-    return generateConstantDefinition(functionDefinition, request)
+    if(definitionWithDetails is BlankDefinitionDefinitionWithDetails)
+        return generateConstantDefinition(definitionWithDetails, request, definitionCount)
+
+    throw IllegalStateException("Unknown DefinitionWithDetail Object")
 }
 
 
 
 fun generateDefinitionsWithInputConstructor(
-    functionDefinition: FunctionDefinition,
+    definition: InputConstructorDefinitionWithDetails,
     request: ProveStatementRequest,
-    constructorInstantiations: Map<String, ConstructorInstantiation>
+    constructorInstantiations: Map<String, ConstructorInstantiation>,
+    definitionCount: Int
 ): List<SmtV20TopLevelExpression> {
     val result = mutableListOf<SmtV20AssertableExpression>()
-    val inputConstructor = functionDefinition.definition?.inputConstructor
-        ?: throw RuntimeException("Input constructor is not defined")
+    val inputConstructor = definition.inputConstructor
 
     val leftHandSideInput = listOf(StatementTreeVertex(inputConstructor.name))
-    var i: Int = 1
+    var i = 1
 
-    for (singleConditional in functionDefinition.definition?.conditional ?: listOf()) {
+    for (singleConditional in definition.details.conditional) {
         result.add(
             SmtV20NamedAssert(
-                generateFunctionName(functionDefinition, i.toString()),
+                generateFunctionName(definition, i.toString(), definitionCount),
                 applyConstructorInstantiation(
                     generateIfThenConditionalDefinition(
-                        functionDefinition,
+                        definition,
                         singleConditional,
                         leftHandSideInput,
                     ),
@@ -65,9 +70,9 @@ fun generateDefinitionsWithInputConstructor(
 
     result.add(
         SmtV20NamedAssert(
-            generateFunctionName(functionDefinition, "Otherwise"),
+            generateFunctionName(definition, "Otherwise", definitionCount),
             applyConstructorInstantiation(
-                generateOtherwiseConditionalDefinition(functionDefinition, leftHandSideInput),
+                generateOtherwiseConditionalDefinition(definition, leftHandSideInput),
                 constructorInstantiations,
                 inputConstructor
             )
@@ -78,24 +83,22 @@ fun generateDefinitionsWithInputConstructor(
 }
 
 fun generateDefinitionsWithInputVariables(
-    functionDefinition: FunctionDefinition,
+    definition: InputVariablesDefinitionWithDetails,
     request: ProveStatementRequest,
+    definitionCount: Int
 ): List<SmtV20TopLevelExpression> {
     val result = mutableListOf<SmtV20NamedAssert>()
-    val inputVariables = functionDefinition.definition?.inputVariable
-        ?: throw RuntimeException()
-
-    val inputVariableTrees = inputVariables.map { StatementTreeVertex(it) }
+    val inputVariableTrees = definition.inputVariables.map { StatementTreeVertex(it) }
 
     var i: Int = 1
 
-    for (singleConditional in functionDefinition.definition?.conditional ?: listOf()) {
+    for (singleConditional in definition.details.conditional ) {
 
         result.add(
             SmtV20NamedAssert(
-                generateFunctionName(functionDefinition, i.toString()),
+                generateFunctionName(definition, i.toString(), definitionCount),
                 generateIfThenConditionalDefinition(
-                    functionDefinition,
+                    definition,
                     singleConditional,
                     inputVariableTrees,
                 )
@@ -107,12 +110,12 @@ fun generateDefinitionsWithInputVariables(
 
     result.add(
         SmtV20NamedAssert(
-            generateFunctionName(functionDefinition, "Otherwise"),
-            generateOtherwiseConditionalDefinition(functionDefinition, inputVariableTrees)
+            generateFunctionName(definition, "Otherwise", definitionCount),
+            generateOtherwiseConditionalDefinition(definition, inputVariableTrees)
         )
     )
 
-    val variableBindings = inputVariables.zip(functionDefinition.inputTypes).toMap()
+    val variableBindings = definition.inputVariables.zip(definition.details.inputTypes).toMap()
 
 
     return result.map {
@@ -128,19 +131,20 @@ fun generateDefinitionsWithInputVariables(
 
 
 fun generateConstantDefinition(
-    functionDefinition: FunctionDefinition,
-    request: ProveStatementRequest
+    definition: BlankDefinitionDefinitionWithDetails,
+    request: ProveStatementRequest,
+    definitionCount: Int
 ): List<SmtV20TopLevelExpression> {
     val result = mutableListOf<SmtV20AssertableExpression>()
 
-    var i: Int = 1
+    var i = 1
 
-    for (singleConditional in functionDefinition.definition?.conditional ?: listOf()) {
+    for (singleConditional in definition.details.conditional) {
         result.add(
             SmtV20NamedAssert(
-                generateFunctionName(functionDefinition, i.toString()),
+                generateFunctionName(definition, i.toString(), definitionCount),
                 generateIfThenConditionalDefinition(
-                    functionDefinition,
+                    definition,
                     singleConditional,
                     listOf(),
                 )
@@ -152,37 +156,34 @@ fun generateConstantDefinition(
 
     result.add(
         SmtV20NamedAssert(
-            generateFunctionName(functionDefinition, "Otherwise"),
-            generateOtherwiseConditionalDefinition(functionDefinition, listOf())
+            generateFunctionName(definition, "Otherwise", definitionCount),
+            generateOtherwiseConditionalDefinition(definition, listOf())
         )
     )
 
     return result
 }
 
-fun generateIfThenConditionalDefinition(functionDefinition: FunctionDefinition, conditionalDefinition: ConditionalDefinition, leftHandSideInput: List<StatementTreeVertex>): StatementTreeVertex {
-    val valueDefinition = generateValueDefinition(functionDefinition, conditionalDefinition.then, leftHandSideInput)
+fun generateIfThenConditionalDefinition(definition: DefinitionWithDetails, conditionalDefinition: ConditionalDefinition, leftHandSideInput: List<StatementTreeVertex>): StatementTreeVertex {
+    val valueDefinition = generateValueDefinition(definition, conditionalDefinition.then, leftHandSideInput)
     val conditionalValueDefinition = generateIfThenDefinition(conditionalDefinition.condition, valueDefinition)
     return conditionalValueDefinition
 }
 
-fun generateOtherwiseConditionalDefinition(functionDefinition: FunctionDefinition, leftHandSideInput: List<StatementTreeVertex>): StatementTreeVertex {
-    if(functionDefinition.definition == null)
-        throw RuntimeException()
-
-    val usedConditions: List<StatementTreeVertex> = functionDefinition.definition!!.conditional.map {
+fun generateOtherwiseConditionalDefinition(definition: DefinitionWithDetails, leftHandSideInput: List<StatementTreeVertex>): StatementTreeVertex {
+    val usedConditions: List<StatementTreeVertex> = definition.details.conditional.map {
         it.condition
     }
-    val valueDefinition = generateValueDefinition(functionDefinition, functionDefinition.definition!!.otherwise, leftHandSideInput)
+    val valueDefinition = generateValueDefinition(definition, definition.details.otherwise, leftHandSideInput)
     val conditionalValueDefinition = generateOtherwiseDefinition(usedConditions, valueDefinition)
     return conditionalValueDefinition
 }
 
 //fun generateConditionalOtherwiseDefinition(functionDefinition: FunctionDefinition, leftHandSideInput: List<StatementTreeVertex>)
 
-fun generateValueDefinition(functionDefinition: FunctionDefinition, value: StatementTreeVertex, leftHandSideInput: List<StatementTreeVertex>): StatementTreeVertex {
+fun generateValueDefinition(definition: DefinitionWithDetails, value: StatementTreeVertex, leftHandSideInput: List<StatementTreeVertex>): StatementTreeVertex {
     val leftHandSide = StatementTreeVertex(
-        functionDefinition.name,
+        definition.details.name,
         leftHandSideInput
     )
 
@@ -229,6 +230,6 @@ fun generateOtherwiseDefinition(usedConditions: List<StatementTreeVertex>, value
     return valueDefinition
 }
 
-fun generateFunctionName(definition: FunctionDefinition, postFix: String): String {
-    return "definition${definition.name.replaceFirstChar { c -> c.uppercase() }}Arity${definition.arity}InputTypes${definition.inputTypes.joinToString("")}OutputType${definition.outputType}${postFix}"
+fun generateFunctionName(definition: DefinitionWithDetails, postFix: String, definitionCount: Int): String {
+    return "definition${definition.details.name.replaceFirstChar { c -> c.uppercase() }}Number${definitionCount}Arity${definition.details.arity}InputTypes${definition.details.inputTypes.joinToString("")}OutputType${definition.details.outputType}${postFix}"
 }

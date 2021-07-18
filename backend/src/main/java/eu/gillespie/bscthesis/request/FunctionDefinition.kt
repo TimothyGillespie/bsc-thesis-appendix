@@ -9,7 +9,7 @@ data class FunctionDefinition (
     var arity: Int,
     var inputTypes: List<String> = LinkedList(),
     var outputType: String,
-    var definition: Definition? = null
+    var definition: List<Definition> = LinkedList()
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
