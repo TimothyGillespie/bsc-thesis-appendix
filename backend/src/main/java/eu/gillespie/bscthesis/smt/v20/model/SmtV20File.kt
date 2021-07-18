@@ -14,6 +14,7 @@ import java.util.LinkedList
 class SmtV20File(
     var produceUnsatCores: Boolean = false,
     var smtCoreMinimize: Boolean = false,
+    var produceProof: Boolean = false,
     var topLevelExpressions: MutableList<SmtV20TopLevelExpression> = LinkedList(),
 ) : SmtV20Expression {
 
@@ -35,6 +36,7 @@ class SmtV20File(
         val sb = StringBuilder()
         sb.append(String.format(optionTemplate, ":produce-unsat-cores", this.produceUnsatCores.toString()))
         sb.append(String.format(optionTemplate, ":smt.core.minimize", this.smtCoreMinimize.toString()))
+        sb.append(String.format(optionTemplate, ":produce-proofs", this.produceProof.toString()))
         for (singleTopLevelExpression in topLevelExpressions) sb.append(singleTopLevelExpression.toSmtV20())
             .append("\n")
         sb.append("(exit)")
