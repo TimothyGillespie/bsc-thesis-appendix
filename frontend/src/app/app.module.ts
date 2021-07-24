@@ -14,9 +14,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { KeyFilterModule } from 'primeng/keyfilter';
+import { StructuralInductionProverGuidedComponent } from './components/structural-induction-prover-guided/structural-induction-prover-guided.component';
+import { ConstructorSidebarEditorComponent } from './components/constructor-sidebar-editor/constructor-sidebar-editor.component';
+import { ConstructorEnteringComponent } from './components/constructor-entering/constructor-entering.component';
+import { ConstructorFunctionEditingComponent } from './components/constructor-function-editing/constructor-function-editing.component';
+import {CardModule} from "primeng/card";
 
 @NgModule({
-	declarations: [AppComponent, StructuralInductionProverComponent],
+	declarations: [AppComponent, StructuralInductionProverComponent, StructuralInductionProverGuidedComponent, ConstructorSidebarEditorComponent, ConstructorEnteringComponent, ConstructorFunctionEditingComponent],
 	imports: [
 		BrowserModule,
 		BrowserAnimationsModule,
@@ -31,6 +36,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 		TabMenuModule,
 		OverlayPanelModule,
 		KeyFilterModule,
+		CardModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],
