@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {AbstractControl, FormArray, FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-constructor-function-editing',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConstructorFunctionEditingComponent implements OnInit {
 
+  @Input('abstractFormGroup') formGroup!: AbstractControl;
+  term!: FormControl;
+  type!: FormControl;
+  functions!: FormArray;
+
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    if(this.formGroup instanceof FormGroup) {
+      this.term = this.formGroup.get('term') as FormControl;
+      this.type = this.formGroup.get('type') as FormControl;
+      this.functions = this.formGroup.get('functions') as FormArray;
+    }
   }
 
 }

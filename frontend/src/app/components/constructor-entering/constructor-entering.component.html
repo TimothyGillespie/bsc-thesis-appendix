@@ -1,9 +1,16 @@
-<div class="p-d-block">
-	<h1>Please enter the constructors which will be used</h1>
+<div>
 
-	<p><button pButton type="button" icon="pi pi-plus-circle" class="p-button-text"></button></p>
-	<p-card *ngFor="let singleDefinitions in constructorDefinitions">
-		x
+  <div class="flex justify-content-center">
+    <h1>Please enter the constructors which will be used</h1>
+  </div>
+
+  <div class="flex justify-content-center" >
+    <p (click)="createNewConstructorDefinitions()">
+      <button pButton type="button" icon="pi pi-plus-circle" class="p-button-text"></button>
+    </p>
+  </div>
+	<p-card *ngFor="let singleDefinitions of constructorDefinitions.controls">
+		<app-constructor-function-editing [abstractFormGroup]="singleDefinitions"></app-constructor-function-editing>
 	</p-card>
 
 </div>
