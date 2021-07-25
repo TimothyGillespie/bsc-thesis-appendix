@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {ConstructorEnteringComponent} from "./components/constructor-entering/constructor-entering.component";
-import {ConstructorFunctionEditingComponent} from "./components/constructor-function-editing/constructor-function-editing.component";
 import {StructuralInductionProverGuidedComponent} from "./components/structural-induction-prover-guided/structural-induction-prover-guided.component";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AccordionModule} from "primeng/accordion";
@@ -17,13 +16,22 @@ import {TabMenuModule} from "primeng/tabmenu";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {KeyFilterModule} from "primeng/keyfilter";
 import {CardModule} from "primeng/card";
+import {RippleModule} from "primeng/ripple";
+import {InputNumberModule} from "primeng/inputnumber";
+import { StatementEnteringComponent } from './components/statement-entering/statement-entering.component';
+import {BlockUIModule} from "primeng/blockui";
+import { BlockComponent } from './components/block/block.component';
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {FunctionDefinitionsComponent} from "./components/function-definitions/function-definitions.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     ConstructorEnteringComponent,
-    ConstructorFunctionEditingComponent,
-    StructuralInductionProverGuidedComponent
+    StructuralInductionProverGuidedComponent,
+    StatementEnteringComponent,
+    BlockComponent,
+    FunctionDefinitionsComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -41,6 +49,10 @@ import {CardModule} from "primeng/card";
     OverlayPanelModule,
     KeyFilterModule,
     CardModule,
+    RippleModule,
+    InputNumberModule,
+    BlockUIModule,
+    ProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

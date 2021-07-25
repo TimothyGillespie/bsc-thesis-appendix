@@ -1,16 +1,64 @@
-<div>
+<div [formGroup]="formGroup">
+  <ng-container formArrayName="constructorDefinitions">
 
-  <div class="flex justify-content-center">
-    <h1>Please enter the constructors which will be used</h1>
-  </div>
+    <div class="flex justify-content-center">
+      <h1>Please enter the constructors which will be used</h1>
+    </div>
 
-  <div class="flex justify-content-center" >
-    <p (click)="createNewConstructorDefinitions()">
-      <button pButton type="button" icon="pi pi-plus-circle" class="p-button-text"></button>
-    </p>
-  </div>
-	<p-card *ngFor="let singleDefinitions of constructorDefinitions.controls">
-		<app-constructor-function-editing [abstractFormGroup]="singleDefinitions"></app-constructor-function-editing>
-	</p-card>
+    <ng-container *ngFor="let singleDefinitions of getConstructorDefinitions().controls; let d = index">
+      <div class="mt-5" [formGroupName]="d">
+        <p-card>
+          <div class="p-fluid">
+            <div class="p-field">
+              <p class="p-float-label">
+                <input pInputText id="term" formControlName="term"/>
+                <label for="term">Term</label>
+              </p>
+            </div>
+          </div>
+          <div>
+            <p-dropdown [options]="typeOptions" formControlName="type" placeholder="Select a type"></p-dropdown>
+          </div>
 
+          <div class="flex">
+            <div class="flex-auto">
+              <div class="flex justify-content-center"><h2>Constructor Functions</h2></div>
+              <ng-container formArrayName="functions">
+              <ng-container *ngFor="let singleFunction of getFunctions(d).controls; let f = index">
+                  <div class="flex justify-content-center" [formGroupName]="f">
+                    <div class="p-fluid formgrid grid">
+                      <div class="field col-9">
+                        <p class="p-float-label">
+                          <input pInputText id="symbol" formControlName="symbol"/>
+                          <label for="symbol">Symbol</label>
+                        </p>
+                      </div>
+                      <div class="field col-3">
+                        <p class="p-float-label">
+                          <p-inputNumber inputId="arity" [min]="0" [showButtons]="true" formControlName="arity"></p-inputNumber>
+                          <label for="arity">Arity</label>
+                        </p>
+                      </div>
+                    </div>
+
+                  </div>
+                </ng-container>
+                <div class="flex mt-8 justify-content-center">
+                  <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewConstructorFunction(d)"></button>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+        </p-card>
+      </div>
+    </ng-container>
+    <div class="flex mt-8 justify-content-center">
+      <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewConstructorDefinitions()"></button>
+    </div>
+  </ng-container>
+</div>
+
+<div class="flex justify-content-center mt-4">
+  <button pButton (click)="emitFinishEvent()" class="p-button-success">Got them all</button>
 </div>

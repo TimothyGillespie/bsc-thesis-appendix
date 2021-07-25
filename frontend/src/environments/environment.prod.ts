@@ -1,3 +1,12 @@
+const constructedTypeOptions = [
+  {label: 'n-ary tree', value: 'NAryTree'},
+  {label: 'formula of propositional logic', value: 'PLFormula'}
+]
 export const environment = {
-  production: true
+  production: true,
+  constructedTypeOptions,
+  typeOptions: [
+    {label: 'Integer', value: 'Int'},
+    ...constructedTypeOptions
+  ]
 };

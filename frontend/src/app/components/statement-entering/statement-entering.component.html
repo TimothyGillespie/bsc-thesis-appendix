@@ -1,0 +1,13 @@
+<div class="flex justify-content-center">
+  <h1>Enter the statement to prove</h1>
+</div>
+
+<div class="flex justify-content-center">
+  <input id="statement" pInputText [pKeyFilter]="allowedValuesForFormulae" class="w-10" [(ngModel)]="statement" (ngModelChange)="changeHandler()"/>
+</div>
+
+<div class="flex justify-content-center mt-5">
+  <button pButton class="p-button-success" (click)="onFinishHandler()">Got it</button>
+</div>
+
+<div><pre>{{ functions | json }}</pre></div>
