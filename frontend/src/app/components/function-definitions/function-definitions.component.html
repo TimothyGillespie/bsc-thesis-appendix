@@ -1,0 +1,99 @@
+<form [formGroup]="formGroup">
+  <ng-container formArrayName="functionDefinitions">
+    <ng-container *ngFor="let _ of getFunctionDefinitions().controls; let fd = index">
+      <ng-container [formGroupName]="fd">
+        <p-card class="mb-8">
+          <div class="flex justify-content-center mb-6">
+            <h2>{{ getFunctionName(fd) }}</h2>
+          </div>
+          <div class="grid">
+            <div class="col-5">
+              <ng-container
+                formArrayName="inputTypes"
+                *ngFor="let _ of getInputTypes(fd).controls; let it = index"
+              >
+                <div class="flex justify-content-end align-items-center">
+                  <div class="flex justify-content-end mr-4 font-bold">{{ it + 1 }}.</div>
+                  <div class="flex justify-content-end align-items-center">
+                    <p-dropdown
+                      [options]="typeDropdownOptions"
+                      [formControlName]="it"
+                    ></p-dropdown>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+            <div class="col-2 flex justify-content-center align-items-center" [style.fontSize]="'33pt'">
+              &#x27FC;
+            </div>
+            <div class="col-5 flex justify-content-start align-items-center">
+              <p-dropdown [options]="typeDropdownOptions" formControlName="outputType"></p-dropdown>
+            </div>
+          </div>
+        </p-card>
+        <ng-container formArrayName="definitions">
+          <ng-container *ngFor="let _ of getValueDefinitions(fd).controls; let vd = index">
+            <ng-container [formGroupName]="vd">
+              <div class="grid mt-5 mb-5">
+                <div class="flex align-items-center justify-content-center col-3 font-bold">
+                  <ng-container [ngSwitch]="getInputVariant(fd, vd)">
+                    <!-- INPUT CONSTRUCTOR -->
+                    <ng-container *ngSwitchCase="'inputConstructor'">
+                      <ng-container formGroupName="inputConstructor">
+                        {{getFunctionName(fd)}}({{ getInputConstructorName(fd, vd)}}(
+                          <ng-container formArrayName="boundVariables">
+                            <ng-container *ngFor="let _ of getInputConstructorBoundVariables(fd, vd).controls; let bv = index">
+                              <input pInputText [formControlName]="bv" class="variable-field p-inputtext-sm" maxlength="4"/>
+                            </ng-container>
+                          </ng-container>
+                        ))
+                      </ng-container>
+                    </ng-container>
+
+                    <!-- INPUT VARIABLES -->
+                    <ng-container *ngSwitchCase="'inputVariables'">
+
+                    </ng-container>
+
+                    <!-- DEFAULT -->
+                    <ng-container *ngSwitchDefault>
+
+                  </ng-container>
+                  </ng-container>
+                </div>
+                <div class="col-1 flex justify-content-center align-items-center">
+                  <button
+                    pButton
+                    [style.width]="'auto'"
+                    label="="
+                  ></button>
+                </div>
+                <div class="col-8">
+                  <ng-container formArrayName="conditional">
+                    <ng-container *ngFor="let _ of getConditional(fd, vd).controls; let c = index">
+                      <ng-container [formGroupName]="c">
+                      <div class="p-inputgroup">
+                        <input pInputText [pKeyFilter]="allowedValuesForFormulae" [style.width.%]="80" formControlName="then"/>
+                        <span class="p-inputgroup-addon" [style.width]="'auto'">if</span>
+                        <input [pKeyFilter]="allowedValuesForFormulae" pInputText [style.width.%]="20" formControlName="if"/>
+                        <button pButton class="p-inputgroup-addon p-button-sm p-button-danger"  icon="pi pi-trash" (click)="removeConditionalDefinition(fd, vd, c)"></button>
+                      </div>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                  <ng-container>
+                    <div class="p-inputgroup">
+                      <input pInputText [pKeyFilter]="allowedValuesForFormulae" formControlName="otherwise"/>
+                      <span class="p-inputgroup-addon">otherwise</span>
+                      <button pButton class="p-inputgroup-addon p-button-sm" label="+" (click)="addConditionalDefinition(fd, vd)"></button>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</form>

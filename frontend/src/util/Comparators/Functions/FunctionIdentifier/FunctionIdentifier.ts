@@ -4,5 +4,5 @@ export function standardFunctionIdentifierComparator(a: FunctionIdentifier, b: F
 	const compareSymbol = a.symbol.localeCompare(b.symbol);
 	if (compareSymbol !== 0) return compareSymbol;
 
-	return a.parameterCount - b.parameterCount;
+	return a.arity - b.arity;
 }

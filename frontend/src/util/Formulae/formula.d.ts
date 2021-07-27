@@ -27,5 +27,5 @@ export type FunctionTreeNode = {
 
 export type FunctionIdentifier = {
 	symbol: string;
-	parameterCount: number;
+	arity: number;
 };

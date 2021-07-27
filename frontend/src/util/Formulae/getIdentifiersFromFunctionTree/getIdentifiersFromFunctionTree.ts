@@ -7,7 +7,7 @@ function getIdentifiersFromFunctionTree(tree: FunctionTreeNode): FunctionIdentif
 	let result = mapPreOrder(tree, node => {
 		return {
 			symbol: node.symbol,
-			parameterCount: node.parameters.length,
+			arity: node.parameters.length,
 		};
 	});
 

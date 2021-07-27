@@ -8,5 +8,6 @@ export const environment = {
   typeOptions: [
     {label: 'Integer', value: 'Int'},
     ...constructedTypeOptions
-  ]
+  ],
+  allowedFormulaInput: /^[A-Za-z0-9\\(\\),\\*\\+-=>< ]+$/,
 };

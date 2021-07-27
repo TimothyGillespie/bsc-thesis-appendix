@@ -24,7 +24,18 @@ export class StructuralInductionProverGuidedComponent implements OnInit {
 
   ngOnInit(): void {
     // this.phase = 'constructorDefinitions';
-    this.phase = 'statement';
+    this.phase = 'functionDefinitions';
+    this.statementTree = getFunctionTree("depth(t) <= size(t)");
+    this.constructorDefinitions = [
+      {term: 't', type: 'NAryTree', functions: [
+          {symbol: 'cBase', arity: 0},
+          {symbol: 'c1', arity: 1},
+          {symbol: 'c2', arity: 2},
+          {symbol: 'c3', arity: 3},
+          {symbol: 'c4', arity: 4},
+        ]
+      }
+    ]
   }
 
   finishConstructorDefinition(constructorDefinitions: ConstructorDefinition[]): void {

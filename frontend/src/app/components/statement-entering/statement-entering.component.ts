@@ -3,6 +3,7 @@ import {getFunctionTree} from "../../../util/Formulae/getFunctionTree/getFunctio
 import {FunctionTreeNode} from "../../../util/Formulae/formula";
 import getIdentifiersFromFunctionTree
   from "../../../util/Formulae/getIdentifiersFromFunctionTree/getIdentifiersFromFunctionTree";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-statement-entering',
@@ -11,7 +12,7 @@ import getIdentifiersFromFunctionTree
 })
 export class StatementEnteringComponent implements OnInit {
 
-  allowedValuesForFormulae = /^[A-Za-z0-9\\(\\),\\*\\+-= ]+$/;
+  allowedValuesForFormulae = environment.allowedFormulaInput;
   statementTree: FunctionTreeNode = null;
   functions = null;
 
