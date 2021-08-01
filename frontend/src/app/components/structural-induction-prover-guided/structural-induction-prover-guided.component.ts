@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
 import {ConstructorDefinition} from "../../models/ConstructorDefinition";
 import {getFunctionTree} from "../../../util/Formulae/getFunctionTree/getFunctionTree";
 import {FunctionTreeNode} from "../../../util/Formulae/formula";
 import {FunctionDefinition} from "../../models/FunctionDefinition";
+import {AdditionalConstraint} from "../../models/AdditionalConstraint";
+import convertKeysToSnakeCase from "../../../util/convertKeysToSnakeCase";
+import {HttpClient} from "@angular/common/http";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-structural-induction-prover-guided',
@@ -11,16 +14,17 @@ import {FunctionDefinition} from "../../models/FunctionDefinition";
   styleUrls: ['./structural-induction-prover-guided.component.scss']
 })
 export class StructuralInductionProverGuidedComponent implements OnInit {
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   loading = false;
 
-  phase: 'constructorDefinitions' | 'statement' | 'functionDefinitions' | 'additionalConstraints';
+  phase: 'constructorDefinitions' | 'statement' | 'functionDefinitions' | 'additionalConstraints' | 'result';
 
   constructorDefinitions?: ConstructorDefinition[];
   statement?: string;
   statementTree?: FunctionTreeNode;
   functionDefinitions?: FunctionDefinition[];
+  additionalConstraints?: AdditionalConstraint[];
 
   ngOnInit(): void {
     // this.phase = 'constructorDefinitions';
@@ -29,10 +33,10 @@ export class StructuralInductionProverGuidedComponent implements OnInit {
     this.constructorDefinitions = [
       {term: 't', type: 'NAryTree', functions: [
           {symbol: 'cBase', arity: 0},
-          {symbol: 'c1', arity: 1},
+          // {symbol: 'c1', arity: 1},
           {symbol: 'c2', arity: 2},
-          {symbol: 'c3', arity: 3},
-          {symbol: 'c4', arity: 4},
+          // {symbol: 'c3', arity: 3},
+          // {symbol: 'c4', arity: 4},
         ]
       }
     ]
@@ -58,5 +62,20 @@ export class StructuralInductionProverGuidedComponent implements OnInit {
     this.functionDefinitions = functionDefinitions;
     this.loading = false;
     this.phase = 'additionalConstraints';
+  }
+
+  finishAdditionalConstraintEntering(additionalConstraintEntering: AdditionalConstraint[]) {
+    this.loading = true;
+    this.additionalConstraints = additionalConstraintEntering;
+    const request = convertKeysToSnakeCase({
+      constructorDefinitions: this.constructorDefinitions,
+      statementTree: this.statementTree,
+      functionDefinitions: this.functionDefinitions,
+      additionalConstraints: this.additionalConstraints,
+    });
+
+    this.http.post(environment.baseUrl + '/api/v1/statement/prove/result', request).subscribe((x) => console.log(x));
+
+    this.phase = 'result';
   }
 }

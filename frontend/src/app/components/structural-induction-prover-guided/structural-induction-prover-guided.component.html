@@ -4,4 +4,5 @@
   <app-constructor-entering *ngSwitchCase="'constructorDefinitions'" (onFinish)="finishConstructorDefinition($event)"></app-constructor-entering>
   <app-statement-entering *ngSwitchCase="'statement'" (onFinish)="finishStatementEntering($event)"></app-statement-entering>
   <app-function-definitions *ngSwitchCase="'functionDefinitions'" [statementTree]="statementTree!" [constructorDefinitions]="constructorDefinitions!" (onFinish)="finishFunctionDefinition($event)"></app-function-definitions>
+  <app-additional-constraints-entering *ngSwitchCase="'additionalConstraints'" (onFinish)="finishAdditionalConstraintEntering($event)"></app-additional-constraints-entering>
 </ng-container>

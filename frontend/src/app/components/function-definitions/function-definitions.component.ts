@@ -10,6 +10,7 @@ import getIdentifiersFromFunctionTree
 import standardInfixOperators, {getInfixFunction} from "../../../util/Formulae/standardInfixOperator";
 import {Footer, MenuItem} from "primeng/api";
 import {environment} from "../../../environments/environment";
+import {getFunctionTree} from "../../../util/Formulae/getFunctionTree/getFunctionTree";
 
 @Component({
   selector: 'app-function-definitions',
@@ -42,7 +43,24 @@ export class FunctionDefinitionsComponent implements OnInit {
   }
 
   emitEvent() {
-    this.onFinish.emit(this.getFunctionDefinitions().value);
+    this.onFinish.emit(this.getFunctionDefinitions().value.map(x => {
+        return {
+          ...x,
+          definition: x.definition.map(y => {
+            return {
+              ...y,
+              conditional: y.conditional.map(z => {
+                return {
+                  condition: getFunctionTree(z.condition),
+                  then: getFunctionTree(z.then),
+                }
+              }),
+              otherwise: getFunctionTree(y.otherwise)
+            }
+          }),
+        };
+      }
+    ));
   }
 
   getFunctionDefinitions(): FormArray {
@@ -51,12 +69,12 @@ export class FunctionDefinitionsComponent implements OnInit {
 
   addFunctionDefinition(identifier: FunctionIdentifier): void {
     let inputTypeByTerm: string | null = null;
-    let definitions: FormGroup[] = [];
+    let definition: FormGroup[] = [];
     if(identifier.arity === 1) {
       const term = getTermOfFunction(this.statementTree, this.constructorDefinitions, identifier.symbol);
       const constructor  = this.constructorDefinitions.find(cons => cons.term === term);
       inputTypeByTerm = constructor.type;
-      definitions = constructor.functions.map((consFunc) => this.fb.group({
+      definition = constructor.functions.map((consFunc) => this.fb.group({
         inputConstructor: this.fb.group({
           name: this.fb.control(consFunc.symbol),
           arity: this.fb.control(consFunc.arity),
@@ -71,9 +89,8 @@ export class FunctionDefinitionsComponent implements OnInit {
       name: this.fb.control(identifier.symbol),
       arity: this.fb.control(identifier.arity),
       inputTypes: this.fb.array(inputTypeByTerm != null ? [inputTypeByTerm] : Array(identifier.arity).fill(null)),
-      outputType: this.fb.control(inputTypeByTerm),
-      definitions: this.fb.array(definitions),
-      otherwise: this.fb.control(null),
+      outputType: this.fb.control(null),
+      definition: this.fb.array(definition),
     }));
   }
 
@@ -82,7 +99,7 @@ export class FunctionDefinitionsComponent implements OnInit {
   }
 
   getValueDefinitions(index: number): FormArray {
-    return this.formGroup.get(`functionDefinitions.${index}.definitions`) as FormArray;
+    return this.formGroup.get(`functionDefinitions.${index}.definition`) as FormArray;
   }
 
   addValueDefinition(index: number, type: InputVariant, arity?: number, inputConstructorName?: string) {
@@ -110,7 +127,7 @@ export class FunctionDefinitionsComponent implements OnInit {
   }
 
   getConditional(fd: number, vd: number): FormArray {
-    return this.formGroup.get(`functionDefinitions.${fd}.definitions.${vd}.conditional`) as FormArray;
+    return this.formGroup.get(`functionDefinitions.${fd}.definition.${vd}.conditional`) as FormArray;
   }
 
   getFunctionName(fd: number): string {
@@ -118,7 +135,7 @@ export class FunctionDefinitionsComponent implements OnInit {
   }
 
   getValueDefinition(fd: number, vd: number): FormGroup {
-    return this.formGroup.get(`functionDefinitions.${fd}.definitions.${vd}`) as FormGroup;
+    return this.formGroup.get(`functionDefinitions.${fd}.definition.${vd}`) as FormGroup;
   }
 
   getInputVariant(fd: number, vd: number): InputVariant {
@@ -135,7 +152,7 @@ export class FunctionDefinitionsComponent implements OnInit {
   }
 
   getInputConstructor(fd: number, vd: number): FormGroup {
-    return this.formGroup.get(`functionDefinitions.${fd}.definitions.${vd}.inputConstructor`) as FormGroup;
+    return this.formGroup.get(`functionDefinitions.${fd}.definition.${vd}.inputConstructor`) as FormGroup;
   }
 
   getInputConstructorName(fd: number, vd: number): string {
@@ -148,7 +165,7 @@ export class FunctionDefinitionsComponent implements OnInit {
 
   addConditionalDefinition(fd: number, vd: number) {
     this.getConditional(fd, vd).push(this.fb.group({
-      if: this.fb.control(null),
+      condition: this.fb.control(null),
       then: this.fb.control(null),
     }))
   }

@@ -23,6 +23,8 @@ import {BlockUIModule} from "primeng/blockui";
 import { BlockComponent } from './components/block/block.component';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {FunctionDefinitionsComponent} from "./components/function-definitions/function-definitions.component";
+import { AdditionalConstraintsEnteringComponent } from './components/additional-constraints-entering/additional-constraints-entering.component';
+import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import {FunctionDefinitionsComponent} from "./components/function-definitions/fu
     StatementEnteringComponent,
     BlockComponent,
     FunctionDefinitionsComponent,
+    AdditionalConstraintsEnteringComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -52,9 +55,10 @@ import {FunctionDefinitionsComponent} from "./components/function-definitions/fu
     RippleModule,
     InputNumberModule,
     BlockUIModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

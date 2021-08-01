@@ -1,0 +1,41 @@
+<div class="flex justify-content-center">
+  <h1>Additional Constraints</h1>
+</div>
+
+<form [formGroup]="formGroup">
+  <ng-container formArrayName="additionalConstraints">
+    <ng-container *ngFor="let _ of getAdditionalConstraints().controls; let ac = index">
+      <ng-container [formGroupName]="ac">
+        <div class="flex">
+          For all
+          <ng-container formArrayName="inputVariables">
+            <ng-container *ngFor="let _ of getInputVariables(ac).controls; let iv = index">
+              <div class="flex-shrink-0">
+                <ng-container [formGroupName]="iv">
+                  <span class="p-inputgroup" [style.width.rem]="20">
+                    <input pInputText class="p-inputtext-sm" formControlName="variable"/>
+                    <p-dropdown [options]="typeDropdownOptions" formControlName="type" placeholder="Please select"></p-dropdown>
+                    <button pButton class="p-inputgroup-addon p-button-sm p-button-danger" icon="pi pi-trash" (click)="deleteInputVariable(ac, iv)"></button>
+                  </span>
+                </ng-container>
+              </div>
+            </ng-container>
+            <div class="flex-shrink-1">
+              <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="addInputVariable(ac)"></button>
+            </div>
+          </ng-container>
+          <div class="flex-grow-1">
+            <input pInputText formControlName="constraint"/>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+  <div class="flex mt-8 justify-content-center">
+    <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="addConstraintEntry()"></button>
+  </div>
+</form>
+
+<div class="flex justify-content-center">
+  <button pButton class="p-button-success" (click)="onFinishHandler()">Start Proving</button>
+</div>

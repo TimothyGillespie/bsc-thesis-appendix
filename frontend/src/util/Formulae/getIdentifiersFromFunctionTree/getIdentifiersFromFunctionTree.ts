@@ -1,7 +1,7 @@
 import { FunctionIdentifier, FunctionTreeNode } from '../formula';
 import mapPreOrder from '../map/mapPreOrder/mapPreOrder';
 import { standardFunctionIdentifierComparator } from '../../Comparators/Functions/FunctionIdentifier/FunctionIdentifier';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 function getIdentifiersFromFunctionTree(tree: FunctionTreeNode): FunctionIdentifier[] {
 	let result = mapPreOrder(tree, node => {
