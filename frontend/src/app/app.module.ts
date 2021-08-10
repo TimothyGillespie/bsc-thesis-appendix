@@ -3,8 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {ConstructorEnteringComponent} from "./components/constructor-entering/constructor-entering.component";
-import {StructuralInductionProverGuidedComponent} from "./components/structural-induction-prover-guided/structural-induction-prover-guided.component";
+import {ConstructorEnteringComponent} from "./pages/constructor-entering/constructor-entering.component";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AccordionModule} from "primeng/accordion";
 import {DropdownModule} from "primeng/dropdown";
@@ -18,47 +17,57 @@ import {KeyFilterModule} from "primeng/keyfilter";
 import {CardModule} from "primeng/card";
 import {RippleModule} from "primeng/ripple";
 import {InputNumberModule} from "primeng/inputnumber";
-import { StatementEnteringComponent } from './components/statement-entering/statement-entering.component';
+import { StatementEnteringComponent } from './pages/statement-entering/statement-entering.component';
 import {BlockUIModule} from "primeng/blockui";
 import { BlockComponent } from './components/block/block.component';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
-import {FunctionDefinitionsComponent} from "./components/function-definitions/function-definitions.component";
-import { AdditionalConstraintsEnteringComponent } from './components/additional-constraints-entering/additional-constraints-entering.component';
+import {FunctionDefinitionsComponent} from "./pages/function-definitions/function-definitions.component";
+import { AdditionalConstraintsEnteringComponent } from './pages/additional-constraints-entering/additional-constraints-entering.component';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {LoadingScreenService} from "./services/loading-screen/loading-screen.service";
+import {RequestDataService} from "./services/request-data-service/request-data.service";
+import {DividerModule} from "primeng/divider";
+import { FinishComponent } from './pages/finish/finish.component';
+import { StartComponent } from './pages/start/start.component';
+import {ConfirmPopupModule} from "primeng/confirmpopup";
+import {ConfirmationService} from "primeng/api";
 
 @NgModule({
   declarations: [
     AppComponent,
     ConstructorEnteringComponent,
-    StructuralInductionProverGuidedComponent,
     StatementEnteringComponent,
     BlockComponent,
     FunctionDefinitionsComponent,
     AdditionalConstraintsEnteringComponent,
+    FinishComponent,
+    StartComponent,
   ],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    AccordionModule,
-    DropdownModule,
-    FieldsetModule,
-    ButtonModule,
-    InputTextModule,
-    FormsModule,
-    ReactiveFormsModule,
-    TabMenuModule,
-    OverlayPanelModule,
-    KeyFilterModule,
-    CardModule,
-    RippleModule,
-    InputNumberModule,
-    BlockUIModule,
-    ProgressSpinnerModule,
-    HttpClientModule,
-  ],
-  providers: [HttpClient],
+    imports: [
+        AppRoutingModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        AccordionModule,
+        DropdownModule,
+        FieldsetModule,
+        ButtonModule,
+        InputTextModule,
+        FormsModule,
+        ReactiveFormsModule,
+        TabMenuModule,
+        OverlayPanelModule,
+        KeyFilterModule,
+        CardModule,
+        RippleModule,
+        InputNumberModule,
+        BlockUIModule,
+        ProgressSpinnerModule,
+        HttpClientModule,
+        DividerModule,
+        ConfirmPopupModule,
+    ],
+  providers: [HttpClient, LoadingScreenService, RequestDataService, ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

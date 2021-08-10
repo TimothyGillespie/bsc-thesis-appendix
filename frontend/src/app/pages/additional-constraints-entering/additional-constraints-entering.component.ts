@@ -3,6 +3,8 @@ import {AdditionalConstraint} from "../../models/AdditionalConstraint";
 import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {environment} from "../../../environments/environment";
 import {getFunctionTree} from "../../../util/Formulae/getFunctionTree/getFunctionTree";
+import {RequestDataService} from "../../services/request-data-service/request-data.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-additional-constraints-entering',
@@ -13,10 +15,13 @@ export class AdditionalConstraintsEnteringComponent implements OnInit {
 
   formGroup: FormGroup;
 
-  @Output() onFinish: EventEmitter<AdditionalConstraint[]> = new EventEmitter();
   typeDropdownOptions = environment.typeOptions;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private requestData: RequestDataService,
+    private router: Router,
+    ) { }
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({
@@ -54,13 +59,15 @@ export class AdditionalConstraintsEnteringComponent implements OnInit {
     this.getInputVariables(ac).removeAt(iv);
   }
 
-  onFinishHandler() {
-    this.onFinish.emit(this.getAdditionalConstraints().value.map(x => {
+  onFinish() {
+    this.requestData.additionalConstraints.next(this.getAdditionalConstraints().value.map(x => {
       return {
         inputVariables: AdditionalConstraintsEnteringComponent.objectify(x.inputVariables),
         constraint: getFunctionTree(x.constraint)
       };
     }));
+
+    this.router.navigate(['finish']);
   }
 
   private static objectify(input: any[]): {[variable: string]: string} {

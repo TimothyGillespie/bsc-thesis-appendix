@@ -6,6 +6,11 @@
   <input id="statement" pInputText [pKeyFilter]="allowedValuesForFormulae" class="w-10" [(ngModel)]="statement" (ngModelChange)="changeHandler()"/>
 </div>
 
+
 <div class="flex justify-content-center mt-5">
-  <button pButton class="p-button-success" (click)="onFinishHandler()">Got it</button>
+  <button pButton class="p-button-success" (click)="onFinish()">Next</button>
+</div>
+
+<div class="flex justify-content-center mt-5">
+  <button pButton (click)="onBack()" class="p-button-link">Go Back To Constructor Definitions</button>
 </div>

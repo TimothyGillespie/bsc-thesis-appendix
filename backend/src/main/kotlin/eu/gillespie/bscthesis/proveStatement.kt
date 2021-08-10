@@ -1,5 +1,6 @@
 package eu.gillespie.bscthesis
 
+
 import eu.gillespie.bscthesis.request.ProveStatementRequest
 import eu.gillespie.bscthesis.response.ProveStatementResponse
 import eu.gillespie.bscthesis.tosmtv20.convertToSmtV20String

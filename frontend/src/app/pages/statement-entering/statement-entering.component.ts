@@ -4,6 +4,9 @@ import {FunctionTreeNode} from "../../../util/Formulae/formula";
 import getIdentifiersFromFunctionTree
   from "../../../util/Formulae/getIdentifiersFromFunctionTree/getIdentifiersFromFunctionTree";
 import {environment} from "../../../environments/environment";
+import {Router} from "@angular/router";
+import {RequestDataService} from "../../services/request-data-service/request-data.service";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'app-statement-entering',
@@ -17,15 +20,25 @@ export class StatementEnteringComponent implements OnInit {
   functions = null;
 
   statement?: string = null;
-  @Output() onFinish: EventEmitter<string> = new EventEmitter();
 
-  constructor() { }
+  constructor(private router: Router, private requestData: RequestDataService) { }
 
   ngOnInit(): void {
+    this.requestData.statementString.pipe(first()).subscribe((initialValue) => {
+      if(initialValue !== undefined)
+        this.statement = initialValue;
+    })
   }
 
-  onFinishHandler() {
-    this.onFinish.emit(this.statement);
+  onFinish() {
+    this.requestData.statementString.next(this.statement);
+    this.router.navigate(['function-definitions']);
+    // this.onFinish.emit(this.statement);
+  }
+
+  onBack() {
+    this.requestData.statementString.next(this.statement);
+    this.router.navigate(['constructor-definitions'])
   }
 
   changeHandler() {

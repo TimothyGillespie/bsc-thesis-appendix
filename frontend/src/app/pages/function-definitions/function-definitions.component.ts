@@ -11,6 +11,9 @@ import standardInfixOperators, {getInfixFunction} from "../../../util/Formulae/s
 import {Footer, MenuItem} from "primeng/api";
 import {environment} from "../../../environments/environment";
 import {getFunctionTree} from "../../../util/Formulae/getFunctionTree/getFunctionTree";
+import {RequestDataService} from "../../services/request-data-service/request-data.service";
+import {first} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-function-definitions',
@@ -19,18 +22,35 @@ import {getFunctionTree} from "../../../util/Formulae/getFunctionTree/getFunctio
 })
 export class FunctionDefinitionsComponent implements OnInit {
 
-  @Input() statementTree!: FunctionTreeNode;
-  @Input() constructorDefinitions: ConstructorDefinition[];
-  @Output() onFinish: EventEmitter<FunctionDefinition[]> = new EventEmitter();
+  statementTree!: FunctionTreeNode;
+  constructorDefinitions: ConstructorDefinition[];
 
   typeDropdownOptions = environment.typeOptions;
   allowedValuesForFormulae = environment.allowedFormulaInput;
 
   formGroup?: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private requestData: RequestDataService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
+    this.requestData.statementString.pipe(first()).subscribe((initialValue) => {
+      if(initialValue === undefined)
+        this.router.navigate(['statement']);
+
+      this.statementTree = getFunctionTree(initialValue ?? '');
+    })
+
+    this.requestData.constructorDefinitions.pipe(first()).subscribe((initialValue) => {
+      if(initialValue === undefined)
+        this.router.navigate(['constructor-definitions']);
+
+      this.constructorDefinitions = initialValue;
+    });
+
     this.formGroup = this.fb.group({
       functionDefinitions: this.fb.array([])
     });
@@ -39,11 +59,11 @@ export class FunctionDefinitionsComponent implements OnInit {
       return this.constructorDefinitions.find(cons => cons.term === identifier.symbol) === undefined &&
         getInfixFunction(identifier.symbol) === undefined
     }).forEach(x => this.addFunctionDefinition(x));
-    console.log(this.formGroup.value);
+
   }
 
-  emitEvent() {
-    this.onFinish.emit(this.getFunctionDefinitions().value.map(x => {
+  onFinish() {
+    this.requestData.functionDefinitions.next(this.getFunctionDefinitions().value.map(x => {
         return {
           ...x,
           definition: x.definition.map(y => {
@@ -61,7 +81,14 @@ export class FunctionDefinitionsComponent implements OnInit {
         };
       }
     ));
+
+    this.router.navigate(['additional-constraints'])
   }
+
+
+  /*
+   * Form Management Functions
+   */
 
   getFunctionDefinitions(): FormArray {
     return this.formGroup.get('functionDefinitions') as FormArray;
