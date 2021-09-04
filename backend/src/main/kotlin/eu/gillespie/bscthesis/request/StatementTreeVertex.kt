@@ -31,7 +31,7 @@ data class StatementTreeVertex(
     }
 
     operator fun contains(tree: StatementTreeVertex): Boolean {
-        return parameters.stream().anyMatch(Predicate { x: StatementTreeVertex -> x.containsOrEquals(tree) })
+        return parameters.stream().anyMatch { x: StatementTreeVertex -> x.containsOrEquals(tree) }
     }
 
     fun createClone(): StatementTreeVertex {
@@ -39,7 +39,7 @@ data class StatementTreeVertex(
     }
 
     override fun toString(): String {
-        val sb = StringBuilder();
+        val sb = StringBuilder()
         val infixOperator = InfixOperator.byZ3Symbol(symbol)
 
         if(infixOperator == null)

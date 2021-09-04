@@ -2,7 +2,6 @@ package eu.gillespie.bscthesis.smt.v20.model
 
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20AssertableExpression
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20Expression
-import lombok.*
 
 data class SmtV20NamedAssert(
     var name: String? = null,

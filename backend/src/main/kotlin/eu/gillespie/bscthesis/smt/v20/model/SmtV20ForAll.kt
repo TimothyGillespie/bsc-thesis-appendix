@@ -13,7 +13,7 @@ data class SmtV20ForAll(
         if (expression !is StatementTreeVertex) return expression.toSmtV20()
         val sortList = bindings.entries.stream()
             .filter { (key) ->
-                (expression as StatementTreeVertex).containsOrEquals(
+                expression.containsOrEquals(
                     StatementTreeVertex(
                         key,
                         emptyList()

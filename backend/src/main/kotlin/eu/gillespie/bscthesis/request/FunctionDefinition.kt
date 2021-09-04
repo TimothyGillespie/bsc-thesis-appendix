@@ -1,8 +1,6 @@
 package eu.gillespie.bscthesis.request
 
 import java.util.LinkedList
-import eu.gillespie.bscthesis.request.Definition
-import lombok.*
 
 data class FunctionDefinition (
     var name: String,
@@ -23,6 +21,6 @@ data class FunctionDefinition (
     }
 
     override fun hashCode(): Int {
-        return name.hashCode() ?: 0
+        return name.hashCode()
     }
 }
