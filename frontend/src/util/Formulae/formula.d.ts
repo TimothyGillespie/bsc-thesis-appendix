@@ -1,3 +1,7 @@
+import Graph from "@tgillespie/graph/lib/models/Graph/Graph";
+import FunctionGraphNode from "./FunctionGraphNode";
+import FunctionGraphEdge from "./FunctionGraphEdge";
+
 export type InfixOperator = {
 	symbol: string;
 	priority: number;
@@ -29,3 +33,5 @@ export type FunctionIdentifier = {
 	symbol: string;
 	arity: number;
 };
+
+export type FunctionGraph = Graph<FunctionGraphNode, FunctionGraphEdge<FunctionGraphNode>>;
