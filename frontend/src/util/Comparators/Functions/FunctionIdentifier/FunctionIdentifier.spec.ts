@@ -4,15 +4,15 @@ describe('FunctionIdentifier', () => {
 	describe('standardFunctionIdentifierComparator()', function() {
 		it('sorts by symbol', () => {
 			const input = [
-				{ symbol: 'b', parameterCount: 1 },
-				{ symbol: 'a', parameterCount: 1 },
-				{ symbol: 'c', parameterCount: 1 },
+				{ symbol: 'b', arity: 1 },
+				{ symbol: 'a', arity: 1 },
+				{ symbol: 'c', arity: 1 },
 			];
 
 			const expectedOutput = [
-				{ symbol: 'a', parameterCount: 1 },
-				{ symbol: 'b', parameterCount: 1 },
-				{ symbol: 'c', parameterCount: 1 },
+				{ symbol: 'a', arity: 1 },
+				{ symbol: 'b', arity: 1 },
+				{ symbol: 'c', arity: 1 },
 			];
 
 			input.sort(standardFunctionIdentifierComparator);
@@ -22,15 +22,15 @@ describe('FunctionIdentifier', () => {
 
 		it('ignores parameter count when symbol is different', () => {
 			const input = [
-				{ symbol: 'b', parameterCount: 3 },
-				{ symbol: 'a', parameterCount: 2 },
-				{ symbol: 'c', parameterCount: 1 },
+				{ symbol: 'b', arity: 3 },
+				{ symbol: 'a', arity: 2 },
+				{ symbol: 'c', arity: 1 },
 			];
 
 			const expectedOutput = [
-				{ symbol: 'a', parameterCount: 2 },
-				{ symbol: 'b', parameterCount: 3 },
-				{ symbol: 'c', parameterCount: 1 },
+				{ symbol: 'a', arity: 2 },
+				{ symbol: 'b', arity: 3 },
+				{ symbol: 'c', arity: 1 },
 			];
 
 			input.sort(standardFunctionIdentifierComparator);
@@ -40,15 +40,15 @@ describe('FunctionIdentifier', () => {
 
 		it('sort by parameter count for same symbol', () => {
 			const input = [
-				{ symbol: 'a', parameterCount: 3 },
-				{ symbol: 'a', parameterCount: 2 },
-				{ symbol: 'a', parameterCount: 1 },
+				{ symbol: 'a', arity: 3 },
+				{ symbol: 'a', arity: 2 },
+				{ symbol: 'a', arity: 1 },
 			];
 
 			const expectedOutput = [
-				{ symbol: 'a', parameterCount: 1 },
-				{ symbol: 'a', parameterCount: 2 },
-				{ symbol: 'a', parameterCount: 3 },
+				{ symbol: 'a', arity: 1 },
+				{ symbol: 'a', arity: 2 },
+				{ symbol: 'a', arity: 3 },
 			];
 
 			input.sort(standardFunctionIdentifierComparator);

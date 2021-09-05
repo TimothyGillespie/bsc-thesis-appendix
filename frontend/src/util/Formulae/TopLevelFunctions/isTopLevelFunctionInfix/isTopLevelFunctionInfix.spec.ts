@@ -11,7 +11,8 @@ describe('isTopLevelFunctionInfix()', () => {
 	testCases.forEach(value => {
 		const [input, expectation] = value;
 		it(`Returns ${expectation} for ${input}`, () => {
-			expect(isTopLevelFunctionInfix(typeof input === 'string' ? input : '', standardInfixOperators)).toBe(
+			expect(isTopLevelFunctionInfix(typeof input === 'string' ? input : '', standardInfixOperators)).toEqual(
+        // @ts-ignore
 				expectation,
 			);
 		});

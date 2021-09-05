@@ -7,44 +7,44 @@ describe('getIdentifiersFromFunctionTree()', () => {
 		[
 			'3 + 2',
 			[
-				{ symbol: '+', parameterCount: 2 },
-				{ symbol: '2', parameterCount: 0 },
-				{ symbol: '3', parameterCount: 0 },
+				{ symbol: '+', arity: 2 },
+				{ symbol: '2', arity: 0 },
+				{ symbol: '3', arity: 0 },
 			],
 		],
 		[
 			'mul(c(3 + 2))',
 			[
-				{ symbol: '+', parameterCount: 2 },
-				{ symbol: '2', parameterCount: 0 },
-				{ symbol: '3', parameterCount: 0 },
-				{ symbol: 'c', parameterCount: 1 },
-				{ symbol: 'mul', parameterCount: 1 },
+				{ symbol: '+', arity: 2 },
+				{ symbol: '2', arity: 0 },
+				{ symbol: '3', arity: 0 },
+				{ symbol: 'c', arity: 1 },
+				{ symbol: 'mul', arity: 1 },
 			],
 		],
 		[
 			'depth(x,e,u,e,size(e,x,c(e,i)))',
 			[
-				{ symbol: 'c', parameterCount: 2 },
-				{ symbol: 'depth', parameterCount: 5 },
-				{ symbol: 'e', parameterCount: 0 },
-				{ symbol: 'i', parameterCount: 0 },
-				{ symbol: 'size', parameterCount: 3 },
-				{ symbol: 'u', parameterCount: 0 },
-				{ symbol: 'x', parameterCount: 0 },
+				{ symbol: 'c', arity: 2 },
+				{ symbol: 'depth', arity: 5 },
+				{ symbol: 'e', arity: 0 },
+				{ symbol: 'i', arity: 0 },
+				{ symbol: 'size', arity: 3 },
+				{ symbol: 'u', arity: 0 },
+				{ symbol: 'x', arity: 0 },
 			],
 		],
 		[
 			'size(c(x,y)) = 1 + edgeCount(c(x,y))',
 			[
-				{ symbol: '+', parameterCount: 2 },
-				{ symbol: '=', parameterCount: 2 },
-				{ symbol: '1', parameterCount: 0 },
-				{ symbol: 'c', parameterCount: 2 },
-				{ symbol: 'edgeCount', parameterCount: 1 },
-				{ symbol: 'size', parameterCount: 1 },
-				{ symbol: 'x', parameterCount: 0 },
-				{ symbol: 'y', parameterCount: 0 },
+				{ symbol: '+', arity: 2 },
+				{ symbol: '=', arity: 2 },
+				{ symbol: '1', arity: 0 },
+				{ symbol: 'c', arity: 2 },
+				{ symbol: 'edgeCount', arity: 1 },
+				{ symbol: 'size', arity: 1 },
+				{ symbol: 'x', arity: 0 },
+				{ symbol: 'y', arity: 0 },
 			],
 		],
 	];
@@ -53,7 +53,8 @@ describe('getIdentifiersFromFunctionTree()', () => {
 		const [input, expectation] = value;
 		it(`Returns ${JSON.stringify(expectation)} for ${input}`, () => {
 			const tree = getFunctionTree(typeof input === 'string' ? input : '', standardInfixOperators);
-			expect(getIdentifiersFromFunctionTree(tree)).toStrictEqual(expectation);
+			// @ts-ignore
+      expect(getIdentifiersFromFunctionTree(tree)).toEqual(expectation);
 		});
 	});
 });

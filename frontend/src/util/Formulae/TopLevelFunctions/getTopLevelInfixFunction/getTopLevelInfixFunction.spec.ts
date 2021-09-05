@@ -11,9 +11,10 @@ describe('getTopLevelInfixFunction()', () => {
 	testCases.forEach(value => {
 		const [input, expectation] = value;
 		it(`Returns ${JSON.stringify(expectation)} for ${input}`, () => {
-			expect(
+      expect(
 				getTopLevelInfixFunction(typeof input === 'string' ? input : '', standardInfixOperators),
-			).toStrictEqual(expectation);
+        // @ts-ignore
+			).toEqual(expectation);
 		});
 	});
 });

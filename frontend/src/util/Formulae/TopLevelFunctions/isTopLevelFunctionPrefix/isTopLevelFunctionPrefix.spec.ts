@@ -12,6 +12,7 @@ describe('isTopLevelFunctionPrefix()', () => {
 	testCases.forEach(value => {
 		const [input, expectation] = value;
 		it(`Returns ${expectation} for ${input}`, () => {
+      // @ts-ignore
 			expect(isTopLevelFunctionPrefix(typeof input === 'string' ? input : '')).toEqual(expectation);
 		});
 	});

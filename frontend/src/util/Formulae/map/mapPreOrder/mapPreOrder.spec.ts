@@ -25,7 +25,7 @@ describe('mapPreOrder()', () => {
 		const [input, expectation] = value;
 		it(`Returns ${JSON.stringify(expectation)} for ${input}`, () => {
 			const tree = getFunctionTree(typeof input === 'string' ? input : '', standardInfixOperators);
-			expect(mapPreOrder(tree, testMappingFunction)).toStrictEqual(expectation);
+			expect(mapPreOrder(tree, testMappingFunction)).toEqual(expectation);
 		});
 	});
 });

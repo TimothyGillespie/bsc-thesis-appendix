@@ -2,11 +2,11 @@ import Edge from "@tgillespie/graph/lib/models/Edge/Edge/Edge";
 import FunctionGraphNode from "./FunctionGraphNode";
 
 class FunctionGraphEdge<V extends FunctionGraphNode> extends Edge<V> {
-  parameterNumber: number;
+  parameterIndex: number;
 
-  constructor(vertexA: V, vertexB: V, parameterNumber: number) {
+  constructor(vertexA: V, vertexB: V, parameterIndex: number) {
     super(vertexA, vertexB);
-    this.parameterNumber = parameterNumber;
+    this.parameterIndex = parameterIndex;
   }
 
   isDirected(): boolean {

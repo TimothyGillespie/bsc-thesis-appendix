@@ -11,9 +11,11 @@ function getFunctionDependencyGraph(tree: FunctionTreeNode, g: FunctionGraph = n
   tree.parameters.forEach((child, index) => {
     const childVertex = new FunctionGraphNode(child.symbol, child.parameters.length);
     g.addVertex(childVertex);
-    g.addEdge(new FunctionGraphEdge(parentVertex, childVertex, index + 1));
+    g.addEdge(new FunctionGraphEdge(parentVertex, childVertex, index));
     getFunctionDependencyGraph(child, g);
   });
 
   return g;
 }
+
+export default getFunctionDependencyGraph;

@@ -10,7 +10,8 @@ describe('getTopLevelPrefixFunction()', () => {
 	testCases.forEach(value => {
 		const [input, expectation] = value;
 		it(`Returns ${JSON.stringify(expectation)} for ${input}`, () => {
-			expect(getTopLevelPrefixFunction(typeof input === 'string' ? input : '')).toStrictEqual(expectation);
+      // @ts-ignore
+			expect(getTopLevelPrefixFunction(typeof input === 'string' ? input : '')).toEqual(expectation);
 		});
 	});
 });

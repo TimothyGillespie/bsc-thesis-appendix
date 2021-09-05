@@ -112,7 +112,8 @@ describe('getFunctionTree()', () => {
 	testCases.forEach(value => {
 		const [input, expectation] = value;
 		it(`Returns ${JSON.stringify(expectation)} for ${input}`, () => {
-			expect(getFunctionTree(typeof input === 'string' ? input : '', standardInfixOperators)).toStrictEqual(
+			expect(getFunctionTree(typeof input === 'string' ? input : '', standardInfixOperators)).toEqual(
+        // @ts-ignore
 				expectation,
 			);
 		});
