@@ -11,7 +11,7 @@ fun proveStatement(request: ProveStatementRequest): ProveStatementResponse {
     val uuid: String = UUID.randomUUID().toString();
 
     val smtV20Code = convertToSmtV20String(request)
-    val fileName = "z3-${uuid}.smt2"
+    val fileName = "${uuid}.smt2"
     val file = File("./${fileName}").apply {
         createNewFile()
         writeText(smtV20Code)
