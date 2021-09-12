@@ -25,7 +25,7 @@ fun proveStatement(request: ProveStatementRequest): ProveStatementResponse {
 
     val satifiability = response.subList(0,countOfCheckSats).map { it == "sat" }
     val unsatCore = response.get(countOfCheckSats).removePrefix("(").removeSuffix(")").split(" ")
-    val proof =  response.subList(countOfCheckSats + 1, response.size).joinToString("")
+    val model = response.subList(countOfCheckSats, response.size - 1).joinToString("\n")
 
-    return ProveStatementResponse(satifiability, unsatCore, proof)
+    return ProveStatementResponse(satifiability, listOf(), model)
 }
