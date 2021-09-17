@@ -31,16 +31,7 @@ class Test {
         })
 
 
-//        printTree(relevantTree, 0)
-//        print(generateTypeMapping(listOf(relevantTree.parameters.first())))
-
-
-//        val typeMapping = generateTypeMapping(tree.parameters)
-//        println(typeMappingToHumanReadableString(typeMapping))
-//        println(typeMapping.filter { it.humanReadable?.contains("(") ?: false })
-
         val counterModel = parseCounterModel(tree.parameters)
-//        println(counterModel)
         println()
         println(counterModelToHumanReadableTypeDeclaration(counterModel))
         println()
@@ -254,94 +245,6 @@ fun isAliasDeclaration(function: SFunction): Boolean = function.name == "declare
         // Last parameter is potentially a type
         && function.parameters[2].name != null && function.parameters[2].parameters.isEmpty()
 
-
-/*
-    Previously
- */
-
-fun typeMappingToHumanReadableString(typeMapping: List<ConstantInformation>): String {
-    val resultList = mutableListOf<String>()
-    typeMapping.groupBy { it.type }.forEach { entry ->
-        var singleResult = ""
-
-        singleResult += entry.value
-            .sortedBy { it.variable }
-            .map { it.variable }
-            .filterNotNull()
-            .joinToString(", ")
-
-        singleResult += " in ${entry.key}"
-
-        resultList.add(singleResult)
-    }
-
-    return resultList.joinToString("\n")
-}
-
-fun generateTypeMapping(functions: List<SFunction>): List<ConstantInformation> {
-    val result = mutableListOf<ConstantInformation>()
-    // Expected Format example: (declare-fun NAryTree!val!2)
-    val filteredFunctions = functions.filter {
-        it.name == "declare-fun"
-                && it.parameters.size == 3
-                // Contains exactly two !
-                && it.parameters[0].name?.count { symbol -> symbol == '!'} == 2 && it.parameters[0].parameters.isEmpty()
-                // has no input parameters
-                && it.parameters[1].name == null && it.parameters[1].parameters.isEmpty()
-                // Last parameter is potentially a type
-                && it.parameters[2].name != null && it.parameters[2].parameters.isEmpty()
-    }
-
-
-    for(singleFunction in filteredFunctions) {
-        val symbol = singleFunction.parameters[0].name
-            ?: throw RuntimeException("Invalid format")
-        val type = singleFunction.parameters[2].name
-            ?: throw RuntimeException("Invalid format")
-        val index = singleFunction.parameters[0].name?.split("!")?.get(2)?.toInt()
-            ?: throw RuntimeException("Invalid format")
-
-        result.add(ConstantInformation(symbol, type, index, getVariableName(functions, type, index), getHumanReadable(functions, type, index)))
-    }
-
-    return result.toList()
-}
-
-fun getHumanReadable(functions: List<SFunction>, type: String, index: Int): String? {
-    val intermediateResult = functions.find {
-        val maybeInstantiation = it.parameters[0]
-        maybeInstantiation.name != null
-                && it.name == "define-fun"
-                && maybeInstantiation.name.startsWith("%")
-                && it.parameters[1].name == null && it.parameters[1].parameters.isEmpty()
-                && it.parameters[2].name != null && it.parameters[2].parameters.isEmpty()
-                && it.parameters[3].name == "${type}!val!${index}" && it.parameters[3].parameters.isEmpty()
-    }
-
-    if (intermediateResult == null) {
-        return null;
-    }
-
-    val instantiation = intermediateResult.parameters[0]
-    var constructorName = instantiation.name?.split("/")?.get(0)?.removePrefix("%")
-        ?: throw RuntimeException("No name found")
-
-    if(constructorName.startsWith("%")) {
-        constructorName = constructorName.removePrefix("%")
-        val inputIndex = instantiation.name.split("_")[1].removePrefix("x")
-        return "${constructorName}${inputIndex}"
-    }
-
-    val arity: Int = instantiation.name.split("/")[1].toInt()
-
-    var symbol = "${constructorName}("
-    symbol += (0 until arity).map { "${constructorName}${it}" }.joinToString(", ")
-    symbol += ")"
-
-    return symbol
-
-}
-
 // Could be a map as well but this allows throwing an exception instead of handling this individually each time
 fun getVariableBaseForType(type: String): String {
     return when(type) {
@@ -352,36 +255,6 @@ fun getVariableBaseForType(type: String): String {
         else -> throw UnknownTypeExpection(type)
     }
 }
-
-fun getVariableName(functions: List<SFunction>, type: String, index: Int): String? {
-    val intermediateResult = functions.find {
-        val maybeInstantiation = it.parameters[0]
-        maybeInstantiation.name != null
-                && it.name == "define-fun"
-                && maybeInstantiation.name.startsWith("%%")
-                && it.parameters[1].name == null && it.parameters[1].parameters.isEmpty()
-                && it.parameters[2].name != null && it.parameters[2].parameters.isEmpty()
-                && it.parameters[3].name == "${type}!val!${index}" && it.parameters[3].parameters.isEmpty()
-    }
-
-    if (intermediateResult == null) {
-        return null;
-    }
-
-    val instantiation = intermediateResult.parameters[0]
-    val constructorName = instantiation.name?.split("/")?.get(0)?.removePrefix("%%")
-        ?: throw RuntimeException("No name found")
-    val inputIndex = instantiation.name.split("_")[1].removePrefix("x")
-    return "${constructorName}${inputIndex}"
-}
-
-data class ConstantInformation(
-    val symbol: String,
-    val type: String,
-    val index: Int,
-    val variable: String?,
-    val humanReadable: String?
-)
 
 fun printTree(tree: SFunction, level: Int) {
 
