@@ -40,8 +40,14 @@ class Test {
 //        println(typeMapping.filter { it.humanReadable?.contains("(") ?: false })
 
         val counterModel = parseCounterModel(tree.parameters)
-        println(counterModel)
+//        println(counterModel)
+        println()
         println(counterModelToHumanReadableTypeDeclaration(counterModel))
+        println()
+        println(counterModelToHumanReadableConstructedStructuresDefinition(counterModel))
+        println()
+        println(counterModelToHumanReadableFunctionValuesProbes(counterModel).joinToString("\n\n"))
+        println()
     }
 
 }
@@ -55,6 +61,47 @@ fun counterModelToHumanReadableTypeDeclaration(model: CounterModel): String {
         .groupBy { it.type }
         .map { it.value.map { aliases -> aliases.humanReadableSymbol }.joinToString(", ") + " ∈ ${it.key}" }
         .joinToString("\n")
+}
+
+fun counterModelToHumanReadableConstructedStructuresDefinition(model: CounterModel): String {
+    val aliasesToDefine = model.aliases
+        .asSequence()
+        .filter { it.instantiation?.startsWith("%") ?: false && !isInstantiationParameterName(it.instantiation)}
+        .sortedBy { it.index }
+
+    val sb = StringBuilder()
+
+    aliasesToDefine.forEach {
+        val relevantAliases = model.aliases
+            .asSequence()
+            .filter { relAlias ->  relAlias.instantiation?.startsWith("%${it.instantiation}") ?: false }
+            .sortedBy { relAlias -> relAlias.instantiation?.split("_")?.last()?.removePrefix("x")?.toInt() }
+
+        val split = it.instantiation?.removePrefix("%")?.split("/")
+        val constructorName = split?.subList(0, split.lastIndex)?.joinToString("")
+
+        val parameters = relevantAliases
+            .map { it.humanReadableSymbol }
+            .joinToString(", ")
+
+        sb.append("\n")
+        sb.append("${it.humanReadableSymbol} = ${constructorName}(${parameters})")
+    }
+
+    return sb.toString().removePrefix("\n")
+}
+
+fun counterModelToHumanReadableFunctionValuesProbes(model: CounterModel): List<String> {
+    val aliasTypeMap = model.aliases.groupBy { it.type }
+
+    return model.values.map { entry ->
+        val aliasesToDefine = aliasTypeMap[entry.value.inputType] ?: listOf()
+
+        aliasesToDefine.sortedBy { it.index }.map { alias ->
+            val valueForAlias = entry.value.valueMapping[alias.systemSymbol] ?: entry.value.elseValue
+            "${entry.key}(${alias.humanReadableSymbol}) = $valueForAlias"
+        }.joinToString("\n")
+    }
 }
 
 fun parseCounterModel(functions: List<SFunction>): CounterModel {
@@ -84,8 +131,9 @@ fun parseCounterModel(functions: List<SFunction>): CounterModel {
         .map {
             val functionName = it.parameters[0].name ?: SyntaxException("Function name was null")
             val (valueMapping, otherwise) = parseIfThenElse(it.parameters[3])
+            val inputType = it.parameters[1].parameters[0].parameters[0].name ?: "Unknown"
 
-            (functionName as String) to FunctionValue(valueMapping, otherwise)
+            (functionName as String) to FunctionValue(valueMapping, otherwise, inputType)
         }.toMap()
 
     return CounterModel(aliases, values)
@@ -477,7 +525,7 @@ data class SFunction(
         if(parameters.isEmpty() && name != null)
             return name
 
-        return "( ${name}${parameters.map { it.toString() }.joinToString(" ")}${ if (parameters.isNotEmpty()) " " else "" })"
+        return "( ${name}${ if (name != null) " " else "" }${parameters.map { it.toString() }.joinToString(" ")}${ if (parameters.isNotEmpty()) " " else "" })"
     }
 }
 
@@ -499,5 +547,6 @@ data class Alias(
 data class FunctionValue (
     // Input as System Symbol -> value
     val valueMapping: Map<String, String>,
-    val elseValue: String
+    val elseValue: String,
+    val inputType: String,
 )
