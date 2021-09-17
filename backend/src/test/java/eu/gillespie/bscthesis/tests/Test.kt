@@ -39,9 +39,22 @@ class Test {
 //        println(typeMappingToHumanReadableString(typeMapping))
 //        println(typeMapping.filter { it.humanReadable?.contains("(") ?: false })
 
-        println(parseCounterModel(tree.parameters))
+        val counterModel = parseCounterModel(tree.parameters)
+        println(counterModel)
+        println(counterModelToHumanReadableTypeDeclaration(counterModel))
     }
 
+}
+
+
+fun counterModelToHumanReadableTypeDeclaration(model: CounterModel): String {
+    return model.aliases
+        .asSequence()
+        .filter { it.instantiation?.startsWith("%%") ?: false }
+        .sortedBy { it.index }
+        .groupBy { it.type }
+        .map { it.value.map { aliases -> aliases.humanReadableSymbol }.joinToString(", ") + " ∈ ${it.key}" }
+        .joinToString("\n")
 }
 
 fun parseCounterModel(functions: List<SFunction>): CounterModel {
@@ -50,7 +63,7 @@ fun parseCounterModel(functions: List<SFunction>): CounterModel {
     val aliasDeclarationFunctions = filteredFunctions.filter { isAliasDeclaration(it) }
     val instantiationAliasMappings = filteredFunctions
         .filter { isInstantiationAliasMapping(it) }
-        .map { it.parameters[2].name to it.parameters[0].name }.toMap()
+        .map { it.parameters[3].name to it.parameters[0].name }.toMap()
 
     val aliases = aliasDeclarationFunctions.map {
         val systemSymbol = it.parameters[0].name ?: throw SyntaxException("Alias system symbol was unexpectedly null")
@@ -62,7 +75,7 @@ fun parseCounterModel(functions: List<SFunction>): CounterModel {
             getVariableBaseForType(type) + index,
             type,
             index,
-            instantiationAliasMappings[type]
+            instantiationAliasMappings[systemSymbol]
         )
     }.toSet()
 
