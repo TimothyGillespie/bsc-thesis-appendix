@@ -24,7 +24,7 @@ fun main(args: Array<String>) {
 
         if(!envError) {
                 val lines = envFile.readLines().filter { it.isNotBlank() }
-                val env = lines.map {
+                val env = lines.associate {
                         val key = it.split("=")[0]
                         val valueList = it.split("=").toMutableList()
                         valueList.removeAt(0)
@@ -32,7 +32,7 @@ fun main(args: Array<String>) {
                         val value = valueList.joinToString("")
 
                         key to value
-                }.toMap()
+                }
 
                 setEnv(env)
 
