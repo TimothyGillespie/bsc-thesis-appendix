@@ -1,7 +1,7 @@
 package eu.gillespie.bscthesis.tosmtv20
 
 import eu.gillespie.bscthesis.model.ProveStatementRequest
-import eu.gillespie.bscthesis.smt.v20.model.SmtV20DefineSort
+import eu.gillespie.bscthesis.model.smt.v20.SmtV20DefineSort
 
 fun getSortDeclarations(request: ProveStatementRequest)
     = getSortDeclarations(extractAllCustomTypes(request))

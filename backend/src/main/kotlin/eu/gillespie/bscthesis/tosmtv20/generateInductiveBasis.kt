@@ -2,8 +2,8 @@ package eu.gillespie.bscthesis.tosmtv20
 
 import eu.gillespie.bscthesis.model.ProveStatementRequest
 import eu.gillespie.bscthesis.model.StatementTreeVertex
-import eu.gillespie.bscthesis.smt.v20.model.SmtV20NamedAssert
-import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression
+import eu.gillespie.bscthesis.model.smt.v20.SmtV20NamedAssert
+import eu.gillespie.bscthesis.model.smt.v20.interfaces.SmtV20TopLevelExpression
 import eu.gillespie.bscthesis.statementtreetransform.replaceInTree
 
 fun generateInductiveBasis(

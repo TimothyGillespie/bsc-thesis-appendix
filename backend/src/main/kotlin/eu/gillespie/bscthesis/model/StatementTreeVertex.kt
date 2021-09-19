@@ -1,6 +1,6 @@
 package eu.gillespie.bscthesis.model
 
-import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20Expression
+import eu.gillespie.bscthesis.model.smt.v20.interfaces.SmtV20Expression
 import java.util.LinkedList
 import java.lang.StringBuilder
 import com.rits.cloning.Cloner

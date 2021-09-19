@@ -2,9 +2,9 @@ package eu.gillespie.bscthesis.tosmtv20
 
 import eu.gillespie.bscthesis.model.AdditionalConstraint
 import eu.gillespie.bscthesis.model.ProveStatementRequest
-import eu.gillespie.bscthesis.smt.v20.model.SmtV20ForAll
-import eu.gillespie.bscthesis.smt.v20.model.SmtV20NamedAssert
-import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression
+import eu.gillespie.bscthesis.model.smt.v20.SmtV20ForAll
+import eu.gillespie.bscthesis.model.smt.v20.SmtV20NamedAssert
+import eu.gillespie.bscthesis.model.smt.v20.interfaces.SmtV20TopLevelExpression
 
 fun generateAdditionalConstraints(request: ProveStatementRequest): List<SmtV20TopLevelExpression> {
     return request.additionalConstraints.mapIndexed { index, constraint -> generateAdditionalConstraint(constraint, index) }

@@ -1,3 +1,3 @@
-package eu.gillespie.bscthesis.smt.v20.model.interfaces
+package eu.gillespie.bscthesis.model.smt.v20.interfaces
 
 interface SmtV20AssertableExpression : SmtV20TopLevelExpression

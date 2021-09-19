@@ -1,8 +1,10 @@
 package eu.gillespie.bscthesis.tosmtv20
 
 import eu.gillespie.bscthesis.model.ProveStatementRequest
-import eu.gillespie.bscthesis.smt.v20.model.*
-import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression
+import eu.gillespie.bscthesis.model.smt.v20.SmtV20CheckSat
+import eu.gillespie.bscthesis.model.smt.v20.SmtV20File
+import eu.gillespie.bscthesis.model.smt.v20.SmtV20GetModel
+import eu.gillespie.bscthesis.model.smt.v20.interfaces.SmtV20TopLevelExpression
 import java.util.*
 
 fun convertRequestToSmtV20List(request: ProveStatementRequest): List<SmtV20TopLevelExpression> {

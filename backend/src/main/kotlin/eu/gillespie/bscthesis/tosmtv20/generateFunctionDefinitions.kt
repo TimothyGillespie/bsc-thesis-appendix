@@ -4,10 +4,10 @@ import eu.gillespie.bscthesis.model.ConditionalDefinition
 import eu.gillespie.bscthesis.model.FunctionDefinition
 import eu.gillespie.bscthesis.model.ProveStatementRequest
 import eu.gillespie.bscthesis.model.StatementTreeVertex
-import eu.gillespie.bscthesis.smt.v20.model.SmtV20ForAll
-import eu.gillespie.bscthesis.smt.v20.model.SmtV20NamedAssert
-import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20AssertableExpression
-import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression
+import eu.gillespie.bscthesis.model.smt.v20.SmtV20ForAll
+import eu.gillespie.bscthesis.model.smt.v20.SmtV20NamedAssert
+import eu.gillespie.bscthesis.model.smt.v20.interfaces.SmtV20AssertableExpression
+import eu.gillespie.bscthesis.model.smt.v20.interfaces.SmtV20TopLevelExpression
 import java.lang.IllegalStateException
 
 fun generateFunctionDefinitions(request: ProveStatementRequest, constructorInstantiations: Map<String, ConstructorInstantiation>): List<SmtV20TopLevelExpression> {

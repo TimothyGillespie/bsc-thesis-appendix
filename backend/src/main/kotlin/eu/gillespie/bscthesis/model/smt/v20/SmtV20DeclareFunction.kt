@@ -1,6 +1,6 @@
-package eu.gillespie.bscthesis.smt.v20.model
+package eu.gillespie.bscthesis.model.smt.v20
 
-import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression
+import eu.gillespie.bscthesis.model.smt.v20.interfaces.SmtV20TopLevelExpression
 
 data class SmtV20DeclareFunction(var name: String, var outputType: String, val parameterTypes: Array<String> = arrayOf()) :
     SmtV20TopLevelExpression {

@@ -1,7 +1,7 @@
-package eu.gillespie.bscthesis.smt.v20.model
+package eu.gillespie.bscthesis.model.smt.v20
 
-import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20Expression
-import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression
+import eu.gillespie.bscthesis.model.smt.v20.interfaces.SmtV20Expression
+import eu.gillespie.bscthesis.model.smt.v20.interfaces.SmtV20TopLevelExpression
 import java.lang.StringBuilder
 import java.util.LinkedList
 

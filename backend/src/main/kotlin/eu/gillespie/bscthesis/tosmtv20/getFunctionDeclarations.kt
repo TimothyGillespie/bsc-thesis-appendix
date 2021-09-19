@@ -2,7 +2,7 @@ package eu.gillespie.bscthesis.tosmtv20
 
 import eu.gillespie.bscthesis.model.FunctionDefinition
 import eu.gillespie.bscthesis.model.ProveStatementRequest
-import eu.gillespie.bscthesis.smt.v20.model.SmtV20DeclareFunction
+import eu.gillespie.bscthesis.model.smt.v20.SmtV20DeclareFunction
 import java.util.*
 
 fun getFunctionDeclarations(request: ProveStatementRequest): List<SmtV20DeclareFunction> {
