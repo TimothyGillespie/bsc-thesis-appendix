@@ -1,4 +1,4 @@
-package eu.gillespie.bscthesis.parseModel
+package eu.gillespie.bscthesis.model
 
 import java.util.*
 

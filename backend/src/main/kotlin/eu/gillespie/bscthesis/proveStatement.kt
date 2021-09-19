@@ -2,7 +2,7 @@ package eu.gillespie.bscthesis
 
 
 import eu.gillespie.bscthesis.model.ProveStatementRequest
-import eu.gillespie.bscthesis.response.ProveStatementResponse
+import eu.gillespie.bscthesis.model.response.ProveStatementResponse
 import eu.gillespie.bscthesis.tosmtv20.convertToSmtV20String
 import java.io.File
 import java.util.*

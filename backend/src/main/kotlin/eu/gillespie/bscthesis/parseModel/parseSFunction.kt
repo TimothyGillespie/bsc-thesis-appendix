@@ -1,6 +1,7 @@
 package eu.gillespie.bscthesis.parseModel
 
 import eu.gillespie.bscthesis.exceptions.SyntaxException
+import eu.gillespie.bscthesis.model.SFunction
 
 fun parseFullParenthesis(input: String): SFunction {
     val processedInput = input.trim().replace(Regex(";.*\n"), "").replace("\n", " ").trim()

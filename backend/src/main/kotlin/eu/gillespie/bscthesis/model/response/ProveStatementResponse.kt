@@ -1,4 +1,4 @@
-package eu.gillespie.bscthesis.response
+package eu.gillespie.bscthesis.model.response
 
 
 class ProveStatementResponse(

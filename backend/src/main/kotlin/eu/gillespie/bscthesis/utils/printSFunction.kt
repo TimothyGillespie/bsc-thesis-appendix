@@ -1,5 +1,7 @@
 package eu.gillespie.bscthesis.parseModel
 
+import eu.gillespie.bscthesis.model.SFunction
+
 fun printTree(tree: SFunction, level: Int) {
 
     for(x in 0 until level)

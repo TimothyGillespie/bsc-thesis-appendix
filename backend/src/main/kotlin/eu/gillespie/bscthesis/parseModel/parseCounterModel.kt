@@ -2,6 +2,7 @@ package eu.gillespie.bscthesis.parseModel
 
 import eu.gillespie.bscthesis.exceptions.SyntaxException
 import eu.gillespie.bscthesis.exceptions.UnknownTypeExpection
+import eu.gillespie.bscthesis.model.SFunction
 
 fun parseCounterModel(functions: List<SFunction>): CounterModel {
     val filteredFunctions = functions.filter { isRelevantForCounterHumanReadableCounterModel(it) }
