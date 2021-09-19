@@ -1,6 +1,6 @@
 package eu.gillespie.bscthesis.tosmtv20
 
-import eu.gillespie.bscthesis.request.*
+import eu.gillespie.bscthesis.model.*
 import java.util.*
 
 fun getListOfAllDefinitionsWithDetails(request: ProveStatementRequest): List<DefinitionWithDetails> {

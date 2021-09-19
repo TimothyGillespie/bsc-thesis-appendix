@@ -1,6 +1,4 @@
-package eu.gillespie.bscthesis.request
-
-import eu.gillespie.bscthesis.model.ConstructorDefinition
+package eu.gillespie.bscthesis.model
 
 class ProveStatementRequest (
     var constructorDefinitions: List<ConstructorDefinition>,

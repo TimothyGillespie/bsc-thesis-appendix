@@ -1,7 +1,7 @@
 package eu.gillespie.bscthesis.tosmtv20
 
 import eu.gillespie.bscthesis.model.ConstructorDefinition
-import eu.gillespie.bscthesis.request.ProveStatementRequest
+import eu.gillespie.bscthesis.model.ProveStatementRequest
 import java.lang.RuntimeException
 
 fun validateRequest(request: ProveStatementRequest) {

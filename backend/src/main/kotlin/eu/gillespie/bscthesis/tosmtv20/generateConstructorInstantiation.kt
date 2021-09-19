@@ -1,6 +1,6 @@
 package eu.gillespie.bscthesis.tosmtv20
 
-import eu.gillespie.bscthesis.request.ProveStatementRequest
+import eu.gillespie.bscthesis.model.ProveStatementRequest
 
 data class ConstructorInstantiation(
     val constructor: String,

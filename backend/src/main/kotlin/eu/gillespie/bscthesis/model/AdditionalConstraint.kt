@@ -1,4 +1,4 @@
-package eu.gillespie.bscthesis.request
+package eu.gillespie.bscthesis.model
 
 data class AdditionalConstraint(
     val constraint: StatementTreeVertex,

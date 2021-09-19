@@ -1,7 +1,7 @@
 package eu.gillespie.bscthesis.tosmtv20
 
-import eu.gillespie.bscthesis.request.FunctionDefinition
-import eu.gillespie.bscthesis.request.ProveStatementRequest
+import eu.gillespie.bscthesis.model.FunctionDefinition
+import eu.gillespie.bscthesis.model.ProveStatementRequest
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20DeclareFunction
 import java.util.*
 

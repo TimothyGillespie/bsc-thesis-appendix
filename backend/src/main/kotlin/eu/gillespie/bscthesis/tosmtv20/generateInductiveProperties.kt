@@ -1,7 +1,7 @@
 package eu.gillespie.bscthesis.tosmtv20
 
-import eu.gillespie.bscthesis.request.ProveStatementRequest
-import eu.gillespie.bscthesis.request.StatementTreeVertex
+import eu.gillespie.bscthesis.model.ProveStatementRequest
+import eu.gillespie.bscthesis.model.StatementTreeVertex
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20NamedAssert
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression
 import eu.gillespie.bscthesis.statementtreetransform.replaceInTree

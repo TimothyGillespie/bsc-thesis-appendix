@@ -1,7 +1,7 @@
 package eu.gillespie.bscthesis.controller
 
 import eu.gillespie.bscthesis.proveStatement
-import eu.gillespie.bscthesis.request.ProveStatementRequest
+import eu.gillespie.bscthesis.model.ProveStatementRequest
 import io.ktor.routing.*
 import io.ktor.application.*
 import io.ktor.request.*

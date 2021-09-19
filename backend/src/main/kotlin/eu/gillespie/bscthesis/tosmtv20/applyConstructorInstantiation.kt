@@ -1,7 +1,7 @@
 package eu.gillespie.bscthesis.tosmtv20
 
-import eu.gillespie.bscthesis.request.InputConstructor
-import eu.gillespie.bscthesis.request.StatementTreeVertex
+import eu.gillespie.bscthesis.model.InputConstructor
+import eu.gillespie.bscthesis.model.StatementTreeVertex
 import eu.gillespie.bscthesis.statementtreetransform.replaceInTree
 import java.lang.RuntimeException
 

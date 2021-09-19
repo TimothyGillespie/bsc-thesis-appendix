@@ -1,7 +1,7 @@
 package eu.gillespie.bscthesis.tosmtv20
 
 import eu.gillespie.bscthesis.model.ConstructorDefinition
-import eu.gillespie.bscthesis.request.ProveStatementRequest
+import eu.gillespie.bscthesis.model.ProveStatementRequest
 
 fun getListOfConstructorFunctionsWithDetails(request: ProveStatementRequest): List<ConstructorFunctionWithDetails> {
     return request.constructorDefinitions.map { convertConstructorDefinitionToConstructorFunctionWithDetails(it) }.flatten();

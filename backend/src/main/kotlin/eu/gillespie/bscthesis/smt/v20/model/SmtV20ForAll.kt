@@ -2,7 +2,7 @@ package eu.gillespie.bscthesis.smt.v20.model
 
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20AssertableExpression
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20Expression
-import eu.gillespie.bscthesis.request.StatementTreeVertex
+import eu.gillespie.bscthesis.model.StatementTreeVertex
 import java.util.stream.Collectors
 
 data class SmtV20ForAll(

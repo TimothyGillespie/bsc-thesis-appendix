@@ -1,6 +1,6 @@
 package eu.gillespie.bscthesis.statementtreetransform
 
-import eu.gillespie.bscthesis.request.StatementTreeVertex
+import eu.gillespie.bscthesis.model.StatementTreeVertex
 
 fun replaceInTree(tree: StatementTreeVertex, toReplace: StatementTreeVertex, replaceWith: StatementTreeVertex): StatementTreeVertex {
     val treeCopy: StatementTreeVertex = tree.createClone();

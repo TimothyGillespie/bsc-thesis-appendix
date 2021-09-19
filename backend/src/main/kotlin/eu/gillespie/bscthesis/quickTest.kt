@@ -1,7 +1,6 @@
 package eu.gillespie.bscthesis
 
-import eu.gillespie.bscthesis.request.StatementTreeVertex
-import eu.gillespie.bscthesis.statementtreetransform.replaceInTree
+import eu.gillespie.bscthesis.model.StatementTreeVertex
 
 fun main() {
 

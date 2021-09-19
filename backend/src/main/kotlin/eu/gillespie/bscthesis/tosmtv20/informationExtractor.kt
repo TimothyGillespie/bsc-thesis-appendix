@@ -1,6 +1,6 @@
 package eu.gillespie.bscthesis.tosmtv20
 
-import eu.gillespie.bscthesis.request.ProveStatementRequest
+import eu.gillespie.bscthesis.model.ProveStatementRequest
 import java.lang.RuntimeException
 
 val predefinedTypes = setOf("Int", "Real", "Bool")

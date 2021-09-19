@@ -1,6 +1,9 @@
 package eu.gillespie.bscthesis.tosmtv20
 
-import eu.gillespie.bscthesis.request.*
+import eu.gillespie.bscthesis.model.ConditionalDefinition
+import eu.gillespie.bscthesis.model.FunctionDefinition
+import eu.gillespie.bscthesis.model.ProveStatementRequest
+import eu.gillespie.bscthesis.model.StatementTreeVertex
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20ForAll
 import eu.gillespie.bscthesis.smt.v20.model.SmtV20NamedAssert
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20AssertableExpression

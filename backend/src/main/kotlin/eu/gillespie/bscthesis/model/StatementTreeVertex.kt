@@ -1,11 +1,9 @@
-package eu.gillespie.bscthesis.request
+package eu.gillespie.bscthesis.model
 
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20Expression
 import java.util.LinkedList
 import java.lang.StringBuilder
 import com.rits.cloning.Cloner
-import eu.gillespie.bscthesis.model.InfixOperator
-import java.util.function.Predicate
 
 data class StatementTreeVertex(
     var symbol: String,

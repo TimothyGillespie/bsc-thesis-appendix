@@ -1,6 +1,6 @@
 package eu.gillespie.bscthesis.tosmtv20
 
-import eu.gillespie.bscthesis.request.ProveStatementRequest
+import eu.gillespie.bscthesis.model.ProveStatementRequest
 import eu.gillespie.bscthesis.smt.v20.model.*
 import eu.gillespie.bscthesis.smt.v20.model.interfaces.SmtV20TopLevelExpression
 import java.util.*
