@@ -1,5 +1,6 @@
 package eu.gillespie.bscthesis.model.smt.v20
 
+import eu.gillespie.bscthesis.information.AvailableTypes
 import eu.gillespie.bscthesis.model.smt.v20.interfaces.SmtV20AssertableExpression
 import eu.gillespie.bscthesis.model.smt.v20.interfaces.SmtV20Expression
 import eu.gillespie.bscthesis.model.StatementTreeVertex
@@ -7,7 +8,7 @@ import java.util.stream.Collectors
 
 data class SmtV20ForAll(
     val expression: SmtV20Expression,
-    val bindings: Map<String, String> = mapOf()
+    val bindings: Map<String, AvailableTypes> = mapOf()
 ) : SmtV20AssertableExpression {
     override fun toSmtV20(): String {
         if (expression !is StatementTreeVertex) return expression.toSmtV20()
@@ -20,7 +21,7 @@ data class SmtV20ForAll(
                     )
                 )
             }
-            .map { (key, value) -> String.format("(%s %s)", key, value) }
+            .map { (key, value) -> String.format("(%s %s)", key, value.smtName) }
             .collect(Collectors.joining(" "))
         return String.format("(forall (%s) %s)", sortList, expression.toSmtV20())
     }

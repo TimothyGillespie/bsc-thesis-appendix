@@ -1,5 +1,6 @@
 package eu.gillespie.bscthesis.tosmtv20
 
+import eu.gillespie.bscthesis.information.AvailableTypes
 import eu.gillespie.bscthesis.model.*
 import java.util.*
 
@@ -29,8 +30,9 @@ fun convertDefinitionToFunctionDefinitionWithDetails(definition: Definition, fun
 data class DetailContainer(
     val name: String,
     val arity: Int,
-    val inputTypes: List<String> = LinkedList(),
-    val outputType: String,
+    val inputTypes: List<AvailableTypes
+            > = LinkedList(),
+    val outputType: AvailableTypes,
     val conditional: List<ConditionalDefinition> = LinkedList(),
     val otherwise: StatementTreeVertex
 )

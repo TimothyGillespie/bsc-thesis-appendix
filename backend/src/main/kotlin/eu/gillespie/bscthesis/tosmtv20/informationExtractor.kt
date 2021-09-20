@@ -1,12 +1,11 @@
 package eu.gillespie.bscthesis.tosmtv20
 
+import eu.gillespie.bscthesis.information.AvailableTypes
 import eu.gillespie.bscthesis.model.ProveStatementRequest
 import java.lang.RuntimeException
 
-val predefinedTypes = setOf("Int", "Real", "Bool")
-
-fun extractAllTypes(request: ProveStatementRequest): Set<String> {
-    val result = HashSet<String>()
+fun extractAllTypes(request: ProveStatementRequest): Set<AvailableTypes> {
+    val result = HashSet<AvailableTypes>()
     result.addAll(request.constructorDefinitions.map { it.type })
 
     request.functionDefinitions.forEach {
@@ -18,7 +17,7 @@ fun extractAllTypes(request: ProveStatementRequest): Set<String> {
 }
 
 fun extractAllCustomTypes(request: ProveStatementRequest)
-    = extractAllTypes(request).filter { !predefinedTypes.contains(it) }
+    = extractAllTypes(request).filter { !it.smtNative }
 
 
 fun getInputConstructor(definition: DefinitionWithDetails, request: ProveStatementRequest): ConstructorFunctionWithDetails? {

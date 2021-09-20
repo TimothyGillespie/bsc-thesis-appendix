@@ -1,5 +1,6 @@
 package eu.gillespie.bscthesis.tosmtv20
 
+import eu.gillespie.bscthesis.information.AvailableTypes
 import eu.gillespie.bscthesis.model.ConstructorDefinition
 import eu.gillespie.bscthesis.model.ProveStatementRequest
 
@@ -15,5 +16,5 @@ data class ConstructorFunctionWithDetails(
     val symbol: String,
     val arity: Int,
     val term: String,
-    val type: String
+    val type: AvailableTypes
 )

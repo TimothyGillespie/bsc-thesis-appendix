@@ -1,7 +1,8 @@
 package eu.gillespie.bscthesis.parseModel
 
 import eu.gillespie.bscthesis.exceptions.SyntaxException
-import eu.gillespie.bscthesis.exceptions.UnknownTypeExpection
+import eu.gillespie.bscthesis.exceptions.UnknownTypeException
+import eu.gillespie.bscthesis.information.AvailableTypes
 import eu.gillespie.bscthesis.model.SFunction
 
 fun parseCounterModel(functions: List<SFunction>): CounterModel {
@@ -19,7 +20,7 @@ fun parseCounterModel(functions: List<SFunction>): CounterModel {
 
         Alias(
             systemSymbol,
-            getVariableBaseForType(type) + index,
+            getVariableBaseForType(AvailableTypes.valueOf(type)) + index,
             type,
             index,
             instantiationAliasMappings[systemSymbol]
@@ -155,12 +156,12 @@ fun isAliasDeclaration(function: SFunction): Boolean = function.name == "declare
         && function.parameters[2].name != null && function.parameters[2].parameters.isEmpty()
 
 // Could be a map as well but this allows throwing an exception instead of handling this individually each time
-fun getVariableBaseForType(type: String): String {
+fun getVariableBaseForType(type: AvailableTypes): String {
     return when(type) {
-        "NAryTree" -> "tree"
-        "PLFormula" -> "formula"
-        "Int" -> "n"
-        "Real" -> "x"
-        else -> throw UnknownTypeExpection(type)
+        AvailableTypes.NAryTree -> "tree"
+        AvailableTypes.PLFormula -> "formula"
+        AvailableTypes.IntegerNumber -> "n"
+        AvailableTypes.RealNumber -> "x"
+        else -> throw UnknownTypeException(type)
     }
 }

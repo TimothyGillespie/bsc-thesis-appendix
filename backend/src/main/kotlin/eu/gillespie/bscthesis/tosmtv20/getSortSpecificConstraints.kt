@@ -1,5 +1,6 @@
 package eu.gillespie.bscthesis.tosmtv20
 
+import eu.gillespie.bscthesis.information.AvailableTypes
 import eu.gillespie.bscthesis.model.ProveStatementRequest
 import eu.gillespie.bscthesis.model.StatementTreeVertex
 import eu.gillespie.bscthesis.model.smt.v20.SmtV20NamedAssert
@@ -11,12 +12,12 @@ fun getSortSpecificConstraints(request: ProveStatementRequest, constructorInstan
     return extractAllCustomTypes(request).map { getSortSpecificConstraints(it, request, constructorInstantiation) }.flatten()
 }
 
-fun getSortSpecificConstraints(sort: String, request: ProveStatementRequest, constructorInstantiation: Map<String, ConstructorInstantiation>): List<SmtV20TopLevelExpression> {
+fun getSortSpecificConstraints(sort: AvailableTypes, request: ProveStatementRequest, constructorInstantiation: Map<String, ConstructorInstantiation>): List<SmtV20TopLevelExpression> {
     return when(sort) {
-        "NAryTree" -> loadNAryTreeConstraints(request, constructorInstantiation)
-        "NonEmptyNAryTree" -> loadNonEmptyNAryTreeConstraints(request, constructorInstantiation)
-        "PLFormula" -> loadPLFormulaConstraints(request, constructorInstantiation)
-        else -> throw RuntimeException("Unknown sort $sort was given")
+        AvailableTypes.NAryTree -> loadNAryTreeConstraints(request, constructorInstantiation)
+        AvailableTypes.NonEmptyNAryTree -> loadNonEmptyNAryTreeConstraints(request, constructorInstantiation)
+        AvailableTypes.PLFormula -> loadPLFormulaConstraints(request, constructorInstantiation)
+        else -> throw RuntimeException("Unknown sort ${sort.toTypeDescription()} was given")
     }
 }
 
@@ -41,7 +42,7 @@ fun loadNAryTreeConstraints(request: ProveStatementRequest, constructorInstantia
     val result = mutableSetOf<StatementTreeVertex>()
 
     for((_, singleInstantiation) in constructorInstantiation) {
-        if(singleInstantiation.type != "NAryTree")
+        if(singleInstantiation.type != AvailableTypes.NAryTree)
             continue
 
         for(singleParameter in singleInstantiation.parameters)
@@ -67,7 +68,7 @@ fun loadPLFormulaConstraints(request: ProveStatementRequest, constructorInstanti
     val result = mutableSetOf<StatementTreeVertex>()
 
     for((_, singleInstantiation) in constructorInstantiation) {
-        if(singleInstantiation.type != "PLForumla")
+        if(singleInstantiation.type != AvailableTypes.PLFormula)
             continue
 
         for(singleParameter in singleInstantiation.parameters)
@@ -82,7 +83,7 @@ fun loadPLFormulaConstraints(request: ProveStatementRequest, constructorInstanti
             }
     }
 
-    val constructorsSymbols = constructorInstantiation.values.filter { it.type == "PLFormula" }.map { it.constructor }
+    val constructorsSymbols = constructorInstantiation.values.filter { it.type == AvailableTypes.PLFormula }.map { it.constructor }
     val pairwiseMatch = mutableSetOf<Pair<String, String>>()
 
     for(i in 0..constructorsSymbols.size - 1) {

@@ -1,11 +1,12 @@
 package eu.gillespie.bscthesis.tosmtv20
 
+import eu.gillespie.bscthesis.information.AvailableTypes
 import eu.gillespie.bscthesis.model.ProveStatementRequest
 
 data class ConstructorInstantiation(
     val constructor: String,
     val parameters: List<String>,
-    val type: String,
+    val type: AvailableTypes,
 )
 
 fun generateConstructorInstantiation(request: ProveStatementRequest): Map<String, ConstructorInstantiation> {
