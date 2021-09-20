@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
                 envError = true
         }
 
-        if(!envError && envFile.readLines().any { it.isNotBlank() && it.count { char -> char == '=' } == 0 }) {
+        if(!envError && envFile.readLines().any { isEnvLineToParse(it) && it.count { char -> char == '=' } == 0 }) {
                 logger.error("The environment file did not contain an '=' on any non empty line. Program will proceed with default configurations.")
                 envError = true
         }
@@ -41,3 +41,5 @@ fun main(args: Array<String>) {
 
         EngineMain.main(args)
 }
+
+fun isEnvLineToParse(line: String) = line.isNotBlank() && !line.startsWith("#")

@@ -17,7 +17,7 @@ fun proveStatement(request: ProveStatementRequest): ProveStatementResponse {
         writeText(smtV20Code)
     }
 
-    val response: List<String> = Runtime.getRuntime().exec("z3 ./${fileName}").inputStream.bufferedReader().use { it.readText()}.split("\n")
+    val response: List<String> = Runtime.getRuntime().exec("${System.getenv("Z3COMMAND") ?: "z3"} ./${fileName}").inputStream.bufferedReader().use { it.readText()}.split("\n")
 
     file.delete()
 
