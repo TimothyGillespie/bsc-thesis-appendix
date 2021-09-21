@@ -4,6 +4,9 @@ function convertKeysToSnakeCase(object: any): any {
   if(typeof object !== 'object')
     return object;
 
+  if(object instanceof Map)
+    return object
+
   if(object instanceof Array)
     return object.map(x => convertKeysToSnakeCase(x));
 

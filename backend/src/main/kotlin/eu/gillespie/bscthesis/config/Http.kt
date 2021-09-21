@@ -9,6 +9,20 @@ import io.ktor.response.*
 
 fun Application.configureHttp() {
     install(AutoHeadResponse)
+    install(CORS) {
+        anyHost()
+        host("0.0.0.0:4200")
+        header(HttpHeaders.ContentType)
+        header(HttpHeaders.AccessControlAllowOrigin)
+        header(HttpHeaders.AccessControlAllowHeaders)
+        header(HttpHeaders.AccessControlAllowMethods)
+        method(HttpMethod.Options)
+        method(HttpMethod.Head)
+        method(HttpMethod.Get)
+        method(HttpMethod.Post)
+        method(HttpMethod.Delete)
+        method(HttpMethod.Put)
+    }
 
     routing {
         install(StatusPages) {

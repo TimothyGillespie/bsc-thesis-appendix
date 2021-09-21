@@ -62,7 +62,7 @@ export class AdditionalConstraintsEnteringComponent implements OnInit {
   onFinish() {
     this.requestData.additionalConstraints.next(this.getAdditionalConstraints().value.map(x => {
       return {
-        inputVariables: AdditionalConstraintsEnteringComponent.objectify(x.inputVariables),
+        inputVariables: AdditionalConstraintsEnteringComponent.mappify(x.inputVariables),
         constraint: getFunctionTree(x.constraint)
       };
     }));
@@ -79,4 +79,12 @@ export class AdditionalConstraintsEnteringComponent implements OnInit {
     return result;
   }
 
+  private static mappify(input: any[]): Map<string, string> {
+    const result = new Map();
+    for(let entry of input) {
+      result.set(entry.variable, entry.type);
+    }
+
+    return result;
+  }
 }

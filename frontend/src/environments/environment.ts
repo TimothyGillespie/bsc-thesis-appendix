@@ -8,7 +8,7 @@ const constructedTypeOptions = [
 ]
 export const environment = {
   production: false,
-  baseUrl: 'http://127.0.0.1:3333/api/v1',
+  baseUrl: 'http://127.0.0.1:8080',
   constructedTypeOptions,
   typeOptions: [
     {label: 'Integer', value: 'Int'},

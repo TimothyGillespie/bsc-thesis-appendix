@@ -6,6 +6,8 @@ import {FunctionDefinition} from "../../models/FunctionDefinition";
 import {AdditionalConstraint} from "../../models/AdditionalConstraint";
 import {environment} from "../../../environments/environment";
 import convertKeysToSnakeCase from "../../../util/convertKeysToSnakeCase";
+import {map} from "rxjs/operators";
+import convertKeysToCamelCase from "../../../util/convertKeysToCamelCase";
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +19,10 @@ export class ApiQueryService {
   ) { }
 
   async prove(request: ProveRequest): Promise<ProveResponse> {
-    const response = await this.http.post<any>(environment.baseUrl + '/statement/prove/result', convertKeysToSnakeCase(request)).toPromise();
-    return {
-      functionDefinitionsSat: response.sat[0],
-      inductivePropertiesSat: response.sat[1],
-      additionalConstraintSat: response.sat[2],
-      inductiveBasisSat: response.sat[3],
-      statementProven: !response.sat[4],
-    }
+     return this.http
+       .post<ProveResponse>(environment.baseUrl + '/statement/prove/result', convertKeysToSnakeCase(request))
+       .pipe(map((response) => convertKeysToCamelCase(response)))
+       .toPromise();
   }
 
 }
@@ -37,9 +35,37 @@ export type ProveRequest = {
 }
 
 export type ProveResponse = {
-  functionDefinitionsSat: boolean,
-  inductivePropertiesSat: boolean,
-  additionalConstraintSat: boolean,
-  inductiveBasisSat: boolean,
-  statementProven: boolean,
+  satisfiability: {
+    functionDefinitions: boolean,
+    inductiveHypothesis?: boolean,
+    additionalConstraints?: boolean,
+    inductiveBasis?: boolean,
+    inductiveStep?: boolean
+  },
+  counterModel?: {
+    parsed: {
+      aliases: {
+        systemSymbol: string,
+        humanReadableSymbol: string,
+        type: string,
+        index: number,
+        instantiation: string
+      }[],
+      values: {
+        [functionName: string]: {
+          valueMapping: { [systemSymbol: string]: string},
+          elseValue: string,
+          inputType: string,
+        }
+      }
+
+    },
+    humanReadable: {
+      typing: string,
+      constantDefinitions: string,
+      functionDefinitions: string[],
+    },
+    raw: string,
+  }
 };
+

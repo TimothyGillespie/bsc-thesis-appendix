@@ -30,7 +30,9 @@ import {DividerModule} from "primeng/divider";
 import { FinishComponent } from './pages/finish/finish.component';
 import { StartComponent } from './pages/start/start.component';
 import {ConfirmPopupModule} from "primeng/confirmpopup";
-import {ConfirmationService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {ToastModule} from "primeng/toast";
 
 @NgModule({
   declarations: [
@@ -43,31 +45,33 @@ import {ConfirmationService} from "primeng/api";
     FinishComponent,
     StartComponent,
   ],
-    imports: [
-        AppRoutingModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        AccordionModule,
-        DropdownModule,
-        FieldsetModule,
-        ButtonModule,
-        InputTextModule,
-        FormsModule,
-        ReactiveFormsModule,
-        TabMenuModule,
-        OverlayPanelModule,
-        KeyFilterModule,
-        CardModule,
-        RippleModule,
-        InputNumberModule,
-        BlockUIModule,
-        ProgressSpinnerModule,
-        HttpClientModule,
-        DividerModule,
-        ConfirmPopupModule,
-    ],
-  providers: [HttpClient, LoadingScreenService, RequestDataService, ConfirmationService],
+  imports: [
+    AppRoutingModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    AccordionModule,
+    DropdownModule,
+    FieldsetModule,
+    ButtonModule,
+    InputTextModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TabMenuModule,
+    OverlayPanelModule,
+    KeyFilterModule,
+    CardModule,
+    RippleModule,
+    InputNumberModule,
+    BlockUIModule,
+    ProgressSpinnerModule,
+    HttpClientModule,
+    DividerModule,
+    ConfirmPopupModule,
+    InputTextareaModule,
+    ToastModule,
+  ],
+  providers: [HttpClient, LoadingScreenService, RequestDataService, ConfirmationService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

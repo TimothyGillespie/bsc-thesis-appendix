@@ -1,0 +1,31 @@
+<p-accordion *ngIf=result>
+  <p class="flex justify-content-center text-2xl">
+    <ng-container *ngIf="result.satisfiability.inductiveStep === false">The statement is correct!</ng-container>
+    <ng-container *ngIf="result.satisfiability.inductiveStep === true">The statement could not be proven.</ng-container>
+    <ng-container *ngIf="result.satisfiability.inductiveStep === undefined">An error occured.</ng-container>
+  </p>
+  <p class="flex justify-content-center text-2xl"></p>
+  <p-accordionTab header="Satisfiability of the various steps">
+    <div class="text-2xl">
+      <ng-container *ngFor="let key of getResponseKeys(); let i = index">
+        <div class="flex justify-content-center m-3">{{ names[i]}}&nbsp;&nbsp;<i [ngClass]="{ 'pi text-2xl': true, 'pi-check green-text': result.satisfiability[key], 'pi-times red-text': !result.satisfiability[key]}"></i></div>
+      </ng-container>
+    </div>
+  </p-accordionTab>
+
+  <p-accordionTab *ngIf="result.counterModel" header="Counter Example">
+      <div class="flex justify-content-center m-3 text-2xl" style="white-space: pre-wrap; font-family: monospace">{{ printHumanReadable() }}</div>
+  </p-accordionTab>
+
+  <p-accordionTab header="What's next"></p-accordionTab>
+  <p-accordionTab header="Information for developers">
+    <div class="grid">
+      <p class="col-8 flex justify-content-start">The sent request: </p>
+      <span class="col-4 flex justify-content-end"><button pButton type="button" label="Copy" icon="pi pi-copy" (click)="copyRequest()"></button></span>
+    </div>
+    <textarea pInputTextarea [autoResize]="true" disabled class="w-full" style="color: black" #requestDisplay>{{sentRequest | json}}</textarea>
+  </p-accordionTab>
+
+
+</p-accordion>
+
