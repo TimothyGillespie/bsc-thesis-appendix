@@ -6,6 +6,7 @@ import {RequestDataService} from "../../services/request-data-service/request-da
 import {first} from "rxjs/operators";
 import {FunctionDefinition} from "../../models/FunctionDefinition";
 import {Router} from "@angular/router";
+import {ApiQueryService} from "../../services/api-query/api-query.service";
 
 @Component({
   selector: 'app-constructor-entering',
@@ -15,11 +16,21 @@ import {Router} from "@angular/router";
 export class ConstructorEnteringComponent implements OnInit {
   formGroup!: FormGroup;
 
-  typeOptions = environment.constructedTypeOptions;
+  typeOptions = [];
 
-  constructor(private fb: FormBuilder, private requestData: RequestDataService, private router: Router) { }
+  constructor(
+    private fb: FormBuilder,
+    private requestData: RequestDataService,
+    private router: Router,
+    private api: ApiQueryService,
+  ) { }
 
   ngOnInit(): void {
+
+    this.api.getTypes().subscribe((options) => {
+      this.typeOptions = options.filter((entry) => !entry.smtNative)
+    });
+
     this.requestData.constructorDefinitions.pipe(first()).subscribe((initialValue) => {
       let initialStateConstructorDefinitions = [];
       if(initialValue !== undefined)

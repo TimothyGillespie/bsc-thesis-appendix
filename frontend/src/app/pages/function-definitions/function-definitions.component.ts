@@ -14,6 +14,7 @@ import {getFunctionTree} from "../../../util/Formulae/getFunctionTree/getFunctio
 import {RequestDataService} from "../../services/request-data-service/request-data.service";
 import {first} from "rxjs/operators";
 import {Router} from "@angular/router";
+import {ApiQueryService} from "../../services/api-query/api-query.service";
 
 @Component({
   selector: 'app-function-definitions',
@@ -25,7 +26,7 @@ export class FunctionDefinitionsComponent implements OnInit {
   statementTree!: FunctionTreeNode;
   constructorDefinitions: ConstructorDefinition[];
 
-  typeDropdownOptions = environment.typeOptions;
+  typeDropdownOptions = [];
   allowedValuesForFormulae = environment.allowedFormulaInput;
 
   formGroup?: FormGroup;
@@ -34,9 +35,15 @@ export class FunctionDefinitionsComponent implements OnInit {
     private fb: FormBuilder,
     private requestData: RequestDataService,
     private router: Router,
+    private api: ApiQueryService,
   ) { }
 
   ngOnInit(): void {
+
+    this.api.getTypes().subscribe((options) => {
+      this.typeDropdownOptions = options;
+    });
+
     this.requestData.statementString.pipe(first()).subscribe((initialValue) => {
       if(initialValue === undefined)
         this.router.navigate(['statement']);

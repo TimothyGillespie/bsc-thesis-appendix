@@ -6,8 +6,11 @@ import {FunctionDefinition} from "../../models/FunctionDefinition";
 import {AdditionalConstraint} from "../../models/AdditionalConstraint";
 import {environment} from "../../../environments/environment";
 import convertKeysToSnakeCase from "../../../util/convertKeysToSnakeCase";
-import {map} from "rxjs/operators";
+import {first, map} from "rxjs/operators";
 import convertKeysToCamelCase from "../../../util/convertKeysToCamelCase";
+import {snakeCase} from "lodash";
+import {Observable} from "rxjs";
+import TypeLabelValue from "../../models/LabelValue";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +26,20 @@ export class ApiQueryService {
        .post<ProveResponse>(environment.baseUrl + '/statement/prove/result', convertKeysToSnakeCase(request))
        .pipe(map((response) => convertKeysToCamelCase(response)))
        .toPromise();
+  }
+
+  getTypes(): Observable<TypeLabelValue[]> {
+    return this.http.get(environment.baseUrl + "/statement/types")
+      .pipe(
+        first(),
+        map((value) => convertKeysToCamelCase(value)),
+        map((values: TypeResponse[]) => values.map((entry) => ({
+          label: entry.displayName,
+          value: entry.smtName,
+          smtNative: entry.smtNative,
+        }))),
+      )
+
   }
 
 }
@@ -69,3 +86,8 @@ export type ProveResponse = {
   }
 };
 
+type TypeResponse = {
+  smtName: string,
+  displayName: string,
+  smtNative: boolean,
+}

@@ -2,18 +2,9 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-const constructedTypeOptions = [
-  {label: 'n-ary tree', value: 'NAryTree'},
-  {label: 'formula of propositional logic', value: 'PLFormula'}
-]
 export const environment = {
   production: false,
   baseUrl: 'http://127.0.0.1:8080',
-  constructedTypeOptions,
-  typeOptions: [
-    {label: 'Integer', value: 'Int'},
-    ...constructedTypeOptions
-  ],
   allowedFormulaInput: /^[A-Za-z0-9\\(\\),\\*\\+-=>< ]+$/,
 };
 

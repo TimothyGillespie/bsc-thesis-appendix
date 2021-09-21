@@ -5,6 +5,7 @@ import {environment} from "../../../environments/environment";
 import {getFunctionTree} from "../../../util/Formulae/getFunctionTree/getFunctionTree";
 import {RequestDataService} from "../../services/request-data-service/request-data.service";
 import {Router} from "@angular/router";
+import {ApiQueryService} from "../../services/api-query/api-query.service";
 
 @Component({
   selector: 'app-additional-constraints-entering',
@@ -15,15 +16,20 @@ export class AdditionalConstraintsEnteringComponent implements OnInit {
 
   formGroup: FormGroup;
 
-  typeDropdownOptions = environment.typeOptions;
+  typeDropdownOptions = [];
 
   constructor(
     private fb: FormBuilder,
     private requestData: RequestDataService,
     private router: Router,
+    private api: ApiQueryService,
     ) { }
 
   ngOnInit(): void {
+    this.api.getTypes().subscribe((options) => {
+      this.typeDropdownOptions = options;
+    });
+
     this.formGroup = this.fb.group({
       additionalConstraints: this.fb.array([]),
     });
