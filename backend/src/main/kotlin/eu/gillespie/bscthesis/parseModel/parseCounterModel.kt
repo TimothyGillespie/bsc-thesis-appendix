@@ -28,10 +28,10 @@ fun parseCounterModel(functions: List<SFunction>): CounterModel {
     }.toSet()
 
     val values: Map<String, FunctionValue> = filteredFunctions
-        .filter { isFunctionValueDefinition(it) }
+        .filter { isFunctionValueDefinition(it) && parseIfThenElse(it.parameters[3]) != null }
         .map {
             val functionName = it.parameters[0].name ?: SyntaxException("Function name was null")
-            val (valueMapping, otherwise) = parseIfThenElse(it.parameters[3])
+            val (valueMapping, otherwise) = parseIfThenElse(it.parameters[3])!!
             val inputType = it.parameters[1].parameters[0].parameters[0].name ?: "Unknown"
 
             (functionName as String) to FunctionValue(valueMapping, otherwise, inputType)
@@ -40,7 +40,7 @@ fun parseCounterModel(functions: List<SFunction>): CounterModel {
     return CounterModel(aliases, values)
 }
 
-fun parseIfThenElse(ite: SFunction, previousMapping: Map<String, String> = mapOf()): Pair<Map<String, String>, String> {
+fun parseIfThenElse(ite: SFunction, previousMapping: Map<String, String> = mapOf()): Pair<Map<String, String>, String>? {
     if(ite.name != "ite")
         return Pair(previousMapping, ite.toString())
 
@@ -48,8 +48,11 @@ fun parseIfThenElse(ite: SFunction, previousMapping: Map<String, String> = mapOf
     val then = ite.parameters[1]
     val otherwise = ite.parameters[2]
 
-    if(condition.name != "=")
-        throw SyntaxException("ITE function did not use equality.")
+    // This is the case with functions which like max
+    if(condition.name != "=") {
+        return null
+//        throw SyntaxException("ITE function did not use equality.")
+    }
 
     val systemSymbol = condition.parameters[1].name ?: throw SyntaxException("The System symbols name was unexpectedly empty")
     val value = then.toString()

@@ -38,203 +38,202 @@ export class FinishComponent implements OnInit {
   ngOnInit(): void {
     this.loadingScreen.start();
 
-    // const request = this.requestData.obtainRequest();
-    const request = convertKeysToCamelCase({
-      "constructor_definitions": [
-        {
-          "term": "nt",
-          "type": "NAryTree",
-          "functions": [
-            {
-              "symbol": "t_base",
-              "arity": 0
-            },
-            {
-              "symbol": "t",
-              "arity": 2
-            }
-          ]
-        }
-      ],
-      "statement_tree": {
-        "symbol": "<=",
-        "parameters": [
-          {
-            "symbol": "depth",
-            "parameters": [
-              {
-                "symbol": "nt",
-                "parameters": []
-              }
-            ]
-          },
-          {
-            "symbol": "size",
-            "parameters": [
-              {
-                "symbol": "nt",
-                "parameters": []
-              }
-            ]
-          }
-        ]
-      },
-      "function_definitions": [
-        {
-          "name": "depth",
-          "arity": 1,
-          "input_types": [
-            "NAryTree"
-          ],
-          "output_type": "Int",
-          "definition": [
-            {
-              "input_constructor": {
-                "name": "t",
-                "arity": 2,
-                "bound_variables": [
-                  "u",
-                  "v"
-                ]
-              },
-              "conditional": [
-                {
-                  "condition": {
-                    "symbol": ">",
-                    "parameters": [
-                      {
-                        "symbol": "depth",
-                        "parameters": [
-                          {
-                            "symbol": "u",
-                            "parameters": []
-                          }
-                        ]
-                      },
-                      {
-                        "symbol": "depth",
-                        "parameters": [
-                          {
-                            "symbol": "v",
-                            "parameters": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  "then": {
-                    "symbol": "depth",
-                    "parameters": [
-                      {
-                        "symbol": "u",
-                        "parameters": []
-                      }
-                    ]
-                  }
-                }
-              ],
-              "otherwise": {
-                "symbol": "depth",
-                "parameters": [
-                  {
-                    "symbol": "v",
-                    "parameters": []
-                  }
-                ]
-              }
-            },
-            {
-              "input_constructor": {
-                "name": "t_base",
-                "arity": 0,
-                "bound_variables": []
-              },
-              "conditional": [],
-              "otherwise": {
-                "symbol": 1,
-                "parameters": []
-              }
-            }
-          ]
-        },
-        {
-          "name": "size",
-          "arity": 1,
-          "input_types": [
-            "NAryTree"
-          ],
-          "output_type": "Int",
-          "definition": [
-            {
-              "input_constructor": {
-                "name": "t",
-                "arity": 2,
-                "bound_variables": [
-                  "x",
-                  "y"
-                ]
-              },
-              "conditional": [],
-              "otherwise": {
-                "symbol": "+",
-                "parameters": [
-                  {
-                    "symbol": "1",
-                    "parameters": []
-                  },
-                  {
-                    "symbol": "+",
-                    "parameters": [
-                      {
-                        "symbol": "size",
-                        "parameters": [
-                          {
-                            "symbol": "x",
-                            "parameters": []
-                          }
-                        ]
-                      },
-                      {
-                        "symbol": "size",
-                        "parameters": [
-                          {
-                            "symbol": "y",
-                            "parameters": []
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            },
-            {
-              "input_constructor": {
-                "name": "t_base",
-                "arity": 0,
-                "bound_variables": []
-              },
-              "conditional": [],
-              "otherwise": {
-                "symbol": 1,
-                "parameters": []
-              }
-            }
-          ]
-        }
-      ],
-      "additional_constraints": [
-      ]
-    })
+    const request = this.requestData.obtainRequest();
+    // const request = convertKeysToCamelCase({
+    //   "constructor_definitions": [
+    //     {
+    //       "term": "nt",
+    //       "type": "NAryTree",
+    //       "functions": [
+    //         {
+    //           "symbol": "t_base",
+    //           "arity": 0
+    //         },
+    //         {
+    //           "symbol": "t",
+    //           "arity": 2
+    //         }
+    //       ]
+    //     }
+    //   ],
+    //   "statement_tree": {
+    //     "symbol": "<=",
+    //     "parameters": [
+    //       {
+    //         "symbol": "depth",
+    //         "parameters": [
+    //           {
+    //             "symbol": "nt",
+    //             "parameters": []
+    //           }
+    //         ]
+    //       },
+    //       {
+    //         "symbol": "size",
+    //         "parameters": [
+    //           {
+    //             "symbol": "nt",
+    //             "parameters": []
+    //           }
+    //         ]
+    //       }
+    //     ]
+    //   },
+    //   "function_definitions": [
+    //     {
+    //       "name": "depth",
+    //       "arity": 1,
+    //       "input_types": [
+    //         "NAryTree"
+    //       ],
+    //       "output_type": "Int",
+    //       "definition": [
+    //         {
+    //           "input_constructor": {
+    //             "name": "t",
+    //             "arity": 2,
+    //             "bound_variables": [
+    //               "u",
+    //               "v"
+    //             ]
+    //           },
+    //           "conditional": [
+    //             {
+    //               "condition": {
+    //                 "symbol": ">",
+    //                 "parameters": [
+    //                   {
+    //                     "symbol": "depth",
+    //                     "parameters": [
+    //                       {
+    //                         "symbol": "u",
+    //                         "parameters": []
+    //                       }
+    //                     ]
+    //                   },
+    //                   {
+    //                     "symbol": "depth",
+    //                     "parameters": [
+    //                       {
+    //                         "symbol": "v",
+    //                         "parameters": []
+    //                       }
+    //                     ]
+    //                   }
+    //                 ]
+    //               },
+    //               "then": {
+    //                 "symbol": "depth",
+    //                 "parameters": [
+    //                   {
+    //                     "symbol": "u",
+    //                     "parameters": []
+    //                   }
+    //                 ]
+    //               }
+    //             }
+    //           ],
+    //           "otherwise": {
+    //             "symbol": "depth",
+    //             "parameters": [
+    //               {
+    //                 "symbol": "v",
+    //                 "parameters": []
+    //               }
+    //             ]
+    //           }
+    //         },
+    //         {
+    //           "input_constructor": {
+    //             "name": "t_base",
+    //             "arity": 0,
+    //             "bound_variables": []
+    //           },
+    //           "conditional": [],
+    //           "otherwise": {
+    //             "symbol": 1,
+    //             "parameters": []
+    //           }
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       "name": "size",
+    //       "arity": 1,
+    //       "input_types": [
+    //         "NAryTree"
+    //       ],
+    //       "output_type": "Int",
+    //       "definition": [
+    //         {
+    //           "input_constructor": {
+    //             "name": "t",
+    //             "arity": 2,
+    //             "bound_variables": [
+    //               "x",
+    //               "y"
+    //             ]
+    //           },
+    //           "conditional": [],
+    //           "otherwise": {
+    //             "symbol": "+",
+    //             "parameters": [
+    //               {
+    //                 "symbol": "1",
+    //                 "parameters": []
+    //               },
+    //               {
+    //                 "symbol": "+",
+    //                 "parameters": [
+    //                   {
+    //                     "symbol": "size",
+    //                     "parameters": [
+    //                       {
+    //                         "symbol": "x",
+    //                         "parameters": []
+    //                       }
+    //                     ]
+    //                   },
+    //                   {
+    //                     "symbol": "size",
+    //                     "parameters": [
+    //                       {
+    //                         "symbol": "y",
+    //                         "parameters": []
+    //                       }
+    //                     ]
+    //                   }
+    //                 ]
+    //               }
+    //             ]
+    //           }
+    //         },
+    //         {
+    //           "input_constructor": {
+    //             "name": "t_base",
+    //             "arity": 0,
+    //             "bound_variables": []
+    //           },
+    //           "conditional": [],
+    //           "otherwise": {
+    //             "symbol": 1,
+    //             "parameters": []
+    //           }
+    //         }
+    //       ]
+    //     }
+    //   ],
+    //   "additional_constraints": [
+    //   ]
+    // })
+    this.sentRequest = request
     this.api.prove(request).then((response) => {
         this.result = response;
     }).catch((error) => {
       error = true
-    }).finally(() => {
-
     });
 
-    this.sentRequest = request
+
     this.loadingScreen.stop();
   }
 

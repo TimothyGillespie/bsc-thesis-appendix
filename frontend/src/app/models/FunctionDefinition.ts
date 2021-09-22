@@ -10,7 +10,7 @@ export interface FunctionDefinition {
 
 export interface ValueDefinition {
   inputConstructor?: InputConstructor;
-  inputVariables?: string[];
+  inputVariable?: string[];
   conditional?: ConditionalDefinition[];
   otherwise: FunctionTreeNode;
 }

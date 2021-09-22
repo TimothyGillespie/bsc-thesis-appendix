@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {AdditionalConstraint} from "../../models/AdditionalConstraint";
 import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {environment} from "../../../environments/environment";
@@ -12,7 +12,7 @@ import {ApiQueryService} from "../../services/api-query/api-query.service";
   templateUrl: './additional-constraints-entering.component.html',
   styleUrls: ['./additional-constraints-entering.component.scss']
 })
-export class AdditionalConstraintsEnteringComponent implements OnInit {
+export class AdditionalConstraintsEnteringComponent implements OnInit, OnDestroy {
 
   formGroup: FormGroup;
 
@@ -33,6 +33,15 @@ export class AdditionalConstraintsEnteringComponent implements OnInit {
     this.formGroup = this.fb.group({
       additionalConstraints: this.fb.array([]),
     });
+  }
+
+  ngOnDestroy(): void {
+    this.requestData.additionalConstraints.next(this.getAdditionalConstraints().value.map(x => {
+      return {
+        inputVariables: AdditionalConstraintsEnteringComponent.mappify(x.inputVariables),
+        constraint: getFunctionTree(x.constraint)
+      };
+    }));
   }
 
   getAdditionalConstraints(): FormArray {
@@ -66,13 +75,6 @@ export class AdditionalConstraintsEnteringComponent implements OnInit {
   }
 
   onFinish() {
-    this.requestData.additionalConstraints.next(this.getAdditionalConstraints().value.map(x => {
-      return {
-        inputVariables: AdditionalConstraintsEnteringComponent.mappify(x.inputVariables),
-        constraint: getFunctionTree(x.constraint)
-      };
-    }));
-
     this.router.navigate(['finish']);
   }
 

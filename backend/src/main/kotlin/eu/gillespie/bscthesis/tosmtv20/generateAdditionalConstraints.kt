@@ -7,7 +7,7 @@ import eu.gillespie.bscthesis.model.smt.v20.SmtV20NamedAssert
 import eu.gillespie.bscthesis.model.smt.v20.interfaces.SmtV20TopLevelExpression
 
 fun generateAdditionalConstraints(request: ProveStatementRequest): List<SmtV20TopLevelExpression> {
-    return request.additionalConstraints.mapIndexed { index, constraint -> generateAdditionalConstraint(constraint, index) }
+    return (request.additionalConstraints ?: listOf()).mapIndexed { index, constraint -> generateAdditionalConstraint(constraint, index) }
 }
 
 fun generateAdditionalConstraint(additionalConstraint: AdditionalConstraint, number: Int? = null): SmtV20TopLevelExpression {

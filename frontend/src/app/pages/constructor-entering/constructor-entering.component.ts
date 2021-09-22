@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {environment} from "../../../environments/environment";
 import {ConstructorDefinition, ConstructorFunctionDefinition} from "../../models/ConstructorDefinition";
@@ -13,7 +13,7 @@ import {ApiQueryService} from "../../services/api-query/api-query.service";
   templateUrl: './constructor-entering.component.html',
   styleUrls: ['./constructor-entering.component.scss']
 })
-export class ConstructorEnteringComponent implements OnInit {
+export class ConstructorEnteringComponent implements OnInit, OnDestroy {
   formGroup!: FormGroup;
 
   typeOptions = [];
@@ -44,6 +44,11 @@ export class ConstructorEnteringComponent implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    this.requestData.constructorDefinitions.next(this.getConstructorDefinitions().value);
+    this.requestData.persist();
+  }
+
   generateFromGroupFromFunctionDefinition(funcDef: ConstructorFunctionDefinition): FormGroup {
       return this.fb.group({
         symbol: funcDef.symbol,
@@ -60,7 +65,6 @@ export class ConstructorEnteringComponent implements OnInit {
   }
 
   onFinish() {
-    this.requestData.constructorDefinitions.next(this.getConstructorDefinitions().value);
     this.router.navigate(['statement']);
   }
 

@@ -52,8 +52,14 @@
                     </ng-container>
 
                     <!-- INPUT VARIABLES -->
-                    <ng-container *ngSwitchCase="'inputVariables'">
-
+                    <ng-container *ngSwitchCase="'inputVariable'">
+                      {{getFunctionName(fd)}}(
+                      <ng-container formGroupName="inputVariable">
+                        <ng-container *ngFor="let _ of getInputVariable(fd, vd).controls; let iv = index">
+                          <input pInputText [formControlName]="iv" class="variable-field p-inputtext-sm" maxlength="4"/>
+                        </ng-container>
+                      </ng-container>
+                      )
                     </ng-container>
 
                     <!-- DEFAULT -->
