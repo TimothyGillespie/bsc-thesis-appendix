@@ -11,25 +11,33 @@
           <div class="p-fluid">
             <div class="p-field">
               <p class="p-float-label">
-                <input pInputText id="term" formControlName="term"/>
+                <input pInputText id="term" formControlName="term"
+                       [class]="getConstructorTerm(d).invalid ? 'ng-invalid ng-dirty' : ''"
+                />
                 <label for="term">Term</label>
               </p>
             </div>
           </div>
           <div>
-            <p-dropdown [options]="typeOptions" formControlName="type" placeholder="Select a type"></p-dropdown>
+            <p-dropdown [options]="typeOptions" formControlName="type" placeholder="Select a type"
+                        [class]="getConstructorTerm(d).invalid ? 'ng-invalid ng-dirty' : ''"
+            ></p-dropdown>
           </div>
 
-          <div class="flex">
+          <div class="flex mt-5">
             <div class="flex-auto">
               <div class="flex justify-content-center"><h2>Constructor Functions</h2></div>
+              <p class="flex justify-content-center" style="color:red" *ngIf="getFunctions(d).errors?.noBaseCase">{{getFunctions(d).errors.noBaseCase.message}}</p>
+              <p class="flex justify-content-center" style="color:red" *ngIf="getFunctions(d).errors?.noNonBaseCase">{{getFunctions(d).errors.noNonBaseCase.message}}</p>
               <ng-container formArrayName="functions">
               <ng-container *ngFor="let singleFunction of getFunctions(d).controls; let f = index">
                   <div class="flex justify-content-center" [formGroupName]="f">
                     <div class="p-fluid formgrid grid">
-                      <div class="field col-9">
+                      <div class="field col-8">
                         <p class="p-float-label">
-                          <input pInputText id="symbol" formControlName="symbol"/>
+                          <input pInputText id="symbol" formControlName="symbol"
+                                 [class]="getSingleFunction(d, f).invalid ? 'ng-invalid ng-dirty' : ''"
+                          />
                           <label for="symbol">Symbol</label>
                         </p>
                       </div>
@@ -39,6 +47,9 @@
                           <label for="arity">Arity</label>
                         </p>
                       </div>
+                    </div>
+                    <div class="field col-1 mt-2">
+                        <button pButton class="p-button-danger"  icon="pi pi-trash" (click)="removeConstructorFunction(d, f)"></button>
                     </div>
 
                   </div>

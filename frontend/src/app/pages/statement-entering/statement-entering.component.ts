@@ -86,4 +86,8 @@ export class StatementEnteringComponent implements OnInit, OnDestroy {
   getFunctions(): FormArray {
     return this.formGroup.get('additionalFunctions') as FormArray;
   }
+
+  removeAdditionalFunction(f: number) {
+    this.getFunctions().removeAt(f);
+  }
 }

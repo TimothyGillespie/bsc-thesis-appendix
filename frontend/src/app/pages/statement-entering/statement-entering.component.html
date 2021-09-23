@@ -2,41 +2,50 @@
   <h1>Enter the statement to prove</h1>
 </div>
 
-<div class="flex justify-content-center">
-  <input id="statement" pInputText [pKeyFilter]="allowedValuesForFormulae" class="w-10" [(ngModel)]="statement" />
-</div>
+<p-card>
+  <div class="flex justify-content-center">
+    <input id="statement" pInputText [pKeyFilter]="allowedValuesForFormulae" class="w-10" [(ngModel)]="statement" />
+  </div>
+</p-card>
 
-<div class="flex">
-  <div class="flex-auto">
-    <div class="flex justify-content-center"><h2>Constructor Functions</h2></div>
-    <ng-container [formGroup]="formGroup">
-      <ng-container formArrayName="additionalFunctions">
-        <ng-container *ngFor="let singleFunction of getFunctions().controls; let f = index">
-          <div class="flex justify-content-center" [formGroupName]="f">
-            <div class="p-fluid formgrid grid">
-              <div class="field col-9">
-                <p class="p-float-label">
-                  <input pInputText id="symbol" formControlName="symbol"/>
-                  <label for="symbol">Symbol</label>
-                </p>
+<div class="flex justify-content-center"><h1>Additional Functions</h1></div>
+<p-card>
+  <div class="flex mt-5">
+    <div class="flex-auto">
+      <ng-container [formGroup]="formGroup">
+        <ng-container formArrayName="additionalFunctions">
+          <ng-container *ngFor="let singleFunction of getFunctions().controls; let f = index">
+            <div class="flex justify-content-center" [formGroupName]="f">
+              <div class="p-fluid formgrid grid">
+                <div class="field col-8">
+                  <p class="p-float-label">
+                    <input pInputText id="symbol" formControlName="symbol"/>
+                    <label for="symbol">Symbol</label>
+                  </p>
+                </div>
+                <div class="field col-3">
+                  <p class="p-float-label">
+                    <p-inputNumber inputId="arity" [min]="0" [showButtons]="true" formControlName="arity"></p-inputNumber>
+                    <label for="arity">Arity</label>
+                  </p>
+                </div>
+                <div class="field col-1">
+                  <p>
+                    <button pButton class="p-button-danger"  icon="pi pi-trash" (click)="removeAdditionalFunction(f)"></button>
+                  </p>
+                </div>
               </div>
-              <div class="field col-3">
-                <p class="p-float-label">
-                  <p-inputNumber inputId="arity" [min]="0" [showButtons]="true" formControlName="arity"></p-inputNumber>
-                  <label for="arity">Arity</label>
-                </p>
-              </div>
+
             </div>
-
+          </ng-container>
+          <div class="flex mt-8 justify-content-center">
+            <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewFunction()"></button>
           </div>
         </ng-container>
-        <div class="flex mt-8 justify-content-center">
-          <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewFunction()"></button>
-        </div>
       </ng-container>
-    </ng-container>
+    </div>
   </div>
-</div>
+</p-card>
 
 
 <div class="flex justify-content-center mt-5">

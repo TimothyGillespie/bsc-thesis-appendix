@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FunctionDefinition, ValueDefinition} from "../../models/FunctionDefinition";
 import {FunctionIdentifier, FunctionTreeNode} from "../../../util/Formulae/formula";
 import {ConstructorDefinition} from "../../models/ConstructorDefinition";
-import {Form, FormArray, FormBuilder, FormGroup} from "@angular/forms";
+import {Form, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import getTypeOfFunctionByTerm from "../../../util/Formulae/getTypeOfFunctionByTerm";
 import getTermOfFunction from "../../../util/Formulae/getTermOfFunction";
 import getIdentifiersFromFunctionTree
@@ -16,6 +16,7 @@ import {first} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {ApiQueryService} from "../../services/api-query/api-query.service";
 import functionTreeNodeToString from "../../../util/Formulae/functionTreeNodeToString";
+import {ValidationHintService} from "../../services/validation-hint/validation-hint.service";
 
 @Component({
   selector: 'app-function-definitions',
@@ -37,6 +38,7 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
     private requestData: RequestDataService,
     private router: Router,
     private api: ApiQueryService,
+    private validationHint: ValidationHintService,
   ) { }
 
   ngOnInit(): void {
@@ -68,12 +70,12 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
         getInfixFunction(identifier.symbol) === undefined
     })
 
-    functionIdentifiers.push(...this.requestData.additionalFunctions.value)
+    functionIdentifiers.push(...this.requestData.additionalFunctions.value ?? [])
 
 
     functionIdentifiers
       .forEach((x) => {
-        const existingDefinition = this.requestData.functionDefinitions.value.find((definition) => definition.name === x.symbol);
+        const existingDefinition = (this.requestData.functionDefinitions.value ?? []).find((definition) => definition.name === x.symbol);
         this.addFunctionDefinition(x, existingDefinition)
       });
 
@@ -83,17 +85,19 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
     this.requestData.functionDefinitions.next(this.getFunctionDefinitions().value.map(x => {
         return {
           ...x,
-          definition: x.definition.map(y => {
-            return {
-              ...y,
-              conditional: y.conditional.map(z => {
-                return {
-                  condition: getFunctionTree(z.condition),
-                  then: getFunctionTree(z.then),
-                }
-              }),
-              otherwise: getFunctionTree(y.otherwise)
-            }
+          definition: x.definition
+            .filter(y => y.otherwise)
+            .map(y => {
+              return {
+                ...y,
+                conditional: y.conditional.map(z => {
+                  return {
+                    condition: getFunctionTree(z.condition),
+                    then: getFunctionTree(z.then),
+                  }
+                }),
+                otherwise: getFunctionTree(y.otherwise)
+              }
           }),
         };
       }
@@ -102,8 +106,18 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
     this.requestData.persist();
   }
 
+  isFormValid(): boolean {
+    return this.formGroup.valid
+  }
+
+  onBack() {
+  }
+
   onFinish() {
-    this.router.navigate(['additional-constraints'])
+    if(this.isFormValid())
+      this.router.navigate(['additional-constraints'])
+    else
+      this.validationHint.sendGeneralHint();
   }
 
 
@@ -126,7 +140,7 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
       const constructor  = this.constructorDefinitions.find(cons => cons.term === term);
       inputTypeByTerm = constructor.type;
       definition = constructor.functions.map((consFunc) => {
-        const alreadyDefinedDefinition = givenValues.definition.find((givenDefinition) =>
+        const alreadyDefinedDefinition = givenValues?.definition?.find((givenDefinition) =>
           givenDefinition.inputConstructor
           && parseInt(givenDefinition.inputConstructor.arity, 10) === consFunc.arity
           && givenDefinition.inputConstructor.name
@@ -136,7 +150,13 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
             inputConstructor: this.fb.group({
               name: this.fb.control(consFunc.symbol),
               arity: this.fb.control(consFunc.arity),
-              boundVariables: this.fb.array(Array.from({length: consFunc.arity}, (_, i) => 'x' + (i + 1))),
+              boundVariables: this.fb.array(
+                Array.from({length: consFunc.arity}, (_, i) => 'x' + (i + 1)).map((initialValue) => this.fb.control(
+                  initialValue,
+                  {validators: [Validators.required], updateOn: "blur"}
+                )),
+
+              ),
             }),
             conditional: this.fb.array([]),
             otherwise: this.fb.control(null),
@@ -146,7 +166,10 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
             inputConstructor: this.fb.group({
               name: this.fb.control(alreadyDefinedDefinition.inputConstructor.name),
               arity: this.fb.control(alreadyDefinedDefinition.inputConstructor.arity),
-              boundVariables: this.fb.array(alreadyDefinedDefinition.inputConstructor.boundVariables),
+              boundVariables: this.fb.array(
+                alreadyDefinedDefinition.inputConstructor.boundVariables,
+                {validators: [Validators.required], updateOn: "blur"}
+              ),
             }),
             conditional: this.fb.array(alreadyDefinedDefinition.conditional.map((conditional) => this.fb.group({
               condition: this.fb.control(functionTreeNodeToString(conditional.condition)),
@@ -159,11 +182,16 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
     }
 
     if(term == null) {
-      const alreadyDefinedInputVariableDefinition = givenValues.definition.find((maybe) => maybe.inputVariable != null)
+      const alreadyDefinedInputVariableDefinition = givenValues ? givenValues.definition.find((maybe) => maybe.inputVariable != null) : null
       if(alreadyDefinedInputVariableDefinition == null) {
         definition = [
           this.fb.group({
-            inputVariable: this.fb.array(Array.from({length: identifier.arity}, (_, i) => 'x' + (i + 1))),
+            inputVariable: this.fb.array(
+              Array.from({length: identifier.arity}, (_, i) => 'x' + (i + 1)).map(initialValue => this.fb.control(
+                initialValue,
+                {validators: [Validators.required], updateOn: "blur"}
+              )),
+            ),
             conditional: this.fb.array([]),
             otherwise: this.fb.control(null),
           })
@@ -171,7 +199,12 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
       } else {
         definition = [
           this.fb.group({
-            inputVariable: this.fb.array(alreadyDefinedInputVariableDefinition.inputVariable),
+            inputVariable: this.fb.array(
+              alreadyDefinedInputVariableDefinition.inputVariable.map(initialValue => this.fb.control(
+                initialValue,
+                {validators: [Validators.required], updateOn: "blur"}
+              ))
+            ),
             conditional: this.fb.array(alreadyDefinedInputVariableDefinition.conditional.map((conditional) => this.fb.group({
               condition: this.fb.control(functionTreeNodeToString(conditional.condition)),
               then: this.fb.control(functionTreeNodeToString(conditional.then)),
@@ -184,18 +217,24 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
 
     if(givenValues == null)
       this.getFunctionDefinitions().push(this.fb.group({
-        name: this.fb.control(identifier.symbol),
-        arity: this.fb.control(identifier.arity),
-        inputTypes: this.fb.array(inputTypeByTerm != null ? [inputTypeByTerm] : Array(identifier.arity).fill(null)),
-        outputType: this.fb.control(null),
+        name: this.fb.control(identifier.symbol, {validators: [Validators.required], updateOn: "blur"}),
+        arity: this.fb.control(identifier.arity, {validators: [Validators.required], updateOn: "blur"}),
+        inputTypes: this.fb.array((inputTypeByTerm != null ? [inputTypeByTerm] : Array(identifier.arity).fill(null)).map(initialValue => this.fb.control(
+          initialValue,
+          {validators: [Validators.required], updateOn: "blur"}
+        ))),
+        outputType: this.fb.control(null,{validators: [Validators.required], updateOn: "blur"}),
         definition: this.fb.array(definition),
       }));
     else
       this.getFunctionDefinitions().push(this.fb.group({
-        name: this.fb.control(identifier.symbol),
-        arity: this.fb.control(identifier.arity),
-        inputTypes: this.fb.array(givenValues.inputTypes),
-        outputType: this.fb.control(givenValues.outputType),
+        name: this.fb.control(identifier.symbol, {validators: [Validators.required], updateOn: "blur"}),
+        arity: this.fb.control(identifier.arity, {validators: [Validators.required], updateOn: "blur"}),
+        inputTypes: this.fb.array(givenValues.inputTypes.map(initialValue => this.fb.control(
+          initialValue,
+          {validators: [Validators.required], updateOn: "blur"}
+        ))),
+        outputType: this.fb.control(givenValues.outputType, {validators: [Validators.required], updateOn: "blur"}),
         definition: this.fb.array(definition),
       }));
   }
@@ -284,6 +323,24 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
   removeConditionalDefinition(fd: number, vd: number, c: number) {
     this.getConditional(fd, vd).removeAt(c);
   }
+
+  getSingleInputConstructorBoundVariable(fd: number, vd: number, bv: number): FormControl {
+    return this.getInputConstructorBoundVariables(fd, vd).get(bv.toString(10)) as FormControl
+  }
+
+  getSingleInputVariable(fd: number, vd: number, iv: number): FormControl {
+    return this.getValueDefinition(fd, vd).get(`inputVariable.${iv}`) as FormControl;
+  }
+
+  getSingleInputType(fd: number, it: number) {
+    return this.getSingleFunctionDefinition(fd).get(`inputTypes.${it}`) as FormControl;
+  }
+
+  getSingleOutputType(fd: number) {
+    console.log(this.getSingleFunctionDefinition(fd).get(`outputType`).invalid)
+    return this.getSingleFunctionDefinition(fd).get(`outputType`) as FormControl;
+  }
+
 }
 
 
