@@ -16,12 +16,13 @@ enum class InfixOperator(
     GEQ(">=", 1, "≥"),
     LEQ("=<", 1, "≤"),
 
-    AND("and", 2, "∧"),
-    OR("or", 2, "∨"),
-    XOR("xor", 2, "⊻"),
     IMPLICATION("=>", 2, "⟹"),
     REVERSED_IMPLICATION("<=", 2, "⟸"),
-    EQUIVALENCE("<=>", 2, "⟺");
+    EQUIVALENCE("<=>", 2, "⟺"),
+
+    AND("and", 3, "∧"),
+    OR("or", 3, "∨"),
+    XOR("xor", 3, "⊻");
 
     companion object {
         fun byZ3Symbol(symbol: String): InfixOperator? {

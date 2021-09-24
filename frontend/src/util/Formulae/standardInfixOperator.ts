@@ -12,12 +12,14 @@ const standardInfixOperators: InfixOperator[] = [
 	{ symbol: '>=', priority: 1 },
 	{ symbol: '=<', priority: 1 },
 
-	{ symbol: 'and', priority: 2 },
-	{ symbol: 'or', priority: 2 },
-	{ symbol: 'xor', priority: 2 },
+
 	{ symbol: '=>', priority: 2 },
 	{ symbol: '<=', priority: 2 },
 	{ symbol: '<=>', priority: 2 },
+
+  { symbol: 'and', priority: 3 },
+  { symbol: 'or', priority: 3 },
+  { symbol: 'xor', priority: 3 },
 ];
 
 export function getInfixFunction(symbol: string): InfixOperator | undefined {
