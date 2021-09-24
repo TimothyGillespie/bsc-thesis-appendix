@@ -17,6 +17,7 @@ import {Router} from "@angular/router";
 import {ApiQueryService} from "../../services/api-query/api-query.service";
 import functionTreeNodeToString from "../../../util/Formulae/functionTreeNodeToString";
 import {ValidationHintService} from "../../services/validation-hint/validation-hint.service";
+import {isNumber} from "lodash";
 
 @Component({
   selector: 'app-function-definitions',
@@ -66,7 +67,8 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
     });
 
     const functionIdentifiers = getIdentifiersFromFunctionTree(this.statementTree).filter(identifier => {
-      return this.constructorDefinitions?.find(cons => cons.term === identifier.symbol) === undefined &&
+      console.log(identifier)
+      return !notToBeDefined(identifier.symbol) && this.constructorDefinitions?.find(cons => cons.term === identifier.symbol) === undefined &&
         getInfixFunction(identifier.symbol) === undefined
     })
 
@@ -345,3 +347,8 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
 
 
 type InputVariant = 'inputConstructor' | 'inputVariable' | 'none';
+
+
+const notToBeDefined = (value: string) => {
+  return isNumber(value) || value === '';
+}
