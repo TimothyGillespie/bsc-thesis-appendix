@@ -17,7 +17,7 @@
 
 
     <build>
-        <finalName>hpilot-server</finalName>
+        <finalName>bsc-thesis-backend</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
