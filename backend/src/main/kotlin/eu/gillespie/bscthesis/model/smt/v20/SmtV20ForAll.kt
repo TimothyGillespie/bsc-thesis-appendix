@@ -23,6 +23,10 @@ data class SmtV20ForAll(
             }
             .map { (key, value) -> String.format("(%s %s)", key, value.smtName) }
             .collect(Collectors.joining(" "))
-        return String.format("(forall (%s) %s)", sortList, expression.toSmtV20())
+
+        if(sortList.isBlank())
+            return expression.toSmtV20()
+        else
+            return String.format("(forall (%s) %s)", sortList, expression.toSmtV20())
     }
 }
