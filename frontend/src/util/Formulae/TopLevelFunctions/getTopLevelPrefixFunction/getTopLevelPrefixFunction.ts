@@ -10,7 +10,7 @@ function getTopLevelPrefixFunction(expression: string): PrefixOperatorInstance |
 	const parameters: string[] = [];
 
 	for (const [index, character] of enumerate(trimmedExpression)) {
-		if (character.match(/[A-Za-z0-9]/) && !functionContentStarted) {
+		if (character.match(/[A-Za-z0-9_]/) && !functionContentStarted) {
 			symbol += character;
 			continue;
 		}

@@ -4,6 +4,8 @@ import isTopLevelFunctionInfix from '../TopLevelFunctions/isTopLevelFunctionInfi
 import isTopLevelFunctionPrefix from '../TopLevelFunctions/isTopLevelFunctionPrefix/isTopLevelFunctionPrefix';
 import getTopLevelPrefixFunction from '../TopLevelFunctions/getTopLevelPrefixFunction/getTopLevelPrefixFunction';
 import getTopLevelInfixFunction from '../TopLevelFunctions/getTopLevelInfixFunction/getTopLevelInfixFunction';
+import isTopLevelFunctionPriority from "../TopLevelFunctions/isTopLevelFunctionPriority/isTopLevelFunctionPriority";
+import getTopLevelPriorityContent from "../TopLevelFunctions/getTopLevelPriorityContent/getTopLevelPriorityContent";
 
 export function getFunctionTree(
 	expression: string,
@@ -18,7 +20,9 @@ export function getFunctionTree(
 		};
 	} else if (isTopLevelFunctionPrefix(expression)) {
 		topLevelOperatorInstance = getTopLevelPrefixFunction(expression)!;
-	} else {
+	} else if (isTopLevelFunctionPriority(expression)) {
+    return getFunctionTree(getTopLevelPriorityContent(expression))
+  } else {
 		topLevelOperatorInstance = { symbol: expression.trim(), parameters: [] };
 	}
 
