@@ -2,13 +2,11 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {FunctionDefinition, ValueDefinition} from "../../models/FunctionDefinition";
 import {FunctionIdentifier, FunctionTreeNode} from "../../../util/Formulae/formula";
 import {ConstructorDefinition} from "../../models/ConstructorDefinition";
-import {Form, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import getTypeOfFunctionByTerm from "../../../util/Formulae/getTypeOfFunctionByTerm";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import getTermOfFunction from "../../../util/Formulae/getTermOfFunction";
 import getIdentifiersFromFunctionTree
   from "../../../util/Formulae/getIdentifiersFromFunctionTree/getIdentifiersFromFunctionTree";
-import standardInfixOperators, {getInfixFunction} from "../../../util/Formulae/standardInfixOperator";
-import {Footer, MenuItem} from "primeng/api";
+import {getInfixFunction} from "../../../util/Formulae/standardInfixOperator";
 import {environment} from "../../../environments/environment";
 import {getFunctionTree} from "../../../util/Formulae/getFunctionTree/getFunctionTree";
 import {RequestDataService} from "../../services/request-data-service/request-data.service";
@@ -17,7 +15,6 @@ import {Router} from "@angular/router";
 import {ApiQueryService} from "../../services/api-query/api-query.service";
 import functionTreeNodeToString from "../../../util/Formulae/functionTreeNodeToString";
 import {ValidationHintService} from "../../services/validation-hint/validation-hint.service";
-import {isNumber} from "lodash";
 
 @Component({
   selector: 'app-function-definitions',
@@ -67,9 +64,7 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
     });
 
     const functionIdentifiers = getIdentifiersFromFunctionTree(this.statementTree).filter(identifier => {
-      console.log(identifier)
-      return !notToBeDefined(identifier.symbol) && this.constructorDefinitions?.find(cons => cons.term === identifier.symbol) === undefined &&
-        getInfixFunction(identifier.symbol) === undefined
+      return this.toBeDefined(identifier)
     })
 
     functionIdentifiers.push(...this.requestData.additionalFunctions.value ?? [])
@@ -169,8 +164,10 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
               name: this.fb.control(alreadyDefinedDefinition.inputConstructor.name),
               arity: this.fb.control(alreadyDefinedDefinition.inputConstructor.arity),
               boundVariables: this.fb.array(
-                alreadyDefinedDefinition.inputConstructor.boundVariables,
-                {validators: [Validators.required], updateOn: "blur"}
+                alreadyDefinedDefinition.inputConstructor.boundVariables.map(variableSymbol => this.fb.control(
+                  variableSymbol,
+                  {validators: [Validators.required], updateOn: "blur"}
+                ))
               ),
             }),
             conditional: this.fb.array(alreadyDefinedDefinition.conditional.map((conditional) => this.fb.group({
@@ -267,7 +264,6 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
       group['inputVariable'] = this.fb.array(Array.from({length: arity}, (_, i) => 'x' + (i + 1)));
 
     this.getValueDefinitions(index).push(this.fb.group(group));
-    console.log(this.formGroup.value)
   }
 
   getInputTypes(index: number): FormArray {
@@ -339,8 +335,18 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
   }
 
   getSingleOutputType(fd: number) {
-    console.log(this.getSingleFunctionDefinition(fd).get(`outputType`).invalid)
     return this.getSingleFunctionDefinition(fd).get(`outputType`) as FormControl;
+  }
+
+  toBeDefined(identifier: FunctionIdentifier) {
+    // Not numbers
+    return isNaN(parseInt(identifier.symbol, 10))
+      // Not parenthesis (priority); would currently not work either way though
+      && identifier.symbol !== ''
+      // Non of the constructor function terms
+      && this.constructorDefinitions?.find(cons => cons.term === identifier.symbol) === undefined
+      // No infix functions, they are defined by the prover
+      && getInfixFunction(identifier.symbol) === undefined;
   }
 
 }
@@ -348,7 +354,3 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
 
 type InputVariant = 'inputConstructor' | 'inputVariable' | 'none';
 
-
-const notToBeDefined = (value: string) => {
-  return isNumber(value) || value === '';
-}
