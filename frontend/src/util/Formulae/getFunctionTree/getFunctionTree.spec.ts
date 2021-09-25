@@ -97,6 +97,58 @@ describe('getFunctionTree()', () => {
 				],
 			},
 		],
+    [
+      'a + b = c and a + d = e and a + f = g',
+      {
+        symbol: 'and',
+        parameters: [
+          {
+            symbol: '=',
+            parameters: [
+              {
+                symbol: '+',
+                parameters: [
+                  {symbol: 'a', parameters: []},
+                  {symbol: 'b', parameters: []},
+                ]
+              },
+              {symbol: 'c', parameters: []},
+            ]
+          },
+          {
+            symbol: 'and',
+            parameters: [
+              {
+                symbol: '=',
+                parameters: [
+                  {
+                    symbol: '+',
+                    parameters: [
+                      {symbol: 'a', parameters: []},
+                      {symbol: 'd', parameters: []},
+                    ]
+                  },
+                  {symbol: 'e', parameters: []},
+                ]
+              },
+              {
+                symbol: '=',
+                parameters: [
+                  {
+                    symbol: '+',
+                    parameters: [
+                      {symbol: 'a', parameters: []},
+                      {symbol: 'f', parameters: []},
+                    ]
+                  },
+                  {symbol: 'g', parameters: []},
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
 	];
 
 	it('bug1', () => {
