@@ -180,18 +180,106 @@ describe('getFunctionTree()', () => {
           {symbol: '4', parameters: []},
         ]
       }
+    ],
+    [
+      '(depth_with_condition(c(x,y)) <= size(c(x,y))) and (depth_with_max(c(x,y)) = depth_with_condition(c(x,y)))',
+      {
+        symbol: 'and',
+        parameters: [
+          {
+            symbol: '<=',
+            parameters: [
+              {
+                symbol: 'depth_with_condition',
+                parameters: [
+                  {
+                    symbol: 'c',
+                    parameters: [
+                      {symbol: 'x', parameters: []},
+                      {symbol: 'y', parameters: []},
+                    ]
+                  }
+                ]
+              },
+              {
+                symbol: 'size',
+                parameters: [
+                  {
+                    symbol: 'c',
+                    parameters: [
+                      {symbol: 'x', parameters: []},
+                      {symbol: 'y', parameters: []},
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            symbol: '=',
+            parameters: [
+              {
+                symbol: 'depth_with_max',
+                parameters: [
+                  {
+                    symbol: 'c',
+                    parameters: [
+                      {symbol: 'x', parameters: []},
+                      {symbol: 'y', parameters: []},
+                    ]
+                  }
+                ]
+              },
+              {
+                symbol: 'depth_with_condition',
+                parameters: [
+                  {
+                    symbol: 'c',
+                    parameters: [
+                      {symbol: 'x', parameters: []},
+                      {symbol: 'y', parameters: []},
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    [
+      'depth_with_condition(c(x,y)) <= size(c(x,y))',
+      {
+        symbol: '<=',
+        parameters: [
+          {
+            symbol: 'depth_with_condition',
+            parameters: [
+              {
+                symbol: 'c',
+                parameters: [
+                  {symbol: 'x', parameters: []},
+                  {symbol: 'y', parameters: []},
+                ]
+              }
+            ]
+          },
+          {
+            symbol: 'size',
+            parameters: [
+              {
+                symbol: 'c',
+                parameters: [
+                  {symbol: 'x', parameters: []},
+                  {symbol: 'y', parameters: []},
+                ]
+              }
+            ]
+          }
+        ]
+      },
     ]
 	];
-
-	it('bug1', () => {
-		// bug
-		console.log(JSON.stringify(getFunctionTree('(depth_with_condition(c(x,y)) <= size(c(x,y))) and (depth_with_max(c(x,y)) = depth_with_condition(c(x,y)))')));
-	})
-
-	it('bug2', () => {
-		// bug
-		console.log(JSON.stringify(getFunctionTree('depth_with_condition(c(x,y)) <= size(c(x,y))')));
-	})
 
 	testCases.forEach(value => {
 		const [input, expectation] = value;
