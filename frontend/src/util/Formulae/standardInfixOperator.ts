@@ -1,11 +1,11 @@
 import { InfixOperator } from './formula';
 
 const standardInfixOperators: InfixOperator[] = [
-	{ symbol: '+', priority: 0 },
-	{ symbol: '-', priority: 0 },
+	{ symbol: '+', priority: 1 },
+	{ symbol: '-', priority: 1 },
 
-  { symbol: '*', priority: 1 },
-	{ symbol: '/', priority: 1 },
+  { symbol: '*', priority: 0 },
+	{ symbol: '/', priority: 0 },
 
 	{ symbol: '=', priority: 2 },
 	{ symbol: '>', priority: 2 },

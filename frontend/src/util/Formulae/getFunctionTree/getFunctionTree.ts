@@ -12,7 +12,10 @@ export function getFunctionTree(
 	infixOperators: InfixOperator[] = standardInfixOperators,
 ): FunctionTreeNode {
 	let topLevelOperatorInstance: PrefixOperatorInstance;
-	if (isTopLevelFunctionInfix(expression, infixOperators)) {
+
+  if (isTopLevelFunctionPriority(expression)) {
+    return getFunctionTree(getTopLevelPriorityContent(expression))
+  } else if (isTopLevelFunctionInfix(expression, infixOperators)) {
 		const intermediateInfix = getTopLevelInfixFunction(expression, infixOperators)!;
 		topLevelOperatorInstance = {
 			symbol: intermediateInfix.operator.symbol,
@@ -20,8 +23,6 @@ export function getFunctionTree(
 		};
 	} else if (isTopLevelFunctionPrefix(expression)) {
 		topLevelOperatorInstance = getTopLevelPrefixFunction(expression)!;
-	} else if (isTopLevelFunctionPriority(expression)) {
-    return getFunctionTree(getTopLevelPriorityContent(expression))
   } else {
 		topLevelOperatorInstance = { symbol: expression.trim(), parameters: [] };
 	}

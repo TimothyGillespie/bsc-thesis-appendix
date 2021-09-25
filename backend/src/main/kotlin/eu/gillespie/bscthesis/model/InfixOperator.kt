@@ -5,11 +5,11 @@ enum class InfixOperator(
     val priority: Int,
     val humanReadableSymbol: String? = null
 ) {
-    ADDITION("+", 0),
-    SUBSTRACTION("-", 0),
+    ADDITION("+", 1),
+    SUBSTRACTION("-", 1),
 
-    DIVISION("/", 1),
-    MULTIPLICATION("*", 1),
+    DIVISION("/", 0),
+    MULTIPLICATION("*", 0),
 
     EQUALITY("=", 2),
     GREATER(">", 2),

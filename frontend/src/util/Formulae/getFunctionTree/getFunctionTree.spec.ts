@@ -148,6 +148,38 @@ describe('getFunctionTree()', () => {
           }
         ]
       }
+    ],
+    [
+      '2 + 3 * 4',
+      {
+        symbol: '+',
+        parameters: [
+          {symbol: '2', parameters: []},
+          {
+            symbol: '*',
+            parameters: [
+              {symbol: '3', parameters: []},
+              {symbol: '4', parameters: []},
+            ]
+          }
+        ]
+      }
+    ],
+    [
+      '(2 + 3) * 4',
+      {
+        symbol: '*',
+        parameters: [
+          {
+            symbol: '+',
+            parameters: [
+              {symbol: '2', parameters: []},
+              {symbol: '3', parameters: []},
+            ]
+          },
+          {symbol: '4', parameters: []},
+        ]
+      }
     ]
 	];
 
