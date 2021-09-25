@@ -7,21 +7,22 @@ enum class InfixOperator(
 ) {
     ADDITION("+", 0),
     SUBSTRACTION("-", 0),
-    DIVISION("/", 0),
-    MULTIPLICATION("*", 0),
 
-    EQUALITY("=", 1),
-    GREATER(">", 1),
-    LESS("<", 1),
-    GEQ(">=", 1, "≥"),
-    LEQ("=<", 1, "≤"),
+    DIVISION("/", 1),
+    MULTIPLICATION("*", 1),
 
-    AND("and", 2, "∧"),
-    OR("or", 2, "∨"),
-    XOR("xor", 2, "⊻"),
-    IMPLICATION("=>", 2, "⟹"),
-    REVERSED_IMPLICATION("<=", 2, "⟸"),
-    EQUIVALENCE("<=>", 2, "⟺");
+    EQUALITY("=", 2),
+    GREATER(">", 2),
+    LESS("<", 2),
+    GEQ(">=", 2, "≥"),
+    LEQ("=<", 2, "≤"),
+
+    AND("and", 3, "∧"),
+    OR("or", 3, "∨"),
+    XOR("xor", 3, "⊻"),
+    IMPLICATION("=>", 3, "⟹"),
+    REVERSED_IMPLICATION("<=", 3, "⟸"),
+    EQUIVALENCE("<=>", 3, "⟺");
 
     companion object {
         fun byZ3Symbol(symbol: String): InfixOperator? {
