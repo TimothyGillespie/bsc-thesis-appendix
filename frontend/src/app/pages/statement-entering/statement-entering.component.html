@@ -4,7 +4,8 @@
 
 <p-card>
   <div class="flex justify-content-center">
-    <input id="statement" pInputText [pKeyFilter]="allowedValuesForFormulae" class="w-10" [(ngModel)]="statement" />
+    <input id="statement" pInputText [pKeyFilter]="allowedValuesForFormulae" class="w-10" [(ngModel)]="statement"
+           [class]="!checkStatement(false) ? 'ng-invalid ng-dirty' : ''"/>
   </div>
 </p-card>
 
@@ -19,7 +20,9 @@
               <div class="p-fluid formgrid grid">
                 <div class="field col-8">
                   <p class="p-float-label">
-                    <input pInputText id="symbol" formControlName="symbol"/>
+                    <input pInputText id="symbol" formControlName="symbol"
+                      [class]="getSymbol(f).invalid ? 'ng-invalid ng-dirty' : ''"
+                    />
                     <label for="symbol">Symbol</label>
                   </p>
                 </div>
