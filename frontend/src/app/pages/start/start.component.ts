@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {RequestDataService} from "../../services/request-data-service/request-data.service";
 import {Router} from "@angular/router";
 import {ConfirmationService} from "primeng/api";
+import {StepDisplayService} from "../../services/step-display/step-display.service";
 
 @Component({
   selector: 'app-start',
@@ -14,7 +15,11 @@ export class StartComponent implements OnInit {
     private router: Router,
     private requestData: RequestDataService,
     private confirmationService: ConfirmationService,
-  ) { }
+    private stepDisplay: StepDisplayService,
+  ) {
+    this.stepDisplay.showSteps = false;
+    this.stepDisplay.activeIndex = 0;
+  }
 
   ngOnInit(): void {
   }

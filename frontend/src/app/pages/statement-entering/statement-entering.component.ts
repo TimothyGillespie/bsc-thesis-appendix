@@ -6,6 +6,7 @@ import {RequestDataService} from "../../services/request-data-service/request-da
 import {first} from "rxjs/operators";
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ValidationHintService} from "../../services/validation-hint/validation-hint.service";
+import {StepDisplayService} from "../../services/step-display/step-display.service";
 
 @Component({
   selector: 'app-statement-entering',
@@ -25,9 +26,14 @@ export class StatementEnteringComponent implements OnInit, OnDestroy {
     private requestData: RequestDataService,
     private fb: FormBuilder,
     private validationHint: ValidationHintService,
-  ) { }
+    private stepDisplay: StepDisplayService,
+  ) {
+    this.stepDisplay.showSteps = true;
+    this.stepDisplay.activeIndex = 1;
+  }
 
   ngOnInit(): void {
+
     this.requestData.additionalFunctions.subscribe((fs) => {
       let additionalFunctions: FormGroup[]
       additionalFunctions = [];

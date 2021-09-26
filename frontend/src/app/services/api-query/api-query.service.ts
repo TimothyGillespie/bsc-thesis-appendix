@@ -22,7 +22,6 @@ export class ApiQueryService {
   ) { }
 
   async prove(request: ProveRequest): Promise<ProveResponse> {
-    console.log(convertKeysToSnakeCase(request))
      return this.http
        .post<ProveResponse>(environment.baseUrl + '/statement/prove/result', convertKeysToSnakeCase(request))
        .pipe(map((response) => convertKeysToCamelCase(response)))

@@ -10,6 +10,7 @@ import {ApiQueryService} from "../../services/api-query/api-query.service";
 import containsBaseCase from "../../../util/validators/containsBaseCase";
 import containsNonBaseCase from "../../../util/validators/containsNonBaseCase";
 import {ValidationHintService} from "../../services/validation-hint/validation-hint.service";
+import {StepDisplayService} from "../../services/step-display/step-display.service";
 
 @Component({
   selector: 'app-constructor-entering',
@@ -27,7 +28,11 @@ export class ConstructorEnteringComponent implements OnInit, OnDestroy {
     private router: Router,
     private api: ApiQueryService,
     private validationHint: ValidationHintService,
-  ) { }
+    private stepDisplay: StepDisplayService,
+  ) {
+    this.stepDisplay.showSteps = true;
+    this.stepDisplay.activeIndex = 0;
+  }
 
   ngOnInit(): void {
 

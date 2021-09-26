@@ -15,6 +15,7 @@ import {Router} from "@angular/router";
 import {ApiQueryService} from "../../services/api-query/api-query.service";
 import functionTreeNodeToString from "../../../util/Formulae/functionTreeNodeToString";
 import {ValidationHintService} from "../../services/validation-hint/validation-hint.service";
+import {StepDisplayService} from "../../services/step-display/step-display.service";
 
 @Component({
   selector: 'app-function-definitions',
@@ -37,7 +38,11 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
     private router: Router,
     private api: ApiQueryService,
     private validationHint: ValidationHintService,
-  ) { }
+    private stepDisplay: StepDisplayService,
+  ) {
+    this.stepDisplay.showSteps = true;
+    this.stepDisplay.activeIndex = 2;
+  }
 
   ngOnInit(): void {
 
@@ -108,6 +113,7 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
   }
 
   onBack() {
+    this.router.navigate(['statement'])
   }
 
   onFinish() {

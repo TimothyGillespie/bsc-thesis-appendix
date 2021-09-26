@@ -33,6 +33,7 @@ import {ConfirmPopupModule} from "primeng/confirmpopup";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {ToastModule} from "primeng/toast";
+import {StepsModule} from "primeng/steps";
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import {ToastModule} from "primeng/toast";
     ConfirmPopupModule,
     InputTextareaModule,
     ToastModule,
+    StepsModule,
   ],
   providers: [HttpClient, LoadingScreenService, RequestDataService, ConfirmationService, MessageService],
   bootstrap: [AppComponent]

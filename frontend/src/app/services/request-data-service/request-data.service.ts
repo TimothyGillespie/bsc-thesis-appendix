@@ -23,10 +23,6 @@ export class RequestDataService {
   }
 
   obtainRequest(): ProveRequest | undefined {
-    this.loadFromLocalStorage()
-    console.log(this.constructorDefinitions.value)
-    console.log(this.statementString.value)
-    console.log(this.functionDefinitions.value)
     if(
       this.constructorDefinitions.value === undefined
       || this.statementString.value === undefined
@@ -92,27 +88,26 @@ export class RequestDataService {
   loadFromLocalStorage() {
 
     const constructorDefinitions = JSON.parse(localStorage.getItem('constructorDefinitions'))
-    if(constructorDefinitions)
+    if (constructorDefinitions)
       this.constructorDefinitions.next(constructorDefinitions);
 
 
     const statementString = localStorage.getItem('statementString')
-    if(statementString && statementString !== "undefined" && statementString !== "null")
+    if (statementString && statementString !== "undefined" && statementString !== "null")
       this.statementString.next(statementString);
 
     const additionalFunctions = JSON.parse(localStorage.getItem('additionalFunctions'))
-    if(additionalFunctions)
+    if (additionalFunctions)
       this.additionalFunctions.next(additionalFunctions);
 
     const functionDefinitions = JSON.parse(localStorage.getItem('functionDefinitions'))
-    console.log('loading', functionDefinitions)
-    if(functionDefinitions)
+    if (functionDefinitions)
       this.functionDefinitions.next(functionDefinitions);
 
     const additionalConstraints = JSON.parse(localStorage.getItem('additionalConstraints'))
-    if(additionalConstraints)
-      this.additionalConstraints.next(additionalConstraints);
-
-
+    if (additionalConstraints)
+      this.additionalConstraints.next(additionalConstraints)
   }
+
+
 }
