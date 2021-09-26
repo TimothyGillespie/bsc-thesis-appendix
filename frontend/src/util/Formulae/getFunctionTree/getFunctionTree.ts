@@ -7,6 +7,11 @@ import getTopLevelInfixFunction from '../TopLevelFunctions/getTopLevelInfixFunct
 import isTopLevelFunctionPriority from "../TopLevelFunctions/isTopLevelFunctionPriority/isTopLevelFunctionPriority";
 import getTopLevelPriorityContent from "../TopLevelFunctions/getTopLevelPriorityContent/getTopLevelPriorityContent";
 import ParsingException from "../../../exceptions/ParsingException";
+import {environment} from "../../../environments/environment";
+import {trim} from "lodash";
+
+// Infix functions are not constrained by this
+export const legalSymbolRegex = /^[A-Za-z0-9_]+$/
 
 export function getFunctionTree(
 	expression: string,
@@ -24,11 +29,16 @@ export function getFunctionTree(
 		};
 	} else if (isTopLevelFunctionPrefix(expression)) {
 		topLevelOperatorInstance = getTopLevelPrefixFunction(expression)!;
+    if(!topLevelOperatorInstance.symbol.match(legalSymbolRegex))
+      throw new SyntaxError();
+
   } else {
     const trimmedExpression = expression.trim()
-    if(trimmedExpression.includes(' '))
-      throw new ParsingException();
-		topLevelOperatorInstance = { symbol: expression.trim(), parameters: [] };
+
+    if(!trimmedExpression.match(legalSymbolRegex))
+      throw new SyntaxError();
+
+		topLevelOperatorInstance = { symbol: trimmedExpression, parameters: [] };
 	}
 
 	return {

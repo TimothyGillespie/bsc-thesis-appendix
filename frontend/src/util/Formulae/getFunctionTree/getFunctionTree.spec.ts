@@ -278,6 +278,22 @@ describe('getFunctionTree()', () => {
           }
         ]
       },
+    ],
+    // This is tricky because the or in world could be seen as an or while the - should be recognized as the infix function
+    [
+      'println(hello-world)',
+      {
+        symbol: 'println',
+        parameters: [
+          {
+            symbol: '-',
+            parameters: [
+              {symbol: 'hello', parameters: []},
+              {symbol: 'world', parameters: []},
+            ]
+          }
+        ]
+      }
     ]
 	];
 
@@ -290,4 +306,14 @@ describe('getFunctionTree()', () => {
 			);
 		});
 	});
+
+
+  // @ts-ignore
+  it.each([
+    'println(hello world)',
+    'println(\'hello world\')'
+    ]
+  )('Throws an error for %s', (input) => {
+    expect(() => getFunctionTree(input)).toThrow()
+  })
 });

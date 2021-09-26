@@ -4,6 +4,9 @@ import enumerate from '../../../enumerate';
 function getTopLevelInfixFunction(expression: string, operators: InfixOperator[]): InfixOperatorInstance | null {
 	let level = 0;
 	const foundOperators: OperatorFound[] = [];
+  const whitespaceAdjustedOps = operators
+    .map((op) => op.recognizeWithoutWhitespace ? op : {...op, symbol: ` ${op.symbol} `} )
+
 
 	for (const [index, character] of enumerate(expression)) {
 		if (character === '(') {
@@ -17,10 +20,10 @@ function getTopLevelInfixFunction(expression: string, operators: InfixOperator[]
 		}
 
 		if (level === 0) {
-			for (const possibleOperator of operators) {
+			for (const possibleOperator of whitespaceAdjustedOps) {
 				if (expression.substr(index, possibleOperator.symbol.length) === possibleOperator.symbol) {
 					foundOperators.push({
-						operator: possibleOperator,
+						operator: {...possibleOperator, symbol: possibleOperator.symbol.trim()},
 						startIndex: index,
 						// - 1 because the startIndex is inclusive
 						endIndex: index + possibleOperator.symbol.length - 1,

@@ -5,6 +5,10 @@ import FunctionGraphEdge from "./FunctionGraphEdge";
 export type InfixOperator = {
 	symbol: string;
 	priority: number;
+  // for example or should not be recognize to be the (w or ld) where or is the logical or so it needs whitespace around them
+  // this value set to false signifies that while hello-world should be the same as hello - world
+  // (we forbid - for function names, so set minus (-) to true)
+  recognizeWithoutWhitespace: boolean,
 };
 
 export type PrefixOperatorInstance = {

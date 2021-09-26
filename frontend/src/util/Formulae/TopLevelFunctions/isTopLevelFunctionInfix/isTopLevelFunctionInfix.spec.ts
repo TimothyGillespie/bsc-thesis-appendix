@@ -6,6 +6,9 @@ describe('isTopLevelFunctionInfix()', () => {
 		['3 + 2', true],
 		['depth(e,x) + size(e,x)', true],
 		['mul(c(3 + 2))', false],
+		['world', false],
+		['w or ld', true],
+		['hello-world', true],
 	];
 
 	testCases.forEach(value => {

@@ -1,7 +1,5 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {AdditionalConstraint} from "../../models/AdditionalConstraint";
 import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
-import {environment} from "../../../environments/environment";
 import {getFunctionTree} from "../../../util/Formulae/getFunctionTree/getFunctionTree";
 import {RequestDataService} from "../../services/request-data-service/request-data.service";
 import {Router} from "@angular/router";
