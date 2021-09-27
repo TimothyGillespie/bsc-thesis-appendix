@@ -1,10 +1,8 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Form, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {environment} from "../../../environments/environment";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ConstructorDefinition, ConstructorFunctionDefinition} from "../../models/ConstructorDefinition";
 import {RequestDataService} from "../../services/request-data-service/request-data.service";
 import {first} from "rxjs/operators";
-import {FunctionDefinition} from "../../models/FunctionDefinition";
 import {Router} from "@angular/router";
 import {ApiQueryService} from "../../services/api-query/api-query.service";
 import containsBaseCase from "../../../util/validators/containsBaseCase";

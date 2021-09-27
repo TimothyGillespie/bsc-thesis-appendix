@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {RequestDataService} from "../../services/request-data-service/request-data.service";
 import {Router} from "@angular/router";
 import {ConfirmationService} from "primeng/api";
@@ -13,7 +13,7 @@ export class StartComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private requestData: RequestDataService,
+    public requestData: RequestDataService,
     private confirmationService: ConfirmationService,
     private stepDisplay: StepDisplayService,
   ) {
@@ -29,7 +29,7 @@ export class StartComponent implements OnInit {
     this.router.navigate(['constructor-definitions']);
   }
 
-  startButtonHandler(event: Event) {
+  startNewButtonHandler(event: Event) {
     if(!this.requestData.isPristine()) {
       this.confirmationService.confirm({
         target: event.target,
@@ -43,5 +43,17 @@ export class StartComponent implements OnInit {
     } else {
       this.startNewProcess()
     }
+  }
+
+  continueButtonHandler() {
+    this.router.navigate(['constructor-definitions'])
+  }
+
+  usageButtonHandler() {
+    this.router.navigate(['usage'])
+  }
+
+  loadRequestButtonHandler() {
+    this.router.navigate(['load-request'])
   }
 }

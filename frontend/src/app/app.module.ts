@@ -34,6 +34,7 @@ import {ConfirmationService, MessageService} from "primeng/api";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {ToastModule} from "primeng/toast";
 import {StepsModule} from "primeng/steps";
+import {LoadRequestComponent} from "./pages/load-request/load-request.component";
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {StepsModule} from "primeng/steps";
     AdditionalConstraintsEnteringComponent,
     FinishComponent,
     StartComponent,
+    LoadRequestComponent,
   ],
   imports: [
     AppRoutingModule,

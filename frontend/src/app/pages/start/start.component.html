@@ -1,4 +1,7 @@
 <div class="screen-centered">
   <h1>Automated Inductive Prover</h1>
-  <div class="flex justify-content-center mt-8"><button pButton class="p-button-success px-8" (click)="startButtonHandler($event)">Start</button></div>
+  <div class="mt-8 flex justify-content-center"><button pButton class="p-button-success startmenu-button" (click)="startNewButtonHandler($event)">Start New Prove Request</button></div>
+  <div *ngIf="requestData.constructorDefinitions.value !== undefined" class="mt-3 flex justify-content-center"><button pButton class="p-button-success startmenu-button" (click)="continueButtonHandler()">Continue previous request</button></div>
+  <div class="mt-3 flex justify-content-center"><button pButton class="p-button-success startmenu-button" (click)="loadRequestButtonHandler()">Load request</button></div>
+  <div class="mt-8 flex justify-content-center"><button pButton class="p-button-info startmenu-button" (click)="usageButtonHandler()">How to use this program</button></div>
 </div>

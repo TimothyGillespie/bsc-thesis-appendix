@@ -2,7 +2,7 @@
   <p class="flex justify-content-center text-2xl">
     <ng-container *ngIf="result.satisfiability.inductiveStep === false">The statement is correct!</ng-container>
     <ng-container *ngIf="result.satisfiability.inductiveStep === true">The statement could not be proven.</ng-container>
-    <ng-container *ngIf="result.satisfiability.inductiveStep === undefined">An error occured.</ng-container>
+    <ng-container *ngIf="result.satisfiability.inductiveStep === undefined">An error occured</ng-container>
   </p>
   <p class="flex justify-content-center text-2xl"></p>
   <p-accordionTab header="Satisfiability of the various steps">
@@ -17,7 +17,41 @@
       <div class="flex justify-content-center m-3 text-2xl" style="white-space: pre-wrap; font-family: monospace">{{ printHumanReadable() }}</div>
   </p-accordionTab>
 
-  <p-accordionTab header="What's next"></p-accordionTab>
+  <p-accordionTab header="What's next">
+    <p *ngIf="result.satisfiability.functionDefinitions === false">
+      The function steps were contradictory. This would indicate the function definitions given were not without conflict.
+      This would, for example, be the case if you gave overlapping conditions which did not have the same value at the point of overlap.
+      Please check your function definitions or report issue.
+    </p>
+    <p *ngIf="result.satisfiability.inductiveHypothesis === false">
+      The inductive hypothesis could not be shown. This is an unexpected mistake please report the issue.
+    </p>
+    <p *ngIf="result.satisfiability.additionalConstraints === false">
+      Conflict with the additional constraints occurred. Please check your constraints and your function definitions if
+      contradict each other.
+    </p>
+    <p *ngIf="result.satisfiability.inductiveBasis === false">
+      The inductive basis could not be shown to hold. The given counter example might be helpful.
+    </p>
+    <p *ngIf="result.satisfiability.inductiveStep === true">
+      <p>
+        The inductive step could not be shown to hold. This means the statement could not be shown via induction with the
+        given constraints. Keep in mind that, while a successful induction proof shows that the statement is true for all
+        values a failed induction proof does not provide any information about the truthiness of the statement.
+      </p>
+
+      <p>
+        Given more constraints the proof might be possible. The counter model might be useful to find such sensible
+        constraints. Additional constraints can be entered in the additional constraint section and the statement section.
+      </p>
+
+      <p>
+        The reason why additional constraints are necessary is that some properties are simply not explicitly given.
+        For expample the depth for a tree is never less than zero by most definitions and it is trivial looking at
+        the function definition, but this program and it's underlying solvers cannot infer this attribute automatically
+        and must be told about it explicitly.
+      </p>
+  </p-accordionTab>
   <p-accordionTab header="Information for developers">
     <div class="grid">
       <p class="col-8 flex justify-content-start">The sent request: </p>
@@ -29,30 +63,39 @@
 
 </p-accordion>
 
-<p class="flex justify-content-center text-2xl">
-  An error occurred.
-</p>
+<ng-container *ngIf="error">
+  <p class="flex justify-content-center text-2xl">
+    An error occurred
+  </p>
 
-<p class="flex justify-content-center">
-  This software performs a lot of restrictions and syntactic checks to reduce errors, however it does not check the
-  semantic in itself and possibly not all syntactical issues are necessarily caught. Thus, the following is suggested:
-</p>
+  <p class="mx-4">
+    This software performs a lot of restrictions and syntactic checks to reduce errors, however it does not check the
+    semantic in itself and possibly not all syntactical issues are necessarily caught. Thus, the following is suggested:
+  </p>
 
-<ul class="">
-  <li>Go back to previous steps and check the inputs you have made for mistakes:</li>
   <ul>
-    <li><a [routerLink]="['/constructor-definitions']">Constructor Definitions</a></li>
-    <li><a [routerLink]="['/statement']">Statements and additional functions</a></li>
-    <li><a [routerLink]="['/function-definitions']">Function Definitions</a></li>
-    <li><a [routerLink]="['/additional-constraints']">Additional Constraints</a></li>
+    <li>Go back to previous steps and check the inputs you have made for mistakes:</li>
+    <ul>
+      <li><a [routerLink]="['/constructor-definitions']">Constructor Definitions</a></li>
+      <li><a [routerLink]="['/statement']">Statements and additional functions</a></li>
+      <li><a [routerLink]="['/function-definitions']">Function Definitions</a></li>
+      <li><a [routerLink]="['/additional-constraints']">Additional Constraints</a></li>
+    </ul>
+    <li>If you did not discover anything wrong with your entries you can copy the debugging results below and ...</li>
+    <ul>
+      <li>... and give it to a fellow-student or your teacher to check ...</li>
+      <li><a href="https://github.com/TimothyGillespie/bsc-thesis-appendix/issues/new">... or if you suspect this is a bug in the software file a bug report on GitHub (account needed).</a></li>
+      <li>If you do not have an GitHub account feel free to send an email to <a href="mailto:bug.bsc-thesis@gillespie.eu">bug.bsc-thesis@gillespie.eu</a></li>
+    </ul>
   </ul>
-  <li>If you did not discover anything wrong with your entries you can copy the debugging results below and ...</li>
-  <ul>
-    <li>... and give it to a fellow-student or your teacher to check ...</li>
-    <li><a href="https://github.com/TimothyGillespie/bsc-thesis-appendix/issues/new">... or if you suspect this is a bug in the software file a bug report on GitHub (account needed).</a></li>
-    <li>If you do not have an GitHub account feel free to send an email to <a href="mailto:bug.bsc-thesis@gillespie.eu">bug.bsc-thesis@gillespie.eu</a></li>
-  </ul>
-</ul>
 
-
-
+  <p-accordion>
+    <p-accordionTab header="Request Information">
+      <div class="grid">
+        <p class="col-8 flex justify-content-start">The sent request: </p>
+        <span class="col-4 flex justify-content-end"><button pButton type="button" label="Copy" icon="pi pi-copy" (click)="copyRequest()"></button></span>
+      </div>
+      <textarea pInputTextarea [autoResize]="true" disabled class="w-full" style="color: black" #requestDisplay>{{sentRequest | json}}</textarea>
+    </p-accordionTab>
+  </p-accordion>
+</ng-container>

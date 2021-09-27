@@ -39,6 +39,4 @@ export type FunctionIdentifier = {
 };
 
 
-
-
 export type FunctionGraph = Graph<FunctionGraphNode, FunctionGraphEdge<FunctionGraphNode>>;

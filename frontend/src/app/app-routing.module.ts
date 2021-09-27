@@ -6,6 +6,7 @@ import {FunctionDefinitionsComponent} from "./pages/function-definitions/functio
 import {AdditionalConstraintsEnteringComponent} from "./pages/additional-constraints-entering/additional-constraints-entering.component";
 import {FinishComponent} from "./pages/finish/finish.component";
 import {StartComponent} from "./pages/start/start.component";
+import {LoadRequestComponent} from "./pages/load-request/load-request.component";
 
 const routes: Routes = [
   {path: '', component: StartComponent},
@@ -14,7 +15,9 @@ const routes: Routes = [
   {path: 'statement', component: StatementEnteringComponent},
   {path: 'function-definitions', component: FunctionDefinitionsComponent},
   {path: 'additional-constraints', component: AdditionalConstraintsEnteringComponent},
-  {path: 'finish', component: FinishComponent}
+  {path: 'finish', component: FinishComponent},
+  // {path: 'load-request', component: LoadRequestComponent},
+
 ];
 
 @NgModule({

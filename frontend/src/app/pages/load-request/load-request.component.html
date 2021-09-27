@@ -1,0 +1,8 @@
+<h1 class="flex justify-content-around">Load a Request</h1>
+<p class="flex justify-content-center text-xl mx-5">The request can be found at the end of along with result. It can be copied and inserted here to load the data of that request.</p>
+
+<textarea pInputTextarea [autoResize]="true" class="w-full" [(ngModel)]="requestInput"></textarea>
+<div class="flex justify-content-around">
+  <button pButton class="p-button-danger" (click)="clearButtonHandler()">Clear Field</button>
+  <button pButton class="p-button-success" (click)="loadRequestButtonHandler()">Load Request</button>
+</div>
