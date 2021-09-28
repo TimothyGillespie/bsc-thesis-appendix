@@ -19,6 +19,7 @@ jobs:
       - name: Login to Private Docker Registry
         uses: docker/login-action@v1
         with:
+          registry: private.docker.gillespie.eu
           username: ${{ secrets.CI_BOT_USERNAME }}
           password: ${{ secrets.CI_BOT_PASSWORD }}
 
@@ -52,6 +53,7 @@ jobs:
       - name: Login to Private Docker Registry
         uses: docker/login-action@v1
         with:
+          registry: private.docker.gillespie.eu
           username: ${{ secrets.CI_BOT_USERNAME }}
           password: ${{ secrets.CI_BOT_PASSWORD }}
 
