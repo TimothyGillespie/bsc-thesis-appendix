@@ -1,0 +1,7 @@
+.idea
+target
+bscthesis.iml
+dependency-reduced-pom.xml
+/*.smt2
+
+.env
