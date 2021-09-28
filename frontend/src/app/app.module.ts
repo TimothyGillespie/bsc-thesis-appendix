@@ -35,6 +35,7 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {ToastModule} from "primeng/toast";
 import {StepsModule} from "primeng/steps";
 import {LoadRequestComponent} from "./pages/load-request/load-request.component";
+import { UsageComponent } from './pages/usage/usage.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import {LoadRequestComponent} from "./pages/load-request/load-request.component"
     FinishComponent,
     StartComponent,
     LoadRequestComponent,
+    UsageComponent,
   ],
   imports: [
     AppRoutingModule,

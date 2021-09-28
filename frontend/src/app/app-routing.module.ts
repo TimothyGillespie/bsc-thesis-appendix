@@ -7,6 +7,7 @@ import {AdditionalConstraintsEnteringComponent} from "./pages/additional-constra
 import {FinishComponent} from "./pages/finish/finish.component";
 import {StartComponent} from "./pages/start/start.component";
 import {LoadRequestComponent} from "./pages/load-request/load-request.component";
+import {UsageComponent} from "./pages/usage/usage.component";
 
 const routes: Routes = [
   {path: '', component: StartComponent},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'additional-constraints', component: AdditionalConstraintsEnteringComponent},
   {path: 'finish', component: FinishComponent},
   // {path: 'load-request', component: LoadRequestComponent},
+  { path: 'usage', component: UsageComponent}
 
 ];
 

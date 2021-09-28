@@ -1,7 +1,7 @@
 <p-accordion *ngIf=result>
   <p class="flex justify-content-center text-2xl">
     <ng-container *ngIf="result.satisfiability.inductiveStep === false">The statement is correct!</ng-container>
-    <ng-container *ngIf="result.satisfiability.inductiveStep === true">The statement could not be proven.</ng-container>
+    <ng-container *ngIf="result.satisfiability.inductiveStep === true">The statement could not be proven</ng-container>
     <ng-container *ngIf="result.satisfiability.inductiveStep === undefined">An error occured</ng-container>
   </p>
   <p class="flex justify-content-center text-2xl"></p>
@@ -17,7 +17,7 @@
       <div class="flex justify-content-center m-3 text-2xl" style="white-space: pre-wrap; font-family: monospace">{{ printHumanReadable() }}</div>
   </p-accordionTab>
 
-  <p-accordionTab header="What's next">
+  <p-accordionTab header="What's next" *ngIf="result.satisfiability.inductiveStep === undefined || result.satisfiability.inductiveStep === true ">
     <p *ngIf="result.satisfiability.functionDefinitions === false">
       The function steps were contradictory. This would indicate the function definitions given were not without conflict.
       This would, for example, be the case if you gave overlapping conditions which did not have the same value at the point of overlap.
@@ -33,7 +33,7 @@
     <p *ngIf="result.satisfiability.inductiveBasis === false">
       The inductive basis could not be shown to hold. The given counter example might be helpful.
     </p>
-    <p *ngIf="result.satisfiability.inductiveStep === true">
+    <div *ngIf="result.satisfiability.inductiveStep === true">
       <p>
         The inductive step could not be shown to hold. This means the statement could not be shown via induction with the
         given constraints. Keep in mind that, while a successful induction proof shows that the statement is true for all
@@ -51,6 +51,7 @@
         the function definition, but this program and it's underlying solvers cannot infer this attribute automatically
         and must be told about it explicitly.
       </p>
+    </div>
   </p-accordionTab>
   <p-accordionTab header="Information for developers">
     <div class="grid">

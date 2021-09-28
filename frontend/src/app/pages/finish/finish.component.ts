@@ -8,6 +8,7 @@ import toClipBoard from "../../../util/toClipBoard";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {StepDisplayService} from "../../services/step-display/step-display.service";
+import convertKeysToSnakeCase from "../../../util/convertKeysToSnakeCase";
 
 @Component({
   selector: 'app-finish',
@@ -46,7 +47,7 @@ export class FinishComponent implements OnInit {
 
     const request = this.requestData.obtainRequest();
 
-    this.sentRequest = request
+    this.sentRequest = convertKeysToSnakeCase(request)
     this.api.prove(request).then((response) => {
       this.result = response;
     }).catch((error) => {

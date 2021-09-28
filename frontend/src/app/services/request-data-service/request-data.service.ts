@@ -34,7 +34,10 @@ export class RequestDataService {
       constructorDefinitions: this.constructorDefinitions.value,
       statementTree: getFunctionTree(this.statementString.value),
       functionDefinitions: this.functionDefinitions.value,
-      additionalConstraints: this.additionalConstraints.value,
+      additionalConstraints: this.additionalConstraints.value
+        ? this.additionalConstraints.value
+          .map(constraint => ({...constraint, constraint: getFunctionTree(constraint.constraint)}))
+        : [],
     }
   }
 

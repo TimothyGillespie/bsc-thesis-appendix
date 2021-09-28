@@ -48,7 +48,10 @@ export type ProveRequest = {
   constructorDefinitions: ConstructorDefinition[],
   statementTree: FunctionTreeNode,
   functionDefinitions: FunctionDefinition[],
-  additionalConstraints: AdditionalConstraint[]
+  additionalConstraints: {
+    inputVariables: { [variable: string]: string };
+    constraint: FunctionTreeNode;
+  }[]
 }
 
 export type ProveResponse = {
