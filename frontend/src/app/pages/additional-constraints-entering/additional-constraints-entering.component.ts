@@ -8,6 +8,7 @@ import functionTreeNodeToString from "../../../util/Formulae/functionTreeNodeToS
 import isTreeableStatement from "../../../util/validators/isTreeableStatement";
 import {ValidationHintService} from "../../services/validation-hint/validation-hint.service";
 import {environment} from "../../../environments/environment";
+import {StepDisplayService} from "../../services/step-display/step-display.service";
 
 @Component({
   selector: 'app-additional-constraints-entering',
@@ -28,7 +29,11 @@ export class AdditionalConstraintsEnteringComponent implements OnInit, OnDestroy
     private router: Router,
     private api: ApiQueryService,
     private validationHint: ValidationHintService,
-    ) { }
+    private stepDisplay: StepDisplayService,
+    ) {
+    this.stepDisplay.activeIndex = 3;
+    this.stepDisplay.showSteps = true;
+  }
 
   ngOnInit(): void {
     this.api.getTypes().subscribe((options) => {
