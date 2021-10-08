@@ -36,7 +36,7 @@ fun generateStatementToProof(request: ProveStatementRequest, constructorInstanti
     val resultList = results.toList();
 
     return SmtV20NamedAssert(
-        "statementToProve",
+        "inductiveStep",
         StatementTreeVertex(
             "not",
             if(results.size >= 2)

@@ -75,15 +75,15 @@ fun isInductionHypothesis(function: SFunction) = function.name == "define-fun"
         && function.parameters.size > 1
         && function.parameters[1].name?.startsWith("inductionHypothesis") ?: false
 
-fun isStatementToProve(function: SFunction) = function.name == "define-fun"
+fun isInductiveStep(function: SFunction) = function.name == "define-fun"
         && function.parameters.size > 1
-        && function.parameters[1].name?.equals("Statement to prove") ?: false
+        && function.parameters[1].name?.equals("inductiveStep") ?: false
 
 
 fun isRelevantForCounterHumanReadableCounterModel(function: SFunction) = !isFunctionDefinition(function)
         && !isInductiveBasis(function)
         && !isInductionHypothesis(function)
-        && !isStatementToProve(function)
+        && !isInductiveStep(function)
         && (
         isInstantiationAliasMapping(function)
                 ||  isAliasDeclaration(function)

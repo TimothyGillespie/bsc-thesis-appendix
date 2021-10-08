@@ -33,7 +33,7 @@
     (= (size %t_base/0) 1))
   (define-fun inductionHypothesis1 () Bool
     (<= (depth %%t/2_x2) (size %%t/2_x2)))
-  (define-fun statementToProve () Bool
+  (define-fun inductiveStep () Bool
     (not (<= (depth %t/2) (size %t/2))))
   (define-fun definitionSizeNumber1Arity1InputTypesNAryTreeOutputTypeIntOtherwise () Bool
     (= (size %t/2) (+ 1 (size %%t/2_x1) (size %%t/2_x2))))
