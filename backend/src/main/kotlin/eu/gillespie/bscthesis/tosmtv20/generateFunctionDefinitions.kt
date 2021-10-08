@@ -234,5 +234,5 @@ fun generateOtherwiseDefinition(usedConditions: List<StatementTreeVertex>, value
 }
 
 fun generateFunctionName(definition: DefinitionWithDetails, postFix: String, definitionCount: Int): String {
-    return "definition${definition.details.name.replaceFirstChar { c -> c.uppercase() }}Number${definitionCount}Arity${definition.details.arity}InputTypes${definition.details.inputTypes.joinToString("")}OutputType${definition.details.outputType}${postFix}"
+    return "definition${definition.details.name}Number${definitionCount}Arity${definition.details.arity}InputTypes${definition.details.inputTypes.joinToString("%")}OutputType${definition.details.outputType}ConditionalCase${postFix}"
 }

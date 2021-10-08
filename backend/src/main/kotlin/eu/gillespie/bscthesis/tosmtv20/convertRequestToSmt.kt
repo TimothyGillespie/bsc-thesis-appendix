@@ -45,7 +45,8 @@ fun convertToSmtV20String(request: ProveStatementRequest): String {
     val file = SmtV20File()
     file.produceUnsatCores = false
     file.smtCoreMinimize = false
-    file.produceProof = true
+    file.produceProof = false
+    file.produceModels = true
 
     file.topLevelExpressions = convertRequestToSmtV20List(request).toMutableList()
 

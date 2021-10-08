@@ -18,7 +18,7 @@ class SmtV20File(
         sb.append(String.format(optionTemplate, ":produce-unsat-cores", this.produceUnsatCores.toString()))
         sb.append(String.format(optionTemplate, ":smt.core.minimize", this.smtCoreMinimize.toString()))
         sb.append(String.format(optionTemplate, ":produce-proofs", this.produceProof.toString()))
-        sb.append(String.format(optionTemplate, ":produce-models", this.produceProof.toString()))
+        sb.append(String.format(optionTemplate, ":produce-models", this.produceModels.toString()))
         for (singleTopLevelExpression in topLevelExpressions) sb.append(singleTopLevelExpression.toSmtV20())
             .append("\n")
         sb.append("(exit)")

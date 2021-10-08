@@ -1,6 +1,7 @@
 package eu.gillespie.bscthesis.config
 
 import eu.gillespie.bscthesis.controller.statementRoutes
+import eu.gillespie.bscthesis.exceptions.SemanticException
 import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.features.*
@@ -31,6 +32,10 @@ fun Application.configureHttp() {
             }
             exception<AuthorizationException> { cause ->
                 call.respond(HttpStatusCode.Forbidden)
+            }
+
+            exception<SemanticException> { cause ->
+                call.respond(HttpStatusCode.BadRequest, cause.message ?: "The request had an semantic error.")
             }
 
             exception<Exception> { cause ->

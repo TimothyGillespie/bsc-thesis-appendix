@@ -1,5 +1,6 @@
 package eu.gillespie.bscthesis.tosmtv20
 
+import eu.gillespie.bscthesis.exceptions.SemanticException
 import eu.gillespie.bscthesis.information.AvailableTypes
 import eu.gillespie.bscthesis.model.ProveStatementRequest
 import java.lang.RuntimeException
@@ -31,7 +32,7 @@ fun getInputConstructor(definition: DefinitionWithDetails, request: ProveStateme
     }
 
     if(result == null)
-        throw RuntimeException("The constructor ${definition.inputConstructor.name}/${definition.inputConstructor.arity} of type ${definition.details.inputTypes.first()} is not defined")
+        throw SemanticException("The constructor ${definition.inputConstructor.name}/${definition.inputConstructor.arity} of type ${definition.details.inputTypes.first()} is not defined")
 
     return result
 }
