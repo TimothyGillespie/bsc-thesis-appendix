@@ -25,5 +25,5 @@ fun generateInductiveProperties(request: ProveStatementRequest, constructorInsta
         }
     }
 
-    return result.mapIndexed { i, it -> SmtV20NamedAssert("inductionAssumption$i", it) }
+    return result.mapIndexed { i, it -> SmtV20NamedAssert("inductionHypothesis$i", it) }
 }

@@ -31,13 +31,13 @@
     (= (depth %t_base/0) 1))
   (define-fun definitionSizeNumber2Arity1InputTypesNAryTreeOutputTypeIntOtherwise () Bool
     (= (size %t_base/0) 1))
-  (define-fun inductionAssumption1 () Bool
+  (define-fun inductionHypothesis1 () Bool
     (<= (depth %%t/2_x2) (size %%t/2_x2)))
   (define-fun statementToProve () Bool
     (not (<= (depth %t/2) (size %t/2))))
   (define-fun definitionSizeNumber1Arity1InputTypesNAryTreeOutputTypeIntOtherwise () Bool
     (= (size %t/2) (+ 1 (size %%t/2_x1) (size %%t/2_x2))))
-  (define-fun inductionAssumption0 () Bool
+  (define-fun inductionHypothesis0 () Bool
     (<= (depth %%t/2_x1) (size %%t/2_x1)))
   (define-fun inductiveBasis () Bool
     (<= (depth %t_base/0) (size %t_base/0)))
