@@ -1,15 +1,19 @@
 <p-accordion *ngIf=result>
   <p class="flex justify-content-center text-2xl">
-    <ng-container *ngIf="result.satisfiability.inductiveStep === false">The statement is correct!</ng-container>
-    <ng-container *ngIf="result.satisfiability.inductiveStep === true">The statement could not be proven</ng-container>
-    <ng-container *ngIf="result.satisfiability.inductiveStep === undefined">An error occured</ng-container>
+    <ng-container *ngIf="result.satisfiability.inductiveStep === 'unsat'">The statement is correct!</ng-container>
+    <ng-container *ngIf="result.satisfiability.inductiveStep === 'sat'">The statement could not be proven</ng-container>
+    <ng-container *ngIf="result.satisfiability.inductiveStep === 'unknown'">The statement has been understood but the result could not be calculated.</ng-container>
   </p>
   <p class="flex justify-content-center text-2xl"></p>
   <p-accordionTab header="Satisfiability of the various steps">
     <div class="text-2xl">
       <ng-container *ngFor="let key of getResponseKeys(); let i = index">
-        <div class="flex justify-content-center m-3">{{ names[i]}}&nbsp;&nbsp;<i [ngClass]="{ 'pi text-2xl': true, 'pi-check green-text': result.satisfiability[key], 'pi-times red-text': !result.satisfiability[key]}"></i></div>
+        <div class="flex justify-content-center m-3">{{ names[i]}}&nbsp;&nbsp;<i [ngClass]="{ 'pi text-2xl': true, 'pi-check green-text': result.satisfiability[key] === 'sat', 'pi-times red-text': result.satisfiability[key] == 'unsat', 'pi-question-circle red-text': result.satisfiability[key] == 'unsat'}"></i></div>
       </ng-container>
+
+      <div class="mt-8">
+        Legend:  <i class="ml-3 pi pi-check green-text"></i> Satisfiable <i class="ml-3 pi pi-times red-text"></i> Unsatisfiable <i class="ml-3 pi pi-question-circle red-text"></i> Unknown
+      </div>
     </div>
   </p-accordionTab>
 
@@ -17,23 +21,23 @@
       <div class="flex justify-content-center m-3 text-2xl" style="white-space: pre-wrap; font-family: monospace">{{ printHumanReadable() }}</div>
   </p-accordionTab>
 
-  <p-accordionTab header="What's next" *ngIf="result.satisfiability.inductiveStep === undefined || result.satisfiability.inductiveStep === true ">
-    <p *ngIf="result.satisfiability.functionDefinitions === false">
+  <p-accordionTab header="What's next" *ngIf="result.satisfiability.inductiveStep === undefined || result.satisfiability.inductiveStep === 'sat' ">
+    <p *ngIf="result.satisfiability.functionDefinitions === 'unsat'">
       The function steps were contradictory. This would indicate the function definitions given were not without conflict.
       This would, for example, be the case if you gave overlapping conditions which did not have the same value at the point of overlap.
       Please check your function definitions or report issue.
     </p>
-    <p *ngIf="result.satisfiability.inductiveHypothesis === false">
-      The inductive hypothesis could not be shown. This is an unexpected mistake please report the issue.
+    <p *ngIf="result.satisfiability.inductiveHypothesis === 'unsat'">
+      The inductive hypothesis could not be asserted. This is an unexpected mistake please report the issue.
     </p>
-    <p *ngIf="result.satisfiability.additionalConstraints === false">
+    <p *ngIf="result.satisfiability.additionalConstraints === 'unsat'">
       Conflict with the additional constraints occurred. Please check your constraints and your function definitions if
       contradict each other.
     </p>
-    <p *ngIf="result.satisfiability.inductiveBasis === false">
+    <p *ngIf="result.satisfiability.inductiveBasis === 'unsat'">
       The inductive basis could not be shown to hold. The given counter example might be helpful.
     </p>
-    <div *ngIf="result.satisfiability.inductiveStep === true">
+    <div *ngIf="result.satisfiability.inductiveStep === 'sat'">
       <p>
         The inductive step could not be shown to hold. This means the statement could not be shown via induction with the
         given constraints. Keep in mind that, while a successful induction proof shows that the statement is true for all

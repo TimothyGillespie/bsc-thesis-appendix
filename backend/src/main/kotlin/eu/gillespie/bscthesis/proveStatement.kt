@@ -42,25 +42,25 @@ fun proveStatement(request: ProveStatementRequest): ProveStatementResponse {
 
     val satisfiabilities = response.subList(0,countOfCheckSats)
 
-    if(!satisfiabilities.all { it == "unsat" || it == "sat" })
+    if(!satisfiabilities.all { it == "sat" || it == "unsat" || it == "unknown" })
         throw SolverException("Unexpected result, it seems z3 could not parse the request and throw an error:\n\n ${response}")
 
-    val functionDefinitionIsSat = satisfiabilities[0] == "sat"
-    val inductiveHypothesisIsSat = satisfiabilities[1] == "sat"
-    val additionalConstraintsIsSat = satisfiabilities[2] == "sat"
-    val inductiveBasisIsSat = satisfiabilities[3] == "sat"
-    val inductiveStepIsSat = satisfiabilities[4] == "sat"
+    val functionDefinition = satisfiabilities[0]
+    val inductiveHypothesis = satisfiabilities[1]
+    val additionalConstraints = satisfiabilities[2]
+    val inductiveBasis = satisfiabilities[3]
+    val inductiveStep = satisfiabilities[4]
 
     val satisfiabilityResponsePart = SatisfiabilityResponsePart(
-        functionDefinitionIsSat,
-        if(functionDefinitionIsSat) inductiveHypothesisIsSat else null,
-        if(inductiveHypothesisIsSat) additionalConstraintsIsSat else null,
-        if(additionalConstraintsIsSat) inductiveBasisIsSat else null,
-        if(inductiveBasisIsSat) inductiveStepIsSat else null,
+        functionDefinition,
+        if(isSatOrUnknown(functionDefinition)) inductiveHypothesis else null,
+        if(isSatOrUnknown(inductiveHypothesis)) additionalConstraints else null,
+        if(isSatOrUnknown(additionalConstraints)) inductiveBasis else null,
+        if(isSatOrUnknown(inductiveBasis)) inductiveStep else null,
     )
 
     var counterModelResponsePart: CounterModelResponsePart? = null
-    if(inductiveStepIsSat) {
+    if(inductiveStep == "sat") {
         val raw  = response.subList(countOfCheckSats, response.size - 1).joinToString("\n")
         val parsedSFunction = parseFullParenthesis(raw)
         if(parsedSFunction.name == "error")
@@ -76,4 +76,9 @@ fun proveStatement(request: ProveStatementRequest): ProveStatementResponse {
         counterModelResponsePart = CounterModelResponsePart(counterModel, humandReadable, raw)
     }
     return ProveStatementResponse(satisfiabilityResponsePart, counterModelResponsePart)
+}
+
+fun isSatOrUnknown(input: String?): Boolean {
+    input ?: return false
+    return input == "sat" || input == "unknown"
 }

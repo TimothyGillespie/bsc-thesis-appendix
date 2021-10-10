@@ -56,11 +56,11 @@ export type ProveRequest = {
 
 export type ProveResponse = {
   satisfiability: {
-    functionDefinitions: boolean,
-    inductiveHypothesis?: boolean,
-    additionalConstraints?: boolean,
-    inductiveBasis?: boolean,
-    inductiveStep?: boolean
+    functionDefinitions: string,
+    inductiveHypothesis?: string,
+    additionalConstraints?: string,
+    inductiveBasis?: string,
+    inductiveStep?: string,
   },
   counterModel?: {
     parsed: {
