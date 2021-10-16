@@ -16,26 +16,35 @@
                 <ng-container [formGroupName]="iv">
                   <span class="p-inputgroup" [style.width.rem]="20">
                     <input pInputText formControlName="variable" [pKeyFilter]="allowedVariableCharacters"
+                           [attr.data-test]="'additional-constraint-' + ac + '-quantified-parameter-' + iv + '-symbol'"
                            [class]="getVariableSymbol(ac, iv).invalid ? 'ng-invalid ng-dirty' : ''"
                     />
                     <span class="text-2xl mx-2 flex align-items-center">∈</span>
                     <p-dropdown [options]="typeDropdownOptions" formControlName="type" placeholder="Please select"
+                                [attr.data-test]="'additional-constraint-' + ac + '-quantified-parameter-' + iv + '-type'"
                                 [class]="getVariableType(ac, iv).invalid ? 'ng-invalid ng-dirty' : ''"
                     ></p-dropdown>
-                    <button pButton class="p-inputgroup-addon p-button-sm p-button-danger" icon="pi pi-trash" (click)="deleteInputVariable(ac, iv)"></button>
+                    <button pButton class="p-inputgroup-addon p-button-sm p-button-danger" icon="pi pi-trash" (click)="deleteInputVariable(ac, iv)"
+                            [attr.data-test]="'additional-constraint-' + ac + '-quantified-parameter-' + iv + '-remove-button'"
+                    ></button>
                   </span>
                 </ng-container>
               </div>
             </ng-container>
             <div class="flex-shrink-1 flex align-items-center">
-              <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="addInputVariable(ac)"></button>
+              <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="addInputVariable(ac)"
+                      [attr.data-test]="'additional-constraint-' + ac + '-add-quantified-parameter-button'"
+              ></button>
             </div>
           </ng-container>
           <div class="flex-grow-1">
             <input pInputText formControlName="constraint" [pKeyFilter]="allowedValuesForFormulae"
+                   [attr.data-test]="'additional-constraint-' + ac + '-expression'"
                    [class]="getConstraint(ac).invalid ? 'ng-invalid ng-dirty' : ''"
             />
-            <button pButton class="p-button-sm p-button-danger" icon="pi pi-trash" (click)="deleteConstraint(ac)"></button>
+            <button pButton class="p-button-sm p-button-danger" icon="pi pi-trash" (click)="deleteConstraint(ac)"
+              [attr.data-test]="'additional-constraint-' + ac + '-remove-button'"
+            ></button>
 
             <span class="ng-invalid text-2xl" *ngIf="getConstraint(ac).invalid">{{ extractStatementError(getConstraint(ac)) }}</span>
           </div>
@@ -44,14 +53,20 @@
     </ng-container>
   </ng-container>
   <div class="flex mt-8 justify-content-center">
-    <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="addConstraintEntry()"></button>
+    <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="addConstraintEntry()"
+      [attr.data-test]="'add-constraint-button'"
+    ></button>
   </div>
 </form>
 
 <div class="flex justify-content-center">
-  <button pButton class="p-button-success" (click)="onFinish()">Start Proving</button>
+  <button pButton class="p-button-success" (click)="onFinish()"
+    [attr.data-test]="'additional-constraints-next-button'"
+  >Start Proving</button>
 </div>
 
 <div class="flex justify-content-center mt-5">
-  <button pButton (click)="onBack()" class="p-button-link">Go Back To Constructor Definitions</button>
+  <button pButton (click)="onBack()" class="p-button-link"
+    [attr.data-test]="'additional-constraints-back-button'"
+  >Go Back To Constructor Definitions</button>
 </div>

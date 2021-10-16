@@ -12,7 +12,7 @@
             <div class="p-field">
               <p class="p-float-label">
                 <input pInputText id="term" formControlName="term"
-                       [class]="getConstructorTerm(d).invalid ? 'ng-invalid ng-dirty' : ''"
+                       [class]="getConstructorTerm(d).invalid ? 'ng-invalid ng-dirty' : ''" [attr.data-test]="'constructor-definition-' + d + '-term'"
                 />
                 <label for="term">Term</label>
               </p>
@@ -20,6 +20,7 @@
           </div>
           <div>
             <p-dropdown [options]="typeOptions" formControlName="type" placeholder="Select a type"
+                        [attr.data-test]="'constructor-definition-' + d +  '-type'"
                         [class]="getConstructorType(d).invalid ? 'ng-invalid ng-dirty' : ''"
             ></p-dropdown>
           </div>
@@ -35,7 +36,7 @@
                     <div class="p-fluid formgrid grid">
                       <div class="field col-8">
                         <p class="p-float-label">
-                          <input pInputText id="symbol" formControlName="symbol"
+                          <input pInputText id="symbol" formControlName="symbol" [attr.data-test]="'constructor-definition-' + d +  '-function-' + f + '-symbol'"
                                  [class]="getSingleFunction(d, f).invalid ? 'ng-invalid ng-dirty' : ''"
                           />
                           <label for="symbol">Symbol</label>
@@ -43,19 +44,21 @@
                       </div>
                       <div class="field col-3">
                         <p class="p-float-label">
-                          <p-inputNumber inputId="arity" [min]="0" [showButtons]="true" formControlName="arity"></p-inputNumber>
+                          <p-inputNumber inputId="arity" [min]="0" [showButtons]="true" formControlName="arity"
+                            [attr.data-test]="'constructor-definition-' + d +  '-function-' + f + '-arity'"
+                          ></p-inputNumber>
                           <label for="arity">Arity</label>
                         </p>
                       </div>
                     </div>
                     <div class="field col-1 mt-2">
-                        <button pButton class="p-button-danger"  icon="pi pi-trash" (click)="removeConstructorFunction(d, f)"></button>
+                        <button pButton class="p-button-danger"  icon="pi pi-trash" (click)="removeConstructorFunction(d, f)" [attr.data-test]="'constructor-definition-' + d +  '-function-' + f + '-remove-button'"></button>
                     </div>
 
                   </div>
                 </ng-container>
                 <div class="flex mt-8 justify-content-center">
-                  <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewConstructorFunction(d)"></button>
+                  <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewConstructorFunction(d)" [attr.data-test]="'constructor-definition-' + d +  '-function-add-button'"></button>
                 </div>
               </ng-container>
             </div>
@@ -65,11 +68,11 @@
       </div>
     </ng-container>
     <div class="flex mt-8 justify-content-center">
-      <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewConstructorDefinitions()"></button>
+      <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewConstructorDefinitions()" data-test="new-constructor-button"></button>
     </div>
   </ng-container>
 </div>
 
 <div class="flex justify-content-center mt-4">
-  <button pButton (click)="onFinish()" class="p-button-success">Next</button>
+  <button pButton (click)="onFinish()" class="p-button-success" data-test="constructor-function-def-next-button">Next</button>
 </div>

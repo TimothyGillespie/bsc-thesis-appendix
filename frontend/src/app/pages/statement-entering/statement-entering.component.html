@@ -5,6 +5,7 @@
 <p-card>
   <div class="flex justify-content-center">
     <input id="statement" pInputText [pKeyFilter]="allowedValuesForFormulae" class="w-10" [(ngModel)]="statement"
+           [attr.data-test]="'statement-to-prove'"
            [class]="!checkStatement(false) ? 'ng-invalid ng-dirty' : ''"/>
   </div>
 </p-card>
@@ -22,13 +23,14 @@
                   <p class="p-float-label">
                     <input pInputText id="symbol" formControlName="symbol"
                       [class]="getSymbol(f).invalid ? 'ng-invalid ng-dirty' : ''"
+                      [attr.data-test]="'additional-function-' + f + '-symbol'"
                     />
                     <label for="symbol">Symbol</label>
                   </p>
                 </div>
                 <div class="field col-3">
                   <p class="p-float-label">
-                    <p-inputNumber inputId="arity" [min]="0" [showButtons]="true" formControlName="arity"></p-inputNumber>
+                    <p-inputNumber [attr.data-test]="'additional-function-' + f + '-arity'" inputId="arity" [min]="0" [showButtons]="true" formControlName="arity"></p-inputNumber>
                     <label for="arity">Arity</label>
                   </p>
                 </div>
@@ -42,7 +44,7 @@
             </div>
           </ng-container>
           <div class="flex mt-8 justify-content-center">
-            <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewFunction()"></button>
+            <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" [attr.data-test]="'add-additional-function-button'" (click)="createNewFunction()"></button>
           </div>
         </ng-container>
       </ng-container>
@@ -52,9 +54,9 @@
 
 
 <div class="flex justify-content-center mt-5">
-  <button pButton class="p-button-success" (click)="onFinish()">Next</button>
+  <button pButton class="p-button-success" [attr.data-test]="'statement-entering-next-button'" (click)="onFinish()">Next</button>
 </div>
 
 <div class="flex justify-content-center mt-5">
-  <button pButton (click)="onBack()" class="p-button-link">Go Back To Constructor Definitions</button>
+  <button pButton (click)="onBack()" class="p-button-link" [attr.data-test]="'statement-entering-back-button'">Go Back To Constructor Definitions</button>
 </div>

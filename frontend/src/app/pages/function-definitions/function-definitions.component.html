@@ -16,6 +16,7 @@
                   <div class="flex justify-content-end mr-4 font-bold">{{ it + 1 }}.</div>
                   <div class="flex justify-content-end align-items-center">
                     <p-dropdown
+                      [attr.data-test]="'function-' + getFunctionName(fd) + '-input-type-' + it"
                       [options]="typeDropdownOptions"
                       [formControlName]="it"
                       [class]="getSingleInputType(fd, it).invalid ? 'ng-invalid ng-dirty' : ''"
@@ -30,6 +31,7 @@
             </div>
             <div class="col-5 flex justify-content-start align-items-center">
               <p-dropdown
+                [attr.data-test]="'function-' + getFunctionName(fd) + '-output-type'"
                 [options]="typeDropdownOptions"
                 formControlName="outputType"
                 placeholder="Please Select"
@@ -50,7 +52,9 @@
                         {{getFunctionName(fd)}}({{ getInputConstructorName(fd, vd)}}(
                           <ng-container formArrayName="boundVariables">
                             <ng-container *ngFor="let _ of getInputConstructorBoundVariables(fd, vd).controls; let bv = index">
-                              <input pInputText [formControlName]="bv" [ngClass]="{'variable-field p-inputtext-sm': true, 'input-invalid': getSingleInputConstructorBoundVariable(fd, vd, bv).invalid}" maxlength="4"/>
+                              <input pInputText [formControlName]="bv" [ngClass]="{'variable-field p-inputtext-sm': true, 'input-invalid': getSingleInputConstructorBoundVariable(fd, vd, bv).invalid}" maxlength="4"
+                                     [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-variable-name-' + bv"
+                              />
                             </ng-container>
                           </ng-container>
                         ))
@@ -62,7 +66,9 @@
                       {{getFunctionName(fd)}}(
                       <ng-container formGroupName="inputVariable">
                         <ng-container *ngFor="let _ of getInputVariable(fd, vd).controls; let iv = index">
-                          <input pInputText [formControlName]="iv" [ngClass]="{'variable-field p-inputtext-sm': true, 'input-invalid': getSingleInputVariable(fd, vd, iv).invalid}" maxlength="4"/>
+                          <input pInputText [formControlName]="iv" [ngClass]="{'variable-field p-inputtext-sm': true, 'input-invalid': getSingleInputVariable(fd, vd, iv).invalid}" maxlength="4"
+                                 [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-variable-name-' + iv"
+                          />
                         </ng-container>
                       </ng-container>
                       )
@@ -86,19 +92,29 @@
                     <ng-container *ngFor="let _ of getConditional(fd, vd).controls; let c = index">
                       <ng-container [formGroupName]="c">
                       <div class="p-inputgroup">
-                        <input pInputText [pKeyFilter]="allowedValuesForFormulae" [style.width.%]="80" formControlName="then"/>
+                        <input pInputText [pKeyFilter]="allowedValuesForFormulae" [style.width.%]="80" formControlName="then"
+                               [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-conditional-' + c + '-value'"
+                        />
                         <span class="p-inputgroup-addon" [style.width]="'auto'">if</span>
-                        <input [pKeyFilter]="allowedValuesForFormulae" pInputText [style.width.%]="20" formControlName="condition"/>
-                        <button pButton class="p-inputgroup-addon p-button-sm p-button-danger"  icon="pi pi-trash" (click)="removeConditionalDefinition(fd, vd, c)"></button>
+                        <input [pKeyFilter]="allowedValuesForFormulae" pInputText [style.width.%]="20" formControlName="condition"
+                               [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-conditional-' + c + '-condition'"
+                        />
+                        <button pButton class="p-inputgroup-addon p-button-sm p-button-danger"  icon="pi pi-trash" (click)="removeConditionalDefinition(fd, vd, c)"
+                          [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-conditional-' + c + '-remove-button'"
+                        ></button>
                       </div>
                       </ng-container>
                     </ng-container>
                   </ng-container>
                   <ng-container>
                     <div class="p-inputgroup">
-                      <input pInputText [pKeyFilter]="allowedValuesForFormulae" formControlName="otherwise"/>
+                      <input pInputText [pKeyFilter]="allowedValuesForFormulae" formControlName="otherwise"
+                             [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-otherwise-value'"
+                      />
                       <span class="p-inputgroup-addon">otherwise</span>
-                      <button pButton class="p-inputgroup-addon p-button-sm" label="+" (click)="addConditionalDefinition(fd, vd)"></button>
+                      <button pButton class="p-inputgroup-addon p-button-sm" label="+" (click)="addConditionalDefinition(fd, vd)"
+                              [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-add-condition-button'"
+                      ></button>
                     </div>
                   </ng-container>
                 </div>
@@ -112,11 +128,11 @@
 
   <p-card>
     <div class="flex justify-content-center">
-      <button pButton class="p-button-success mt-5" (click)="onFinish()">Next</button>
+      <button pButton class="p-button-success mt-5" (click)="onFinish()" [attr.data-test]="'function-definition-next-button'">Next</button>
     </div>
-    
+
     <div class="flex justify-content-center mt-5">
-      <button pButton (click)="onBack()" class="p-button-link">Go Back To Constructor Definitions</button>
+      <button pButton (click)="onBack()" class="p-button-link" [attr.data-test]="'function-definition-back-button'">Go Back To Constructor Definitions</button>
     </div>
   </p-card>
 </form>

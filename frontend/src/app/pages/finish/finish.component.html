@@ -1,5 +1,5 @@
 <p-accordion *ngIf=result>
-  <p class="flex justify-content-center text-2xl">
+  <p class="flex justify-content-center text-2xl" [attr.data-test]="'result-header'">
     <ng-container *ngIf="result.satisfiability.inductiveStep === 'unsat'">The statement is correct!</ng-container>
     <ng-container *ngIf="result.satisfiability.inductiveStep === 'sat'">The statement could not be proven</ng-container>
     <ng-container *ngIf="result.satisfiability.inductiveStep === 'unknown'">The statement has been understood but the result could not be calculated.</ng-container>

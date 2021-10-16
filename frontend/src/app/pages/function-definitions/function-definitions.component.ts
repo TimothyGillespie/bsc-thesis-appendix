@@ -284,6 +284,10 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
     return this.formGroup.get(`functionDefinitions.${fd}.name`).value
   }
 
+  getConstructorName(fd: number, vd: number): string {
+    return this.formGroup.get(`functionDefinitions.${fd}.definition.${vd}.inputConstructor.name`)?.value ?? 'none';
+  }
+
   getValueDefinition(fd: number, vd: number): FormGroup {
     return this.formGroup.get(`functionDefinitions.${fd}.definition.${vd}`) as FormGroup;
   }
