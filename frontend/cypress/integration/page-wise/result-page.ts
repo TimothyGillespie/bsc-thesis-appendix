@@ -37,7 +37,7 @@ describe('Result page tests', () => {
     result.additionalConstraintsIsSat();
     result.inductiveBasisIsSat();
     result.inductiveStepIsSat();
-  })
+  });
 
   it('Displays all unsatisfiable correctly', () => {
     cy.server();
@@ -49,7 +49,7 @@ describe('Result page tests', () => {
     result.additionalConstraintsIsUnsat();
     result.inductiveBasisIsUnsat();
     result.inductiveStepIsUnsat();
-  })
+  });
 
   it('Displays all unknown correctly', () => {
     cy.server();
@@ -61,6 +61,14 @@ describe('Result page tests', () => {
     result.additionalConstraintsIsUnknown();
     result.inductiveBasisIsUnknown();
     result.inductiveStepIsUnknown();
-  })
+  });
+
+  it('Displays only function definitions unsat correctly', () => {
+    cy.server();
+    cy.route('POST', '**/result', 'fixture:only-unsat-function-definitions-result.json');
+    cy.visit('/finish');
+    result.headerShouldNotSayProven();
+    result.functionDefinitionsIsUnsat();
+  });
 
 });
