@@ -8,7 +8,11 @@
   <p-accordionTab header="Satisfiability of the various steps">
     <div class="text-2xl">
       <ng-container *ngFor="let key of getResponseKeys(); let i = index">
-        <div class="flex justify-content-center m-3">{{ names[i]}}&nbsp;&nbsp;<i [ngClass]="{ 'pi text-2xl': true, 'pi-check green-text': result.satisfiability[key] === 'sat', 'pi-times red-text': result.satisfiability[key] == 'unsat', 'pi-question-circle red-text': result.satisfiability[key] == 'unsat'}"></i></div>
+        <div class="flex justify-content-center m-3">{{ names[i]}}&nbsp;&nbsp;
+          <i [ngClass]="{ 'pi text-2xl': true, 'pi-check green-text': result.satisfiability[key] === 'sat', 'pi-times red-text': result.satisfiability[key] == 'unsat', 'pi-question-circle red-text': result.satisfiability[key] == 'unknown'}"
+             [attr.data-test]="convertForDataTest(names[i])"
+          ></i>
+        </div>
       </ng-container>
 
       <div class="mt-8">

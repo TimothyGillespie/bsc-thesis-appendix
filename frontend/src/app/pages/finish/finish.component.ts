@@ -80,4 +80,8 @@ export class FinishComponent implements OnInit {
       detail: 'The sent request was successfully copied to your clipboard!'
     })
   }
+
+  convertForDataTest(name: string): string {
+    return 'sat-' + name.toLowerCase().replace(' ', '-');
+  }
 }

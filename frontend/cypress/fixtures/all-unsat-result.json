@@ -1,0 +1,9 @@
+{
+  "satisfiability": {
+    "function_definitions": "unsat",
+    "inductive_hypothesis": "unsat",
+    "additional_constraints": "unsat",
+    "inductive_basis": "unsat",
+    "inductive_step": "unsat"
+  }
+}
