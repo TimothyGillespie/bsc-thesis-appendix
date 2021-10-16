@@ -6,9 +6,6 @@ import getTopLevelPrefixFunction from '../TopLevelFunctions/getTopLevelPrefixFun
 import getTopLevelInfixFunction from '../TopLevelFunctions/getTopLevelInfixFunction/getTopLevelInfixFunction';
 import isTopLevelFunctionPriority from "../TopLevelFunctions/isTopLevelFunctionPriority/isTopLevelFunctionPriority";
 import getTopLevelPriorityContent from "../TopLevelFunctions/getTopLevelPriorityContent/getTopLevelPriorityContent";
-import ParsingException from "../../../exceptions/ParsingException";
-import {environment} from "../../../environments/environment";
-import {trim} from "lodash";
 
 // Infix functions are not constrained by this
 export const legalSymbolRegex = /^[A-Za-z0-9_]+$/

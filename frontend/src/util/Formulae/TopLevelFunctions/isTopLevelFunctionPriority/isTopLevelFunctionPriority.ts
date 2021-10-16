@@ -1,5 +1,3 @@
-import {forEach} from "lodash";
-
 const isTopLevelFunctionPriority = (expression: string): boolean => {
   const processedExpression = expression.trim();
   if(!processedExpression.startsWith("(") || !processedExpression.endsWith(")"))
