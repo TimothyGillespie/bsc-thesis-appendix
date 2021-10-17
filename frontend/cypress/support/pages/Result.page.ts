@@ -51,6 +51,9 @@ class ResultPage extends ProofStepPage {
   inductiveBasisIsUnknown = () => this.stepIsUnknown(this.stepNameInductiveBasis);
   inductiveStepIsUnknown = () => this.stepIsUnknown(this.stepNameInductiveStep);
 
+  getCounterExample = () => cy
+    .get('[data-test=counter-example]');
+
 }
 
 export default ResultPage;

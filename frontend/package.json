@@ -38,6 +38,7 @@
     "@angular/cli": "^12.1.4",
     "@angular/compiler-cli": "^12.1.5",
     "@cypress/schematic": "^1.5.1",
+    "@cypress/snapshot": "^2.1.7",
     "@types/jest": "^27.0.2",
     "@types/node": "^12.20.27",
     "cypress": "^8.6.0",

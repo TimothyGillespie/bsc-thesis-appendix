@@ -2,6 +2,6 @@
 <p-steps *ngIf="stepDisplay.showSteps" [activeIndex]="stepDisplay.activeIndex" id="steps" [model]="stepDisplay.stepItems" [readonly]="false"
          styleClass="grayBackground" (activeIndexChange)="stepDisplay.handleActiveIndexChange($event)"
 ></p-steps>
-<p-confirmPopup key="confirmPopup"></p-confirmPopup>
+<p-confirmPopup key="confirmPopup" [attr.data-test]="'generic-confirm-popup'"></p-confirmPopup>
 <router-outlet></router-outlet>
 <p-toast position="bottom-center"></p-toast>
