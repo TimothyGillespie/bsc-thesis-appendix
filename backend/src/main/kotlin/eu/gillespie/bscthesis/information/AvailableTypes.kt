@@ -10,7 +10,7 @@ enum class AvailableTypes(val smtName: String, val displayName: String, val smtN
     Bool("Bool", "boolean", true),
 
     NAryTree("NAryTree", "n-ary tree"),
-    NonEmptyNAryTree("NonEmptyNAryTree", "non-empty n-ary tree"),
+//    NonEmptyNAryTree("NonEmptyNAryTree", "non-empty n-ary tree"),
     PLFormula("PLFormula", "formula of propositional logic");
 
     fun toTypeDescription() = TypeDescription(smtName, displayName, smtNative)
