@@ -6,7 +6,7 @@ import {FunctionDefinition} from "../../models/FunctionDefinition";
 import {AdditionalConstraint} from "../../models/AdditionalConstraint";
 import {environment} from "../../../environments/environment";
 import convertKeysToSnakeCase from "../../../util/convertKeysToSnakeCase";
-import {first, map} from "rxjs/operators";
+import {first, map, timeout} from "rxjs/operators";
 import convertKeysToCamelCase from "../../../util/convertKeysToCamelCase";
 import {snakeCase} from "lodash";
 import {Observable} from "rxjs";
@@ -24,13 +24,17 @@ export class ApiQueryService {
   async prove(request: ProveRequest): Promise<ProveResponse> {
      return this.http
        .post<ProveResponse>(environment.baseUrl + '/statement/prove/result', convertKeysToSnakeCase(request))
-       .pipe(map((response) => convertKeysToCamelCase(response)))
+       .pipe(
+         timeout(10000),
+         map((response) => convertKeysToCamelCase(response))
+       )
        .toPromise();
   }
 
   getTypes(): Observable<TypeLabelValue[]> {
     return this.http.get(environment.baseUrl + "/statement/types")
       .pipe(
+        timeout(10000),
         first(),
         map((value) => convertKeysToCamelCase(value)),
         map((values: TypeResponse[]) => values.map((entry) => ({
