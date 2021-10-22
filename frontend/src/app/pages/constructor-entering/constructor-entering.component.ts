@@ -96,6 +96,13 @@ export class ConstructorEnteringComponent implements OnInit, OnDestroy {
       this.validationHint.sendGeneralHint()
   }
 
+
+  showTitleHelp: boolean;
+
+  toggleTitleHelp() {
+    this.showTitleHelp = !this.showTitleHelp;
+  }
+
   /*
    * Form Management Functions
    */
@@ -156,5 +163,9 @@ export class ConstructorEnteringComponent implements OnInit, OnDestroy {
 
   getSingleFunction(d: number, f: number) {
     return this.getFunctions(d).get(`${f}`) as FormGroup;
+  }
+
+  removeConstructorGroup(d: number) {
+    this.getConstructorDefinitions().removeAt(d);
   }
 }

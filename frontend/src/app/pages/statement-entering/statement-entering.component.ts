@@ -23,7 +23,7 @@ export class StatementEnteringComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private requestData: RequestDataService,
+    public requestData: RequestDataService,
     private fb: FormBuilder,
     private validationHint: ValidationHintService,
     private stepDisplay: StepDisplayService,
@@ -33,6 +33,7 @@ export class StatementEnteringComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log(this.requestData.constructorDefinitions.value);
 
     this.requestData.additionalFunctions.subscribe((fs) => {
       let additionalFunctions: FormGroup[]

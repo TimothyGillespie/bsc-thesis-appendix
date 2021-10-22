@@ -4,7 +4,10 @@
       <ng-container [formGroupName]="fd">
         <p-card class="mb-8">
           <div class="flex justify-content-center mb-6">
-            <h2>{{ getFunctionName(fd) }}</h2>
+            <h2>
+              {{ getFunctionName(fd) }}
+              &nbsp;&nbsp;&nbsp;&nbsp;<i class="pi pi-question-circle text-2xl text-blue-500" (click)="definitionHelp.toggle($event)"></i>
+            </h2>
           </div>
           <div class="grid">
             <div class="col-5">
@@ -136,3 +139,109 @@
     </div>
   </p-card>
 </form>
+
+<p-overlayPanel #definitionHelp [showCloseIcon]="true">
+  <ng-template pTemplate>
+    <p>
+      On the top below the function name you will find the type definitions of the function.
+      In your text book or excerise you might find a notation which is like:
+    </p>
+    <p>N x N -> N</p>
+    <p>
+      Which defines a function with two parameters which are both natural numbers and which returns a natural number
+      again. This is equivalent to what is seen below. The right-hand side are the input types, whereas the number
+      indicates which input it is (i.e, the first).
+      On the right is the output type, also on the left-hand side of the arrow as in the notation.
+    </p>
+    <p>
+      You must set the input and output types. Although, you can skip the value definitions below them if you
+      don't need them. Conditional definitions, however, must be filled.
+    </p>
+    <p>
+      To add a conditional case, click on the plus symbol on the right. The result must be a boolean value.
+    </p>
+    <p class="mt-6">The following operation can be used and are defined:</p>
+    <table border="1">
+      <tr>
+        <th>Operator</th>
+        <th>Meaning</th>
+        <th>Example</th>
+      </tr>
+      <tr>
+        <td>+</td>
+        <td>Addition</td>
+        <td>1 + 2</td>
+      </tr>
+      <tr>
+        <td>-</td>
+        <td>Subtraction</td>
+        <td>1 - 2</td>
+      </tr>
+      <tr>
+        <td>*</td>
+        <td>Multiplikation</td>
+        <td>1 * 2</td>
+      </tr>
+      <tr>
+        <td>/</td>
+        <td>Division</td>
+        <td>1 / 2</td>
+      </tr>
+      <tr>
+        <td>=</td>
+        <td>Equality</td>
+        <td>1 = 2</td>
+      </tr>
+      <tr>
+        <td>not</td>
+        <td>Negation</td>
+        <td>not(1 = 2)</td>
+      </tr>
+      <tr>
+        <td>and</td>
+        <td>Logical AND operator</td>
+        <td>(1 = 2) and (2 = 3)</td>
+      </tr>
+      <tr>
+        <td>or</td>
+        <td>Logical OR operator</td>
+        <td>(1 = 2) or (2 = 3)</td>
+      </tr>
+      <tr>
+        <td>=></td>
+        <td>Logical implication operator</td>
+        <td>(1 = 2) => (2 = 3)</td>
+      </tr>
+      <tr>
+        <td>></td>
+        <td>Larger than</td>
+        <td>1 > 2</td>
+      </tr>
+      <tr>
+        <td><</td>
+        <td>Smaller than</td>
+        <td>1 < 2</td>
+      </tr>
+      <tr>
+        <td><=</td>
+        <td>Smaller than or equal</td>
+        <td>1 <= 2</td>
+      </tr>
+      <tr>
+        <td>numbers (1, 2, 3, ...)</td>
+        <td>Simple Number Values</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>true / false</td>
+        <td>Boolean Values</td>
+        <td>false</td>
+      </tr>
+      <tr>
+        <td>letters</td>
+        <td>Constants prefix functions</td>
+        <td>c < 2</td>
+      </tr>
+    </table>
+  </ng-template>
+</p-overlayPanel>

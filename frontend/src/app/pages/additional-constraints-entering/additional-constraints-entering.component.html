@@ -1,5 +1,9 @@
 <div class="flex justify-content-center">
-  <h1>Additional Constraints</h1>
+  <h1>
+    Additional Constraints
+    &nbsp;&nbsp;&nbsp;&nbsp;<i class="pi pi-question-circle text-2xl text-blue-500" (click)="additionalConstraintsHelp.toggle($event)"></i>
+
+  </h1>
 </div>
 
 <form [formGroup]="formGroup">
@@ -70,3 +74,102 @@
     [attr.data-test]="'additional-constraints-back-button'"
   >Go Back To Constructor Definitions</button>
 </div>
+
+<p-overlayPanel #additionalConstraintsHelp>
+  <ng-template pTemplate>
+    <p>
+      Sometimes the given information is not enough to prove the statement.
+      Additional helpful constraints can be defined here. These are not usually needed. Feel free to skip this section
+      and add some constraints if you notice that the given counter model does not make sense
+    </p>
+
+    <p>
+      The variables you have defined can be used on the right-hand side. The variable may not have the name of another
+    function however.
+    </p>
+
+    <p class="mt-6">The following operation can be used and are defined:</p>
+    <table border="1">
+      <tr>
+        <th>Operator</th>
+        <th>Meaning</th>
+        <th>Example</th>
+      </tr>
+      <tr>
+        <td>+</td>
+        <td>Addition</td>
+        <td>1 + 2</td>
+      </tr>
+      <tr>
+        <td>-</td>
+        <td>Subtraction</td>
+        <td>1 - 2</td>
+      </tr>
+      <tr>
+        <td>*</td>
+        <td>Multiplikation</td>
+        <td>1 * 2</td>
+      </tr>
+      <tr>
+        <td>/</td>
+        <td>Division</td>
+        <td>1 / 2</td>
+      </tr>
+      <tr>
+        <td>=</td>
+        <td>Equality</td>
+        <td>1 = 2</td>
+      </tr>
+      <tr>
+        <td>not</td>
+        <td>Negation</td>
+        <td>not(1 = 2)</td>
+      </tr>
+      <tr>
+        <td>and</td>
+        <td>Logical AND operator</td>
+        <td>(1 = 2) and (2 = 3)</td>
+      </tr>
+      <tr>
+        <td>or</td>
+        <td>Logical OR operator</td>
+        <td>(1 = 2) or (2 = 3)</td>
+      </tr>
+      <tr>
+        <td>=></td>
+        <td>Logical implication operator</td>
+        <td>(1 = 2) => (2 = 3)</td>
+      </tr>
+      <tr>
+        <td>></td>
+        <td>Larger than</td>
+        <td>1 > 2</td>
+      </tr>
+      <tr>
+        <td><</td>
+        <td>Smaller than</td>
+        <td>1 < 2</td>
+      </tr>
+      <tr>
+        <td><=</td>
+        <td>Smaller than or equal</td>
+        <td>1 <= 2</td>
+      </tr>
+      <tr>
+        <td>numbers (1, 2, 3, ...)</td>
+        <td>Simple Number Values</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>true / false</td>
+        <td>Boolean Values</td>
+        <td>false</td>
+      </tr>
+      <tr>
+        <td>letters</td>
+        <td>Constants prefix functions</td>
+        <td>c < 2</td>
+      </tr>
+    </table>
+  </ng-template>
+</p-overlayPanel>

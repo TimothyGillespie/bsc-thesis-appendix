@@ -1,16 +1,23 @@
 <div class="flex justify-content-center">
-  <h1>Enter the statement to prove</h1>
+  <h1>
+    Enter the statement to prove
+    <i class="pi pi-question-circle text-2xl text-blue-500" (click)="statementHelp.toggle($event)"></i>
+  </h1>
 </div>
 
 <p-card>
   <div class="flex justify-content-center">
     <input id="statement" pInputText [pKeyFilter]="allowedValuesForFormulae" class="w-10" [(ngModel)]="statement"
            [attr.data-test]="'statement-to-prove'"
-           [class]="!checkStatement(false) ? 'ng-invalid ng-dirty' : ''"/>
+           [class]="!checkStatement(false) ? 'ng-invalid ng-dirty' : ''"
+    />
   </div>
 </p-card>
 
-<div class="flex justify-content-center"><h1>Additional Functions</h1></div>
+<div class="flex justify-content-center"><h1>
+  Additional Functions
+  <i class="pi pi-question-circle text-2xl text-blue-500" (click)="additionFunctionHelp.toggle($event)"></i>
+</h1></div>
 <p-card>
   <div class="flex mt-5">
     <div class="flex-auto">
@@ -60,3 +67,136 @@
 <div class="flex justify-content-center mt-5">
   <button pButton (click)="onBack()" class="p-button-link" [attr.data-test]="'statement-entering-back-button'">Go Back To Constructor Definitions</button>
 </div>
+
+<p-overlayPanel #statementHelp [showCloseIcon]="true">
+  <ng-template pTemplate>
+    <p>
+      Enter below the statement that you are attempting to prove.
+      You may define new functions and use parenthesis for prioritization and you can also use the constructor terms
+      defined in the previous step.
+    </p>
+
+    <p class="mt-6">You have defined the following constructor terms:</p>
+    <ul>
+      <li *ngFor="let constructorDef of requestData.constructorDefinitions.value ?? []">
+        {{constructorDef.term }}
+      </li>
+    </ul>
+
+    <p class="mt-6">For example, for the constructor term {{requestData.constructorDefinitions.value[0].term}} you can write:</p>
+    <p>depth({{requestData.constructorDefinitions.value[0].term}}) <= size({{requestData.constructorDefinitions.value[0].term}})</p>
+    <p>or</p>
+    <p>(depth({{requestData.constructorDefinitions.value[0].term}}) <= size({{requestData.constructorDefinitions.value[0].term}}))
+      and (0 <= depth({{requestData.constructorDefinitions.value[0].term}}))</p>
+    <p>Note the extra parenthesis in the seccond example.</p>
+    <p class="mt-6">
+      New function which you introduce can be defined in the next step. You can also leave the definitions blank. However,
+      newly introduced functions must be consistent with their arity. This means if you have a function "f" of arity 1,
+      you cannot suddenly use the function f with arity 2. The type must also be consistent.
+    </p>
+    <p class="mt-6">
+      Unfortunately, we cannot check all inputs 100%. If the end screen shows an error you may want to revisit this
+      section for mistakes and try adding parenthesis.
+    </p>
+    <p class="mt-6">The following operation can be used and are defined:</p>
+    <table border="1">
+      <tr>
+        <th>Operator</th>
+        <th>Meaning</th>
+        <th>Example</th>
+      </tr>
+      <tr>
+        <td>+</td>
+        <td>Addition</td>
+        <td>1 + 2</td>
+      </tr>
+      <tr>
+        <td>-</td>
+        <td>Subtraction</td>
+        <td>1 - 2</td>
+      </tr>
+      <tr>
+        <td>*</td>
+        <td>Multiplikation</td>
+        <td>1 * 2</td>
+      </tr>
+      <tr>
+        <td>/</td>
+        <td>Division</td>
+        <td>1 / 2</td>
+      </tr>
+      <tr>
+        <td>=</td>
+        <td>Equality</td>
+        <td>1 = 2</td>
+      </tr>
+      <tr>
+        <td>not</td>
+        <td>Negation</td>
+        <td>not(1 = 2)</td>
+      </tr>
+      <tr>
+        <td>and</td>
+        <td>Logical AND operator</td>
+        <td>(1 = 2) and (2 = 3)</td>
+      </tr>
+      <tr>
+        <td>or</td>
+        <td>Logical OR operator</td>
+        <td>(1 = 2) or (2 = 3)</td>
+      </tr>
+      <tr>
+        <td>=></td>
+        <td>Logical implication operator</td>
+        <td>(1 = 2) => (2 = 3)</td>
+      </tr>
+      <tr>
+        <td>></td>
+        <td>Larger than</td>
+        <td>1 > 2</td>
+      </tr>
+      <tr>
+        <td><</td>
+        <td>Smaller than</td>
+        <td>1 < 2</td>
+      </tr>
+      <tr>
+        <td><=</td>
+        <td>Smaller than or equal</td>
+        <td>1 <= 2</td>
+      </tr>
+      <tr>
+        <td>numbers (1, 2, 3, ...)</td>
+        <td>Simple Number Values</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>true / false</td>
+        <td>Boolean Values</td>
+        <td>false</td>
+      </tr>
+      <tr>
+        <td>letters</td>
+        <td>Constants prefix functions</td>
+        <td>c < 2</td>
+      </tr>
+    </table>
+  </ng-template>
+</p-overlayPanel>
+
+<p-overlayPanel #additionFunctionHelp>
+  <ng-template pTemplate>
+    <p>
+      Any function which does not occur in the statement above should be defined here, otherwise it cannot be used and
+      defined in later steps.
+    </p>
+    <p class="mt-6">
+      For example, the function depth/1 might be defined as: depth(c(x,y)) = 1 + max(depth(x), depth(y))
+    </p>
+    <p class="mt-6">
+      The depth function would be part of the statement above and c would be a constructor, then you will need to
+      enter below a function with the symbol "max" and the arity 2. If this is not done you cannot use the max function
+      in your definitions.
+    </p>
+  </ng-template>
+</p-overlayPanel>

@@ -2,7 +2,9 @@
   <ng-container formArrayName="constructorDefinitions">
 
     <div class="flex justify-content-center">
-      <h1>Please enter the constructors which will be used</h1>
+      <h1>Please enter the constructors which will be used&nbsp;&nbsp;&nbsp;&nbsp;
+        <i class="pi pi-question-circle text-2xl text-blue-500" (click)="titleHelp.toggle($event)"></i>
+      </h1>
     </div>
 
     <ng-container *ngFor="let singleDefinitions of getConstructorDefinitions().controls; let d = index">
@@ -10,14 +12,22 @@
         <p-card>
           <div class="p-fluid">
             <div class="p-field">
-              <p class="p-float-label">
-                <input pInputText id="term" formControlName="term"
-                       [class]="getConstructorTerm(d).invalid ? 'ng-invalid ng-dirty' : ''" [attr.data-test]="'constructor-definition-' + d + '-term'"
-                />
-                <label for="term">Term</label>
-              </p>
+              <div class="grid">
+                <div class="col-10">
+                  <p class="p-float-label">
+                    <input pInputText id="term" formControlName="term"
+                           [class]="getConstructorTerm(d).invalid ? 'ng-invalid ng-dirty' : ''" [attr.data-test]="'constructor-definition-' + d + '-term'"
+                    />
+                    <label for="term">Term</label>
+                  </p>
+                </div>
+                <div class="col-2 mt-4">
+                  <i class="pi pi-question-circle text-xl text-blue-500" (click)="termHelp.toggle($event)"></i>
+                </div>
+              </div>
             </div>
           </div>
+
           <div>
             <p-dropdown [options]="typeOptions" formControlName="type" placeholder="Select a type"
                         [attr.data-test]="'constructor-definition-' + d +  '-type'"
@@ -27,7 +37,9 @@
 
           <div class="flex mt-5">
             <div class="flex-auto">
-              <div class="flex justify-content-center"><h2>Constructor Functions</h2></div>
+              <div class="flex justify-content-center"><h2>Constructor Functions&nbsp;&nbsp;&nbsp;&nbsp;
+                <i class="pi pi-question-circle text-xl text-blue-500" (click)="constructorFunctionHelp.toggle($event)"></i>
+              </h2></div>
               <p class="flex justify-content-center" style="color:red" *ngIf="getFunctions(d).errors?.noBaseCase">{{getFunctions(d).errors.noBaseCase.message}}</p>
               <p class="flex justify-content-center" style="color:red" *ngIf="getFunctions(d).errors?.noNonBaseCase">{{getFunctions(d).errors.noNonBaseCase.message}}</p>
               <ng-container formArrayName="functions">
@@ -58,7 +70,10 @@
                   </div>
                 </ng-container>
                 <div class="flex mt-8 justify-content-center">
-                  <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewConstructorFunction(d)" [attr.data-test]="'constructor-definition-' + d +  '-function-add-button'"></button>
+                  <button pButton pRipple icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewConstructorFunction(d)" [attr.data-test]="'constructor-definition-' + d +  '-function-add-button'"></button>
+                </div>
+                <div class="flex flex justify-content-end mr-5">
+                  <button pButton pRipple class="p-button-danger" icon="pi pi-trash" (click)="removeConstructorGroup(d)"></button>
                 </div>
               </ng-container>
             </div>
@@ -76,3 +91,45 @@
 <div class="flex justify-content-center mt-4">
   <button pButton (click)="onFinish()" class="p-button-success" data-test="constructor-function-def-next-button">Next</button>
 </div>
+
+<p-overlayPanel #titleHelp>
+  <ng-template pTemplate>
+    <p>
+      Constructors are functions which are used to build more complex structures like trees. Here, you will define
+      constructors in groups. If you do not know how to form these groups simply you can simply define a single group
+      the type you need and define all constructor functions you need.
+    </p>
+  </ng-template>
+</p-overlayPanel>
+
+<p-overlayPanel #termHelp>
+  <ng-template pTemplate>
+    <p>You can choose the term freely. You should only remember it for the next step.</p>
+  </ng-template>
+</p-overlayPanel>
+
+<p-overlayPanel #constructorFunctionHelp>
+  <ng-template pTemplate>
+    <p>
+      For example, if you have the constructor function c(x,y) then
+      you can enter "c" as a symbol and the arity would be two, because this function as two input parameters.
+    </p>
+      <div>For propositional logic the constructor could be:</div>
+      <div>Symbol: "variable"; arity: 0</div>
+      <div>Symbol: "verum"; arity: 0</div>
+      <div>Symbol: "falsum"; arity: 0</div>
+      <div>Symbol: "mynot"; arity: 1</div>
+      <div>Symbol: "myor"; arity: 2</div>
+      <div>Symbol: "myand"; arity: 2</div>
+      <div>Symbol: "implication"; arity: 2</div>
+      <div>Symbol: "equivalency"; arity: 2</div>
+    <p>
+      You need to have at least one function with arity equal 0 and at least one function with an arity greater than
+      zero, otherwise no induction proof can be performed.
+    </p>
+    <p>
+      Your function symbols may not be any of the following: "and", "or", "xor", "not", "assert". If you are defining
+      constructor for propositional logic you might want to consider prefixing your options.
+    </p>
+  </ng-template>
+</p-overlayPanel>
