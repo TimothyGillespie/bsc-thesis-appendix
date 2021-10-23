@@ -15,9 +15,8 @@
                 formArrayName="inputTypes"
                 *ngFor="let _ of getInputTypes(fd).controls; let it = index"
               >
-                <div class="flex justify-content-end align-items-center">
-                  <div class="flex justify-content-end mr-4 font-bold">{{ it + 1 }}.</div>
-                  <div class="flex justify-content-end align-items-center">
+                <div class="flex justify-content-end align-items-center mt-2">
+                  <span class="font-bold mr-4">{{ it + 1 }}.</span>
                     <p-dropdown
                       [attr.data-test]="'function-' + getFunctionName(fd) + '-input-type-' + it"
                       [options]="typeDropdownOptions"
@@ -25,7 +24,6 @@
                       [class]="getSingleInputType(fd, it).invalid ? 'ng-invalid ng-dirty' : ''"
                       placeholder="Please Select"
                     ></p-dropdown>
-                  </div>
                 </div>
               </ng-container>
             </div>
