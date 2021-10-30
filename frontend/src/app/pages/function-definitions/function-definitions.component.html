@@ -101,6 +101,7 @@
                                [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-conditional-' + c + '-condition'"
                         />
                         <button pButton class="p-inputgroup-addon p-button-sm p-button-danger"  icon="pi pi-trash" (click)="removeConditionalDefinition(fd, vd, c)"
+                                pTooltip="Remove Conditional Case"
                           [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-conditional-' + c + '-remove-button'"
                         ></button>
                       </div>
@@ -113,7 +114,9 @@
                              [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-otherwise-value'"
                       />
                       <span class="p-inputgroup-addon">otherwise</span>
-                      <button pButton class="p-inputgroup-addon p-button-sm" label="+" (click)="addConditionalDefinition(fd, vd)"
+                      <button pButton class="p-inputgroup-addon p-button-sm"
+                              pTooltip="Add Conditional Case"
+                              label="+" (click)="addConditionalDefinition(fd, vd)"
                               [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-add-condition-button'"
                       ></button>
                     </div>

@@ -85,15 +85,22 @@ export class ConstructorEnteringComponent implements OnInit, OnDestroy {
     })
   }
 
+  hasAtLeastOneConstructorGroup() {
+    return this.getConstructorDefinitions().value.length > 0;
+  }
+
   isFormValid(): boolean {
-    return this.formGroup.valid
+    return this.formGroup.valid && this.hasAtLeastOneConstructorGroup();
   }
 
   onFinish() {
     if(this.isFormValid())
       this.router.navigate(['statement']);
     else
-      this.validationHint.sendGeneralHint()
+      if(!this.hasAtLeastOneConstructorGroup())
+        this.validationHint.sendHint("You must enter at least one constructor group.")
+      else
+        this.validationHint.sendGeneralHint()
   }
 
 

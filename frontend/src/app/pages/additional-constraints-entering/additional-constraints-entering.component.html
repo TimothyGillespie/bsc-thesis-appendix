@@ -30,6 +30,7 @@
                     ></p-dropdown>
                     <button pButton class="p-inputgroup-addon p-button-sm p-button-danger" icon="pi pi-trash" (click)="deleteInputVariable(ac, iv)"
                             [attr.data-test]="'additional-constraint-' + ac + '-quantified-parameter-' + iv + '-remove-button'"
+                            pTooltip="Remove Quantified Parameter"
                     ></button>
                   </span>
                 </ng-container>
@@ -38,6 +39,7 @@
             <div class="flex-shrink-1 flex align-items-center">
               <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="addInputVariable(ac)"
                       [attr.data-test]="'additional-constraint-' + ac + '-add-quantified-parameter-button'"
+                      pTooltip="Add Quantified Parameter"
               ></button>
             </div>
           </ng-container>
@@ -48,6 +50,7 @@
             />
             <button pButton class="p-button-sm p-button-danger" icon="pi pi-trash" (click)="deleteConstraint(ac)"
               [attr.data-test]="'additional-constraint-' + ac + '-remove-button'"
+                    pTooltip="Remove Constraint"
             ></button>
 
             <span class="ng-invalid text-2xl" *ngIf="getConstraint(ac).invalid">{{ extractStatementError(getConstraint(ac)) }}</span>
@@ -58,7 +61,8 @@
   </ng-container>
   <div class="flex mt-8 justify-content-center">
     <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="addConstraintEntry()"
-      [attr.data-test]="'add-constraint-button'"
+        pTooltip="Add Constraint"
+        [attr.data-test]="'add-constraint-button'"
     ></button>
   </div>
 </form>

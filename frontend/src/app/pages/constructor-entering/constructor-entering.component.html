@@ -64,16 +64,22 @@
                       </div>
                     </div>
                     <div class="field col-1 mt-2">
-                        <button pButton class="p-button-danger"  icon="pi pi-trash" (click)="removeConstructorFunction(d, f)" [attr.data-test]="'constructor-definition-' + d +  '-function-' + f + '-remove-button'"></button>
+                        <button pButton class="p-button-danger"  icon="pi pi-trash"
+                                pTooltip="Remove Constructor Function"
+                                (click)="removeConstructorFunction(d, f)" [attr.data-test]="'constructor-definition-' + d +  '-function-' + f + '-remove-button'"></button>
                     </div>
 
                   </div>
                 </ng-container>
                 <div class="flex mt-8 justify-content-center">
-                  <button pButton pRipple icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewConstructorFunction(d)" [attr.data-test]="'constructor-definition-' + d +  '-function-add-button'"></button>
+                  <button pButton pRipple icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewConstructorFunction(d)" [attr.data-test]="'constructor-definition-' + d +  '-function-add-button'"
+                          pTooltip="Add Constructor Function"
+                  ></button>
                 </div>
                 <div class="flex flex justify-content-end mr-5">
-                  <button pButton pRipple class="p-button-danger" icon="pi pi-trash" (click)="removeConstructorGroup(d)"></button>
+                  <button pButton pRipple class="p-button-danger" icon="pi pi-trash"
+                          pTooltip="Remove Constructor Group"
+                          (click)="removeConstructorGroup(d)"></button>
                 </div>
               </ng-container>
             </div>
@@ -83,7 +89,9 @@
       </div>
     </ng-container>
     <div class="flex mt-8 justify-content-center">
-      <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewConstructorDefinitions()" data-test="new-constructor-button"></button>
+      <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-text p-button-lg font-bold" (click)="createNewConstructorDefinitions()" data-test="new-constructor-button"
+              pTooltip="Add Constructor Group"
+      ></button>
     </div>
   </ng-container>
 </div>
