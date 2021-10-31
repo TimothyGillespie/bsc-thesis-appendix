@@ -17,6 +17,7 @@
                   <p class="p-float-label">
                     <input pInputText id="term" formControlName="term"
                            [class]="getConstructorTerm(d).invalid ? 'ng-invalid ng-dirty' : ''" [attr.data-test]="'constructor-definition-' + d + '-term'"
+                           [pKeyFilter]="wordKeyFilter"
                     />
                     <label for="term">Term</label>
                   </p>
@@ -50,6 +51,7 @@
                         <p class="p-float-label">
                           <input pInputText id="symbol" formControlName="symbol" [attr.data-test]="'constructor-definition-' + d +  '-function-' + f + '-symbol'"
                                  [class]="getSingleFunction(d, f).invalid ? 'ng-invalid ng-dirty' : ''"
+                                 [pKeyFilter]="wordKeyFilter"
                           />
                           <label for="symbol">Symbol</label>
                         </p>
@@ -113,6 +115,7 @@
 <p-overlayPanel #termHelp>
   <ng-template pTemplate>
     <p>You can choose the term freely. You should only remember it for the next step.</p>
+    <p>A term may only consist of English letters. Entering a non-letter will be ignored and not shown.</p>
   </ng-template>
 </p-overlayPanel>
 
@@ -122,6 +125,18 @@
       For example, if you have the constructor function c(x,y) then
       you can enter "c" as a symbol and the arity would be two, because this function as two input parameters.
     </p>
+
+    <p>A symbol may only consist of English letters. Entering a non-letter will be ignored and not shown.</p>
+
+    <p>
+      You need to have at least one function with arity equal 0 and at least one function with an arity greater than
+      zero, otherwise no induction proof can be performed.
+    </p>
+    <p>
+      Your function symbols may not be any of the following: "and", "or", "xor", "not", "assert". If you are defining
+      constructor for propositional logic you might want to consider prefixing your options.
+    </p>
+
       <div>For propositional logic the constructor could be:</div>
       <div>Symbol: "variable"; arity: 0</div>
       <div>Symbol: "verum"; arity: 0</div>
@@ -131,13 +146,6 @@
       <div>Symbol: "myand"; arity: 2</div>
       <div>Symbol: "implication"; arity: 2</div>
       <div>Symbol: "equivalency"; arity: 2</div>
-    <p>
-      You need to have at least one function with arity equal 0 and at least one function with an arity greater than
-      zero, otherwise no induction proof can be performed.
-    </p>
-    <p>
-      Your function symbols may not be any of the following: "and", "or", "xor", "not", "assert". If you are defining
-      constructor for propositional logic you might want to consider prefixing your options.
-    </p>
+
   </ng-template>
 </p-overlayPanel>

@@ -92,7 +92,7 @@ it('depth <= size example with max function', () => {
     result.headerShouldNotSayProven();
     result.clickOnStatementStep();
 
-    statementEntering.setStatement('(depth(nt) <= size(nt)) and (0 <= depth(nt))');
+    statementEntering.setStatement('depth(nt) <= size(nt) and 0 <= depth(nt)');
     statementEntering.clickOnResultStep();
 
     result.headerShouldSayProven();
@@ -166,7 +166,7 @@ it('depth <= size example without max function', () => {
   result.headerShouldNotSayProven();
   result.clickOnStatementStep();
 
-  statementEntering.setStatement('(depth(nt) <= size(nt)) and (0 <= depth(nt))');
+  statementEntering.setStatement('depth(nt) <= size(nt) and 0 <= depth(nt)');
   statementEntering.clickOnResultStep();
 
   result.headerShouldSayProven();

@@ -20,6 +20,8 @@ export class ConstructorEnteringComponent implements OnInit, OnDestroy {
 
   typeOptions = [];
 
+  wordKeyFilter = /^[a-zA-Z]$/
+
   constructor(
     private fb: FormBuilder,
     private requestData: RequestDataService,
