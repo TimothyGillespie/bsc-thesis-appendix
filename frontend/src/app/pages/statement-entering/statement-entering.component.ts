@@ -16,6 +16,8 @@ import {StepDisplayService} from "../../services/step-display/step-display.servi
 export class StatementEnteringComponent implements OnInit, OnDestroy {
 
   allowedValuesForFormulae = environment.allowedFormulaInput;
+  wordKeyFilter = /^[a-zA-Z]$/
+
 
   formGroup: FormGroup;
   // This is separate from the formGroup due to the development steps

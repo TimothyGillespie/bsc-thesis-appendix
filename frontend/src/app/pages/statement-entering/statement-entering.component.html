@@ -31,6 +31,7 @@
                     <input pInputText id="symbol" formControlName="symbol"
                       [class]="getSymbol(f).invalid ? 'ng-invalid ng-dirty' : ''"
                       [attr.data-test]="'additional-function-' + f + '-symbol'"
+                      [pKeyFilter]="wordKeyFilter"
                     />
                     <label for="symbol">Symbol</label>
                   </p>
@@ -92,7 +93,6 @@
     <p>or</p>
     <p>(depth({{requestData.constructorDefinitions.value[0].term}}) <= size({{requestData.constructorDefinitions.value[0].term}}))
       and (0 <= depth({{requestData.constructorDefinitions.value[0].term}}))</p>
-    <p>Note the extra parenthesis in the second example.</p>
     <p class="mt-6">
       New function which you introduce can be defined in the next step. You can also leave the definitions blank. However,
       newly introduced functions must be consistent with their arity. This means if you have a function "f" of arity 1,
