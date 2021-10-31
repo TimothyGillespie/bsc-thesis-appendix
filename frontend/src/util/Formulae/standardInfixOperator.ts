@@ -7,7 +7,7 @@ const standardInfixOperators: InfixOperator[] = [
 	{ symbol: '-', priority: 1, recognizeWithoutWhitespace: true },
 
   { symbol: '*', priority: 0, recognizeWithoutWhitespace: true },
-	// { symbol: '/', priority: 0, recognizeWithoutWhitespace: true },
+	{ symbol: '/', priority: 0, recognizeWithoutWhitespace: true },
 
   // Must be placed first because of "="
   { symbol: '=>', priority: 3, recognizeWithoutWhitespace: true },
