@@ -2,7 +2,7 @@
   <p class="flex justify-content-center text-2xl" [attr.data-test]="'result-header'">
     <ng-container *ngIf="result.satisfiability.inductiveStep === 'unsat'">The statement is correct!</ng-container>
     <ng-container *ngIf="result.satisfiability.inductiveStep === 'sat' || result.satisfiability.inductiveStep === undefined">The statement could not be proven</ng-container>
-    <ng-container *ngIf="result.satisfiability.inductiveStep === 'unknown'">The statement has been understood but the result could not be calculated.</ng-container>
+    <ng-container *ngIf="result.satisfiability.inductiveStep === 'unknown'">The statement has been understood but the result could not be calculated</ng-container>
 
   </p>
   <p class="flex justify-content-center text-2xl"></p>
@@ -10,7 +10,7 @@
     <div class="text-2xl">
       <ng-container *ngFor="let key of getResponseKeys(); let i = index">
         <div class="flex justify-content-center m-3">{{ names[i]}}&nbsp;&nbsp;
-          <i [ngClass]="{ 'pi text-2xl': true, 'pi-check green-text': result.satisfiability[key] === 'sat', 'pi-times red-text': result.satisfiability[key] === 'unsat', 'pi-question-circle red-text': result.satisfiability[key] === 'unknown'}"
+          <i [ngClass]="{ 'pi text-2xl': true, 'pi-check green-text': result.satisfiability[key] === 'sat', 'pi-times': result.satisfiability[key] === 'unsat', 'pi-question-circle': result.satisfiability[key] === 'unknown', ' red-text': result.satisfiability[key] === 'unsat' || result.satisfiability[key] === 'unknown'}"
              [attr.data-test]="convertForDataTest(names[i])"
           ></i>
         </div>
@@ -28,7 +28,7 @@
       >{{ printHumanReadable() }}</div>
   </p-accordionTab>
 
-  <p-accordionTab header="What's next" *ngIf="result.satisfiability.inductiveStep === undefined || result.satisfiability.inductiveStep === 'sat' ">
+  <p-accordionTab header="What's next" *ngIf=" result.satisfiability.inductiveStep === undefined || result.satisfiability.inductiveStep === 'sat' ">
     <p *ngIf="result.satisfiability.functionDefinitions === 'unsat'">
       The function steps were contradictory. This would indicate the function definitions given were not without conflict.
       This would, for example, be the case if you gave overlapping conditions which did not have the same value at the point of overlap.

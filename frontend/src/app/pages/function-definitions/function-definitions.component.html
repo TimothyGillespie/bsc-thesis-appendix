@@ -54,6 +54,7 @@
                           <ng-container formArrayName="boundVariables">
                             <ng-container *ngFor="let _ of getInputConstructorBoundVariables(fd, vd).controls; let bv = index">
                               <input pInputText [formControlName]="bv" [ngClass]="{'variable-field p-inputtext-sm': true, 'input-invalid': getSingleInputConstructorBoundVariable(fd, vd, bv).invalid}" maxlength="4"
+                                     [pKeyFilter]="alphanumKeyFilter"
                                      [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-variable-name-' + bv"
                               />
                             </ng-container>
@@ -68,6 +69,7 @@
                       <ng-container formGroupName="inputVariable">
                         <ng-container *ngFor="let _ of getInputVariable(fd, vd).controls; let iv = index">
                           <input pInputText [formControlName]="iv" [ngClass]="{'variable-field p-inputtext-sm': true, 'input-invalid': getSingleInputVariable(fd, vd, iv).invalid}" maxlength="4"
+                                 [pKeyFilter]="alphanumKeyFilter"
                                  [attr.data-test]="'function-' + getFunctionName(fd) + '-input-constructor-' + getConstructorName(fd, vd) + '-variable-name-' + iv"
                           />
                         </ng-container>
@@ -240,7 +242,7 @@
       </tr>
       <tr>
         <td>letters</td>
-        <td>Constants prefix functions</td>
+        <td>Constants (as prefix functions)</td>
         <td>c < 2</td>
       </tr>
     </table>

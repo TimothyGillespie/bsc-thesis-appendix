@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   baseUrl: 'http://127.0.0.1:8080',
-  allowedFormulaInput: /^[A-Za-z0-9\\(\\),\\*\\+-=>< ]+$/,
+  allowedFormulaInput: /^[A-Za-z0-9\\(\\),\\*\\+-=></^ ]+$/,
 };
 
 /*

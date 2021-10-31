@@ -29,6 +29,7 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
 
   typeDropdownOptions = [];
   allowedValuesForFormulae = environment.allowedFormulaInput;
+  alphanumKeyFilter = /^[a-zA-Z0-9]+$/
 
   formGroup?: FormGroup;
 
@@ -129,7 +130,6 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
   /*
    * Form Management Functions
    */
-
   getFunctionDefinitions(): FormArray {
     return this.formGroup.get('functionDefinitions') as FormArray;
   }
