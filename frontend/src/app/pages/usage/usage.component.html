@@ -1,1 +1,138 @@
-<h1 class="flex justify-content-center">Work in Progress</h1>
+<h1 class="flex justify-content-center">Manual</h1>
+
+<p class="flex justify-content-center">The following two examples are available to be used in this manual</p>
+<div class="flex justify-content-center align-items-center mb-5">
+  <p-selectButton [options]="exampleOptions" [(ngModel)]="chosenExample" optionValue="value" optionLabel="name"></p-selectButton>
+</div>
+<p-accordion>
+  <p-accordionTab header="What does this website do?">
+    This website is specialized prover for inductive proof tasks. You can define an inductive statement with so-called
+    constructors and this website will attempt to prove it. It <b>cannot</b> display the proof and explain to you how it
+    has proven the statement. However, it can also occasionally generate a counter example to show why the statement cannot be shown.
+  </p-accordionTab>
+  <p-accordionTab header="What are these examples?">
+    <p>The example you choose on the top of the page will be used in this manual to illustrate the usage of this website.
+      It is <b>recommended</b> to use the <b>binary tree example</b> first because it can show more functionalities and problem solutions.</p>
+    <p>When you change the example the descriptions and images will be changed to use this example.</p>
+    <p class="mt-5">You can try it right now and select a different example on the top and observe how the following text changes:</p>
+    <p>The {{getChosenExampleObject().name}} is currently chosen.</p>
+  </p-accordionTab>
+  <p-accordionTab *ngIf="chosenExample === 'tree'" header="About the binary tree example">
+    <p>The binary tree example will prove, that for any binary tree t the depth is either smaller than or equal to the tree's size:</p>
+    <pre>∀t ∈ BinaryTree: depth(t) ≤ size(t)</pre>
+    <p class="mt-5">This example is recommended because it will also demonstrate the occasional need to strengthen the constraints and the usage of additional functions with the max function.</p>
+    <p class="mt-8">In the following definitions t<sub>L</sub> should mean the left child tree of t and t<sub>R</sub> the right one respectively.</p>
+    <p class="mt-7">The function depth is defined as:</p>
+    <pre>depth: BinaryTree &#x27FC; N</pre>
+    <pre>depth(t) = 1 + max(depth(t<sub>L</sub>), depth(t<sub>R</sub>))</pre>
+
+    <p class="mt-7">The function size is defined as:</p>
+    <pre>size: BinaryTree &#x27FC; N</pre>
+    <pre>size(t) = 1 + size(t<sub>L</sub>) + size(t<sub>R</sub>)</pre>
+
+    <p class="mt-7">The max is defined as:</p>
+    <pre>max: N x N &#x27FC; N</pre>
+    <pre>max(x,y) = if x > y then x otherwise y</pre>
+
+  </p-accordionTab>
+  <p-accordionTab *ngIf="chosenExample === 'logic'" header="About the propositional logic example">
+    <p>The propositional logic formula example will prove, that for any propositional logic formula f the number of parenthesis is exactly double the amount of operators:</p>
+    <pre>∀f ∈ PLFormula: parenthesisCount(f) = 2 * operatorCount(f)</pre>
+    <p class="mt-2">Here a operator are the logical functions "not", "or", "and", "implication", and "equivalency". We will assume every operator carries two parenthesis.</p>
+    <p class="mt-8">In the following definitions f<sub>1</sub> should mean the first sub formula of f and f<sub>2</sub> the second one respectively. For example in the example:</p>
+    <pre>A or B </pre> will mean <pre>f<sub>1</sub> = A; f<sub>1</sub> = B</pre> Also we will write this differently as so called prefix notation: <pre>and(A, B)</pre>
+    <p class="mt-7">The function parenthesisCount is thus defined as:</p>
+    <pre>parenthesisCount: PLFormula &#x27FC; N</pre>
+    <pre class="mt-3">If f is a variable then:</pre>
+    <pre>parenthesisCount(f) =  0</pre>
+    <pre class="mt-3">If f = not(f<sub>1</sub>) then:</pre>
+    <pre>parenthesisCount(not(f<sub>1</sub>)) =  2 + parenthesisCount(f<sub>1</sub>)</pre>
+    <pre class="mt-3">If f = and(f<sub>1</sub>, f<sub>2</sub>) then:</pre>
+    <pre>parenthesisCount(and(f<sub>1</sub>, f<sub>2</sub>)) =  2 + parenthesisCount(f<sub>1</sub>) + parenthesisCount(f<sub>2</sub>)</pre>
+    <pre class="mt-3">If f = or(f<sub>1</sub>, f<sub>2</sub>) then:</pre>
+    <pre>parenthesisCount(or(f<sub>1</sub>, f<sub>2</sub>)) =  2 + parenthesisCount(f<sub>1</sub>) + parenthesisCount(f<sub>2</sub>)</pre>
+    <pre class="mt-3">If f = implication(f<sub>1</sub>, f<sub>2</sub>) then:</pre>
+    <pre>parenthesisCount(implication(f<sub>1</sub>, f<sub>2</sub>)) =  2 + parenthesisCount(f<sub>1</sub>) + parenthesisCount(f<sub>2</sub>)</pre>
+    <pre class="mt-3">If f = equivalency(f<sub>1</sub>, f<sub>2</sub>) then:</pre>
+    <pre>parenthesisCount(equivalency(f<sub>1</sub>, f<sub>2</sub>)) =  2 + parenthesisCount(f<sub>1</sub>) + parenthesisCount(f<sub>2</sub>)</pre>
+
+    <p class="mt-7">The function operatorCount is thus defined as:</p>
+    <pre>operatorCount: PLFormula &#x27FC; N</pre>
+    <pre class="mt-3">If f is a variable then:</pre>
+    <pre>operatorCount(f) =  0</pre>
+    <pre class="mt-3">If f = not(f<sub>1</sub>) then:</pre>
+    <pre>operatorCount(not(f<sub>1</sub>)) =  1 + operatorCount(f<sub>1</sub>)</pre>
+    <pre class="mt-3">If f = and(f<sub>1</sub>, f<sub>2</sub>) then:</pre>
+    <pre>operatorCount(and(f<sub>1</sub>, f<sub>2</sub>)) =  1 + operatorCount(f<sub>1</sub>) + operatorCount(f<sub>2</sub>)</pre>
+    <pre class="mt-3">If f = or(f<sub>1</sub>, f<sub>2</sub>) then:</pre>
+    <pre>operatorCount(or(f<sub>1</sub>, f<sub>2</sub>)) =  1 + operatorCount(f<sub>1</sub>) + operatorCount(f<sub>2</sub>)</pre>
+    <pre class="mt-3">If f = implication(f<sub>1</sub>, f<sub>2</sub>) then:</pre>
+    <pre>operatorCount(implication(f<sub>1</sub>, f<sub>2</sub>)) =  1 + operatorCount(f<sub>1</sub>) + operatorCount(f<sub>2</sub>)</pre>
+    <pre class="mt-3">If f = equivalency(f<sub>1</sub>, f<sub>2</sub>) then:</pre>
+    <pre>operatorCount(equivalency(f<sub>1</sub>, f<sub>2</sub>)) =  1 + operatorCount(f<sub>1</sub>) + operatorCount(f<sub>2</sub>)</pre>
+
+  </p-accordionTab>
+  <p-accordionTab header="General Hints">
+    <p>Through out this website some icons and functionality will be given repeatedly. They will be explained here:</p>
+    <p class="mt-6">The question mark inside a circle symbol &nbsp;&nbsp;<i class="pi pi-question-circle text-2xl text-blue-500" (click)="exampleOverlay.toggle($event)"></i>&nbsp;&nbsp; can be clicked to receive information and help about the input, function or section it is attached to.</p>
+    <p class="mt-8">On top of each phase you will find a progress bar which looks as follows:</p>
+    <img src="/assets/images/common-ui-elements/progress-bar.png" class="w-full" alt="Progress bar currently at constructor definitions"/>
+    <p>
+      The progressbar indicates at which step you currently are and gives an overview of all steps. You can also use it to go backward and forward in the application by clicking on the respective step if
+      you have already visited that step.
+    </p>
+    <p class="mt-8">When an error occurs you may receive such a so-called toast on the bottom of your screen telling you what to look for. It look as follows:</p>
+    <img src="/assets/images/common-ui-elements/error-toast.png" alt="Generic error toast"/>
+    <p>You can click <button pButton class="p-button-text" (click)="sendExampleError()">here</button> to see it in action.</p>
+    <p class="mt-8">Some button consist only of icons. If you are unsure about what their purpose you can hover over them. You will see a tooltip describing the action like this:</p>
+    <img src="/assets/images/common-ui-elements/tooltip.png" alt="Tooltip appearing on icon hover">
+    <p>You can try it with this button: <button pButton icon="pi pi-check" class="p-button-text" pTooltip="You're looking for me!"></button></p>
+  </p-accordionTab>
+  <p-accordionTab header="Step 1: Defining Constructors" [selected]="true">
+    <p>In this step you define your data structures in terms of constructors. We wll start with an empty page such as this:</p>
+    <img src="/assets/images/bsc-thesis-screenshots/2.png" />
+
+    <p class="mt-5">Click on the plus symbol to add a constructor group. For most tasks you will only need one. You may need two groups if you need to combine two different data types. When you added the group it should look like this:</p>
+    <img src="/assets/images/bsc-thesis-screenshots/3.png" />
+
+    <p>
+      You can type anything for the term that you would like. This is will only later be used by you.
+      <ng-container *ngIf="chosenExample === 'tree'">We will choose bt for binary tree. We will also set the type to n-ary tree as this is what our data structure is.</ng-container>
+      <ng-container *ngIf="chosenExample === 'logic'">We will choose f for formula. We will also set the type to formula of propositional logic as this is what our data structure is.</ng-container>
+    </p>
+    <p class="mt-5" *ngIf="chosenExample === 'tree'">
+      We will then add three constructors. One which will be nil, signifying no tree and one for a node with up to two sub-trees.
+      Nil will have arity zero because it cannot have any sub-trees. Our node constructor function will have arity two so it can take in two sub-trees.
+    </p>
+    <p class="mt-5" *ngIf="chosenExample === 'logic'">
+      We will then add six constructors. One which for any variable, and five for the logical operators "not", "and", "or", "implication", and "equivalency". We will add an "l" infront of all of these for "logical"
+      because some of these names are protected.
+      Variable will have arity zero because it cannot have any sub-formulae. Our "lnot" constructor function will have arity one because it can have one sub-formula. All other operators use two sub-formulae and will thus have arity two.
+    </p>
+    <img [src]="getExample('filled-out-constructor-def')" />
+  </p-accordionTab>
+  <p-accordionTab header="Step 2: Statement Entering">
+
+  </p-accordionTab>
+  <p-accordionTab header="Step 3: Function Definitions">
+
+  </p-accordionTab>
+  <p-accordionTab header="Step 4: Additional Constraints">
+
+  </p-accordionTab>
+  <p-accordionTab header="Step 5: Result">
+
+  </p-accordionTab>
+  <p-accordionTab *ngIf="chosenExample === 'tree'" header="Adding constraints via additional constraints">
+
+  </p-accordionTab>
+  <p-accordionTab *ngIf="chosenExample === 'tree'" header="Adding constraints via the statement">
+
+  </p-accordionTab>
+</p-accordion>
+
+<p-overlayPanel #exampleOverlay>
+  <ng-template pTemplate>
+    <p>You can close this window by clicking outside of it or clicking on the info symbol again.</p>
+  </ng-template>
+</p-overlayPanel>

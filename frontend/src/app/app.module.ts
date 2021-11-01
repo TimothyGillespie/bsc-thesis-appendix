@@ -38,6 +38,8 @@ import {LoadRequestComponent} from "./pages/load-request/load-request.component"
 import { UsageComponent } from './pages/usage/usage.component';
 import {DialogModule} from "primeng/dialog";
 import {TooltipModule} from "primeng/tooltip";
+import {InputSwitchModule} from "primeng/inputswitch";
+import {SelectButtonModule} from "primeng/selectbutton";
 
 @NgModule({
   declarations: [
@@ -80,6 +82,8 @@ import {TooltipModule} from "primeng/tooltip";
     StepsModule,
     DialogModule,
     TooltipModule,
+    InputSwitchModule,
+    SelectButtonModule,
   ],
   providers: [HttpClient, LoadingScreenService, RequestDataService, ConfirmationService, MessageService],
   bootstrap: [AppComponent]
