@@ -1,6 +1,6 @@
 <h1 class="flex justify-content-center">Manual</h1>
 
-<p class="flex justify-content-center">The following two examples are available to be used in this manual</p>
+<p class="flex justify-content-center">The following two examples are available for used in this manual</p>
 <div class="flex justify-content-center align-items-center mb-5">
   <p-selectButton [options]="exampleOptions" [(ngModel)]="chosenExample" optionValue="value" optionLabel="name"></p-selectButton>
 </div>
@@ -22,12 +22,22 @@
     <pre>∀t ∈ BinaryTree: depth(t) ≤ size(t)</pre>
     <p class="mt-5">This example is recommended because it will also demonstrate the occasional need to strengthen the constraints and the usage of additional functions with the max function.</p>
     <p class="mt-8">In the following definitions t<sub>L</sub> should mean the left child tree of t and t<sub>R</sub> the right one respectively.</p>
+    <p>"nil" stands for the end of the tree which is no itself</p>
     <p class="mt-7">The function depth is defined as:</p>
     <pre>depth: BinaryTree &#x27FC; N</pre>
+    <pre class="mt-3">If t is nil then:</pre>
+    <pre>depth(nil) = 0</pre>
+
+    <pre class="mt-3">If t is not nil then:</pre>
     <pre>depth(t) = 1 + max(depth(t<sub>L</sub>), depth(t<sub>R</sub>))</pre>
 
     <p class="mt-7">The function size is defined as:</p>
     <pre>size: BinaryTree &#x27FC; N</pre>
+
+    <pre class="mt-3">If t is nil then:</pre>
+    <pre>size(nil) = 0</pre>
+
+    <pre class="mt-3">If t is not nil then:</pre>
     <pre>size(t) = 1 + size(t<sub>L</sub>) + size(t<sub>R</sub>)</pre>
 
     <p class="mt-7">The max is defined as:</p>
@@ -38,13 +48,13 @@
   <p-accordionTab *ngIf="chosenExample === 'logic'" header="About the propositional logic example">
     <p>The propositional logic formula example will prove, that for any propositional logic formula f the number of parenthesis is exactly double the amount of operators:</p>
     <pre>∀f ∈ PLFormula: parenthesisCount(f) = 2 * operatorCount(f)</pre>
-    <p class="mt-2">Here a operator are the logical functions "not", "or", "and", "implication", and "equivalency". We will assume every operator carries two parenthesis.</p>
+    <p class="mt-2">Here a operator are the logical functions "not", "or", "and", "implication", and "equivalency" and logical variables. We will assume every operator and variable carries two parenthesis.</p>
     <p class="mt-8">In the following definitions f<sub>1</sub> should mean the first sub formula of f and f<sub>2</sub> the second one respectively. For example in the example:</p>
     <pre>A or B </pre> will mean <pre>f<sub>1</sub> = A; f<sub>1</sub> = B</pre> Also we will write this differently as so called prefix notation: <pre>and(A, B)</pre>
     <p class="mt-7">The function parenthesisCount is thus defined as:</p>
     <pre>parenthesisCount: PLFormula &#x27FC; N</pre>
     <pre class="mt-3">If f is a variable then:</pre>
-    <pre>parenthesisCount(f) =  0</pre>
+    <pre>parenthesisCount(f) =  2</pre>
     <pre class="mt-3">If f = not(f<sub>1</sub>) then:</pre>
     <pre>parenthesisCount(not(f<sub>1</sub>)) =  2 + parenthesisCount(f<sub>1</sub>)</pre>
     <pre class="mt-3">If f = and(f<sub>1</sub>, f<sub>2</sub>) then:</pre>
@@ -59,7 +69,7 @@
     <p class="mt-7">The function operatorCount is thus defined as:</p>
     <pre>operatorCount: PLFormula &#x27FC; N</pre>
     <pre class="mt-3">If f is a variable then:</pre>
-    <pre>operatorCount(f) =  0</pre>
+    <pre>operatorCount(f) =  1</pre>
     <pre class="mt-3">If f = not(f<sub>1</sub>) then:</pre>
     <pre>operatorCount(not(f<sub>1</sub>)) =  1 + operatorCount(f<sub>1</sub>)</pre>
     <pre class="mt-3">If f = and(f<sub>1</sub>, f<sub>2</sub>) then:</pre>
@@ -88,7 +98,7 @@
     <img src="/assets/images/common-ui-elements/tooltip.png" alt="Tooltip appearing on icon hover">
     <p>You can try it with this button: <button pButton icon="pi pi-check" class="p-button-text" pTooltip="You're looking for me!"></button></p>
   </p-accordionTab>
-  <p-accordionTab header="Step 1: Defining Constructors" [selected]="true">
+  <p-accordionTab header="Step 1: Defining Constructors">
     <p>In this step you define your data structures in terms of constructors. We wll start with an empty page such as this:</p>
     <img src="/assets/images/bsc-thesis-screenshots/2.png" />
 
@@ -101,33 +111,285 @@
       <ng-container *ngIf="chosenExample === 'logic'">We will choose f for formula. We will also set the type to formula of propositional logic as this is what our data structure is.</ng-container>
     </p>
     <p class="mt-5" *ngIf="chosenExample === 'tree'">
-      We will then add three constructors. One which will be nil, signifying no tree and one for a node with up to two sub-trees.
-      Nil will have arity zero because it cannot have any sub-trees. Our node constructor function will have arity two so it can take in two sub-trees.
+      We will then add two constructors. One which will be nil, signifying the end of tree (and thus no node nor leaf) and one for a node with up to two sub-trees.
+      Nil will have arity zero because it cannot have any sub-trees. Our node constructor function will have arity two so it can take in two sub-trees we will call it "c" for "constructor".
     </p>
     <p class="mt-5" *ngIf="chosenExample === 'logic'">
       We will then add six constructors. One which for any variable, and five for the logical operators "not", "and", "or", "implication", and "equivalency". We will add an "l" infront of all of these for "logical"
       because some of these names are protected.
       Variable will have arity zero because it cannot have any sub-formulae. Our "lnot" constructor function will have arity one because it can have one sub-formula. All other operators use two sub-formulae and will thus have arity two.
     </p>
+    <p>The page should look like this afterwards:</p>
     <img [src]="getExample('filled-out-constructor-def')" />
   </p-accordionTab>
   <p-accordionTab header="Step 2: Statement Entering">
+    <p>
+      In this step we define the statement we wish to prove. We also need to enter any additional function which we want to use in
+      our definitions in the next step.
+    </p>
+    <ng-container *ngIf="chosenExample === 'tree'">
+      <p>We simply copy the statement from our example as:</p>
+      <pre>depth(t) <= size(t)</pre>
+    </ng-container>
 
+    <ng-container *ngIf="chosenExample === 'logic'">
+      <p>We simply copy the statement from our example as:</p>
+      <pre>parenthesisCount(f) = 2 * operatorCount(f)</pre>
+    </ng-container>
+
+    <p>
+      Note that
+      <ng-container *ngIf="chosenExample === 'tree'">t</ng-container>
+      <ng-container *ngIf="chosenExample === 'logic'">f</ng-container>
+      is our constructor group we defined in the previous step. If you have forgotten the term you defined
+      you can click the info box. The info box also contains the operators you can use. Have a good look at them!
+      We do not need to add any universal quantifiers. They are implicitly contained. If you need equivalency you need
+      use two implications.
+    </p>
+    <p><b>Note:</b> The statement you enter should have a boolean result.</p>
+    <ng-container *ngIf="chosenExample === 'tree'">
+      <p>
+        We also used in our definition of depth the max-function. It does not appear in the statement we entered above so
+        we need to add it under additional functions. We can give it same name "max" and for the arity we can assign two
+        because the the definition takes in two parameters. Functions with different amounts of arities cannot be used.
+      </p>
+    </ng-container>
+    <ng-container *ngIf="chosenExample === 'logic'">
+      <p>We do not need any additional functions. If you would like to see an example switch to the binary tree example.</p>
+    </ng-container>
+    <p>The page should look like this afterwards:</p>
+    <img [src]="getExample('filled-out-statement')"/>
   </p-accordionTab>
   <p-accordionTab header="Step 3: Function Definitions">
+    <p>We should now be greeted with a longer page. We need to define the typing and value of our functions here.</p>
+    <p>Function values are not always defined and can be as well. You should only do this when the task does not specify them however (e.g., it is an unknown constant)</p>
+    <p>The initial page should look as follows:</p>
+    <img [src]="getExample('func-def-initial')"/>
+    <ng-container *ngIf="chosenExample === 'tree'">
+      <p>The typing can be read from our example</p>
+      <pre>depth: BinaryTree &#x27FC; N</pre>
+      <pre>size: BinaryTree &#x27FC; N</pre>
+      <pre>max: N x N &#x27FC; N</pre>
+      <p>
+        N stands for the natural numbers (we include zero here). However, we do not have this type. Instead we would use
+        "integers". We will later see that this is an issue and will fix it. With the exception of the max functions all input values are automatically assigned.
+        For the max-function we need to enter all inputs on the left side as integer. As the output is also a natural number
+        we assign it the integer type as well. We also need to assign integer as the output type of size and depth.
+      </p>
+      <p>
+        We do not have a binary tree type but our binary tree property is defined by the constructors. Thus, we use n-ary tree.
+      </p>
+    </ng-container>
+    <ng-container *ngIf="chosenExample === 'logic'">
+      <p>The typing can be read from our example</p>
+      <pre>operatorCount: PLFormula &#x27FC; N</pre>
+      <pre>parenthesisCount: PLFormula &#x27FC; N</pre>
+      <p>
+        N stands for the natural numbers (we include zero here). However, we do not have this type. Instead we would use
+        "integers". We will not encounter any issues with this, however this may cause issues. For these see the binary tree example.
+        We can simply plug in the output type as integer here for both the parenthesisCount and operatorCount. The input types are
+        already set automatically and should not usually be changed.
+      </p>
+    </ng-container>
+    <p>
+      The actual value definition now can now be copied form the definitions above. The variables name on the left side should be noted and used.
+      They can also be changed but may not have the name of any function, constant, etc.
+    </p>
+
+    <ng-container *ngIf="chosenExample === 'tree'">
+      <p>
+        For the maximum function we need to define a conditional value since we described it above with an "if". We can
+        do by simply clicking the plus sign on the far-left side of the application.
+      </p>
+      <img src="/assets/images/bsc-thesis-screenshots/add-conditional-case.png" />
+      <p>Now we can define our max-function easily too (see the image blow).</p>
+    </ng-container>
+    <p *ngIf="chosenExample === 'logic'">
+      A functionality that we do not use here are conditional value definition which allow the piece-wise definition of functions.
+      You can find this in the binary tree example for the max-function.
+    </p>
+
+    <p>The final page might look filled in like this:</p>
+    <img [src]="getExample('filled-out-func-def')" />
 
   </p-accordionTab>
   <p-accordionTab header="Step 4: Additional Constraints">
-
+    <p>
+      This step allows to add additional constraints. On the previous page we noticed that we do not have a natural number type
+      but use the integer type.
+    </p>
+    <p *ngIf="chosenExample === 'tree'">
+      We will need to fix at least the depth function to be more or equal to zero for our proof to work. We actually have
+      two ways of doing this. How to do this with the additional constraints will be shown in the section "Adding constraints via additional constraints".
+    </p>
+    <ng-container *ngIf="chosenExample === 'logic'">
+      This scenario is not relevant here so we can simply skip this step. The binary tree example is better suited to show this.
+    </ng-container>
   </p-accordionTab>
+
   <p-accordionTab header="Step 5: Result">
+    <ng-container *ngIf="chosenExample === 'tree'">
+      <p>When we come to the result tree we will be faced with the assertion: <b>The statement could not be proven</b></p>
+      <img src="/assets/images/bsc-thesis-screenshots/result-binary-tree-page-initial.png" />
+      <p>We can obtain more information by clicking on the headers below. We will find the following headers</p>
+
+    </ng-container>
+    <ng-container *ngIf="chosenExample === 'logic'">
+      <p>When we come to the result tree we will be faced with the assertion: <b>The statement is correct!</b></p>
+      <img src="/assets/images/bsc-thesis-screenshots/result-page-formula-example.png" />
+      <p>
+        This means the prover could determine that this statement holds for all propositional logical formulas as we
+        defined them. We did it. Unfornately, we do not get proof but only the information that it is correct.
+      </p>
+    </ng-container>
+
+    <p class="mt-5">
+      <b>Satifiability of the various steps</b>:
+      This is something specific about how our software works. We will find up to five different steps listed here. Fewer
+      if a previous step failed. Then all following steps automatically fail as well and are not displayed.
+    </p>
+    <img [src]="getExample('result-page-steps')" />
+
+    <p *ngIf="chosenExample === 'tree'">
+      In our example we will see that everything has a green tick. So how is there something wrong? The green tick means
+      something is satisfiable. You can also look to the "What's next" section which will explain the result.
+    </p>
+    <p *ngIf="chosenExample === 'logic'">
+      In our example it may seem like it's wrong with the red cross. However, for the last step this is what is expected.
+      As this is alright we may possibly ignore it and if an error occurs the "What's next" section - which can be seen in
+      the binary tree example - will explain what went wrong.
+    </p>
+    <p>
+      However, we can read and understand the list as follows:
+    </p>
+    <p class="mt-5">
+      If the <b>function definitions</b> are unsatisfiable, then the function definitions are inconsistent. For example,
+      when a function f is defined as:
+    </p>
+    <pre>f(x) = 2 and f(x) = 3</pre>
+    <p>The function cannot be 2 and 3 for the same input as the same time. This is inconsistent and we would get an error here.</p>
+    <p>
+      The <b>Inductive Hypothesis</b> should usually be satisfiable. Currently, no example of this failing is known.
+      It would, however, mean that the inductive hypothesis is inconsistent with the function definitions. This usually does
+      not happen because the inductive hypothesis specify an yet unspecified behavior.
+    </p>
+
+
+    <p class="mt-5">
+      The <b>Additional Constraints</b> will be unsatisfiable when the additional constraints entered conflict with the inductive
+      hypothesis or the function definitions or itself. This may, for example, be the case if we define a function f as follows:
+    </p>
+    <pre>f(x) = x</pre>
+    <p>Where x may be an integer but in the additional constraints we say</p>
+    <pre>∀f ∈ Int: f(x) = 2</pre>
+    <p>This is obviously in conflict as f(3) = 3 but per constraint it is 2</p>
+
+
+    <p class="mt-5">
+      The <b>Inductive Basis</b> will be unsatisfiable if the showing the inductive basis fails because it conflicts with
+      any of the previous steps. If we for example define a function <b>f</b> and a base case <b>bc</b> then the may be an example:
+    </p>
+    <pre>f(cb) = 0</pre>
+    <p>When we try to prove that:</p>
+    <pre>∀x: ?: f(x) > 0</pre>
+    <p>
+      Note: The question mark means that we do not mean any specific type. The idea is that it should always be larger than 0
+      but for at least on base case it is zero and thus the inductive basis fails.
+    </p>
+
+
+    <p class="mt-5">
+      The <b>Inductive Step</b> may be confusing because internally the statement is actually negated. Which is why a satisfiable
+      inductive step signifies a failed proof attempt while unsatisfiability shows a succeeded proof.
+      If this step failed than the statement could not be shown with all the previously setup work. The website will offer some help though.
+    </p>
+
+    <ng-container *ngIf="chosenExample === 'logic'">
+      <p>To see an example of the give help see the binary tree example.</p>
+    </ng-container>
+
+    <ng-container *ngIf="chosenExample === 'tree'">
+      <p>As our proof did not work we can use the <b>Counter Example</b> to see an example where our proof fails:</p>
+      <img src="/assets/images/bsc-thesis-screenshots/result-binary-tree-page-counter-example.png"/>
+      <p>tree1 and tree2 defined at the top are just any freely chosen tree which will not be specified any further.</p>
+      <p>We see that tree0 is the combination of tree1 and tree2.</p>
+      <p>And we also see that tree3 is our base case nil.</p>
+      <p>We can replace the variables with the definitions we just saw and below to make it easier and thus get:</p>
+      <pre>
+        depth(c(tree1, tree2)) = 1
+        depth(nil) = 0
+        depth(tree2) = -1
+        depth(tree3) = 0
+
+        size(c(tree1, tree2)) = 0
+        size(nil) = 0
+        size(tree2) = -1
+        size(tree3) = 0
+      </pre>
+
+      <p>
+        If we try to now check our statement on this example we will notice that depth is not smaller or equal to size
+        for the input c(tree1, tree2). This because of the negative value given size and depth with tree2.
+      </p>
+      <p>This is wrong though. Our size and depth are at least zero. So we see the problem of enhancing the numbers here.</p>
+      <p>
+        This is what we need to add additional constraints for because the property that size and depth are never negative
+        is only implicitly given but the program needs these attributes explicitly.
+      </p>
+      <p>
+        In the two following sections we will see two different methods to add the needed constraint.
+        If the property can be inductively proven the second method via the statement should be used. This has the effect
+        that the property is also proven itself and if a mistake about this property has been made it will become clear.
+        The additional constraints simply declare that the property true without any further reassurance.
+      </p>
+
+      <p>
+        In case of failure we will also get the <b>What's next</b> section which will give hints about what might help now:
+      </p>
+      <img src="/assets/images/bsc-thesis-screenshots/result-binary-tree-page-whats-next.png"/>
+    </ng-container>
+
+    <p>
+      The <b>Information for developers</b> section may be interesting if you find a bug or have a problem and want to
+      report the issue. It contains all information about the proof task you attempted to perform. You can include it in
+      your bug reports.
+    </p>
+
+    <img [src]="getExample('result-page-information-developer')" />
 
   </p-accordionTab>
   <p-accordionTab *ngIf="chosenExample === 'tree'" header="Adding constraints via additional constraints">
-
+    <p>To add additional constraints we can go back to step 4 by clicking on this step in the progress bar on top of page.</p>
+    <p>
+      We will be faced with the empty page. Here we can add two additional constraints. For each constraint we also need to
+      add a variable. We can call the variable anything we like. The type however must be binary tree here. We will choose
+      for both the variable name as x.
+    </p>
+    <p>
+      We then type the constraint. They would be:
+    </p>
+    <pre>0 <= depth(x)</pre>
+    <pre>0 <= size(x)</pre>
+    <p>Because we had an issue with these two functions turning negative. It should look like this:</p>
+    <img src="/assets/images/bsc-thesis-screenshots/binary-tree-additional-constraints1.png"/>
+    <p>Instead of adding two constraints we can also combine them in this case with an "and" like this:</p>
+    <img src="/assets/images/bsc-thesis-screenshots/binary-tree-additional-constraints2.png"/>
+    <p>If we go back to the result page now we will get the following:</p>
+    <img src="/assets/images/bsc-thesis-screenshots/result-page-success.png" />
   </p-accordionTab>
   <p-accordionTab *ngIf="chosenExample === 'tree'" header="Adding constraints via the statement">
-
+    <p>
+      Instead of using additional constraints we can use the statement if the property can be shown inductively.
+      We can go back to the statement page by clicking on it in the progress bar on the top.
+      We add our constraints by attaching them with a logical "and" at the end. We need to strengthen size and depth so that they are larger
+      or equal to zero. Therefore, we attach the following to our statement:
+    </p>
+    <pre>and 0 <= size(t) and 0 <= depth(t)</pre>
+    <p>Remember: our symbol for binary trees was t.</p>
+    <p>Our statement page should look like this then:</p>
+    <img src="/assets/images/bsc-thesis-screenshots/statement-page-constraint-strengthening.png" />
+    <p>We can now go back to our result page via the progress bar on the top and should see this:</p>
+    <img src="/assets/images/bsc-thesis-screenshots/result-page-success.png"/>
   </p-accordionTab>
 </p-accordion>
 

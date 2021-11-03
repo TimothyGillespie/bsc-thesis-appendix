@@ -58,7 +58,7 @@ it('parenthesisCount = 2 * operatorCount example', () => {
 
   functionDefinition.setOutputType('integer', 'parenthesisCount');
 
-  functionDefinition.setOtherwiseValue('2', 'parenthesisCount', 'lvariable');
+  functionDefinition.setOtherwiseValue('0', 'parenthesisCount', 'lvariable');
   functionDefinition.setOtherwiseValue('2 + parenthesisCount(x1)', 'parenthesisCount', 'lnot');
   functionDefinition.setOtherwiseValue('2 + parenthesisCount(x1) + parenthesisCount(x2)', 'parenthesisCount', 'land');
   functionDefinition.setOtherwiseValue('2 + parenthesisCount(x1) + parenthesisCount(x2)', 'parenthesisCount', 'lor');
@@ -67,7 +67,7 @@ it('parenthesisCount = 2 * operatorCount example', () => {
   functionDefinition.setOtherwiseValue('2 + parenthesisCount(x1) + parenthesisCount(x2)', 'parenthesisCount', 'lEquivalency');
 
   functionDefinition.setOutputType('integer', 'operatorCount');
-  functionDefinition.setOtherwiseValue('1', 'operatorCount', 'lvariable');
+  functionDefinition.setOtherwiseValue('0', 'operatorCount', 'lvariable');
   functionDefinition.setOtherwiseValue('1 + operatorCount(x1)', 'operatorCount', 'lnot');
   functionDefinition.setOtherwiseValue('1 + operatorCount(x1) + operatorCount(x2)', 'operatorCount', 'land');
   functionDefinition.setOtherwiseValue('1 + operatorCount(x1) + operatorCount(x2)', 'operatorCount', 'lor');
