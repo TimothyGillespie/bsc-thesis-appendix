@@ -1,5 +1,12 @@
 <div class="screen-centered">
   <h1>Automated Inductive Prover</h1>
+  <p-messages class="md:hidden lg:hidden xl:hidden" severity="error">
+    <ng-template pTemplate>
+      This website is not optimized<br/>
+      for small screens.<br/>
+      Consider switching to a computer.
+    </ng-template>
+  </p-messages>
   <div class="mt-8 flex justify-content-center"><button pButton class="p-button-success startmenu-button" (click)="startNewButtonHandler($event)" data-test="start-new-button">Start New Prove Request</button></div>
   <div *ngIf="!requestData.isPristine()" class="mt-3 flex justify-content-center"><button pButton class="p-button-success startmenu-button" data-test="continue-button" (click)="continueButtonHandler()">Continue previous request</button></div>
 <!--  <div class="mt-3 flex justify-content-center"><button pButton class="p-button-success startmenu-button" (click)="loadRequestButtonHandler()">Load request</button></div>-->
