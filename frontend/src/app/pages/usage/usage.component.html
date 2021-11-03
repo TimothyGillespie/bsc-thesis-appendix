@@ -4,6 +4,9 @@
 <div class="flex justify-content-center align-items-center mb-5">
   <p-selectButton [options]="exampleOptions" [(ngModel)]="chosenExample" optionValue="value" optionLabel="name"></p-selectButton>
 </div>
+<div class="flex justify-content-center">
+  <button pButton class="p-button-success mb-7" (click)="loadSelectedExample($event, false)">Load the selected example</button>
+</div>
 <p-accordion>
   <p-accordionTab header="What does this website do?">
     This website is specialized prover for inductive proof tasks. You can define an inductive statement with so-called
