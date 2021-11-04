@@ -3,6 +3,7 @@ import {RequestDataService} from "../../services/request-data-service/request-da
 import {Router} from "@angular/router";
 import {ConfirmationService} from "primeng/api";
 import {StepDisplayService} from "../../services/step-display/step-display.service";
+import {ConfigService} from "../../services/config/config.service";
 
 @Component({
   selector: 'app-start',
@@ -11,17 +12,23 @@ import {StepDisplayService} from "../../services/step-display/step-display.servi
 })
 export class StartComponent implements OnInit {
 
+  imprintLink: string;
+  imprintText: string;
+
   constructor(
     private router: Router,
     public requestData: RequestDataService,
     private confirmationService: ConfirmationService,
     private stepDisplay: StepDisplayService,
+    private config: ConfigService,
   ) {
     this.stepDisplay.showSteps = false;
     this.stepDisplay.activeIndex = 0;
   }
 
   ngOnInit(): void {
+    this.imprintLink = this.config.obtainedConfig.imprintLink;
+    this.imprintText = this.config.obtainedConfig.imprintText;
   }
 
   startNewProcess() {

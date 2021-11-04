@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -41,6 +41,12 @@ import {TooltipModule} from "primeng/tooltip";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {MessagesModule} from "primeng/messages";
+import {ConfigService} from "./services/config/config.service";
+
+
+function initConfig(client: HttpClient, config: ConfigService): () => Promise<void> {
+  return () => config.init();
+}
 
 @NgModule({
   declarations: [
@@ -87,7 +93,20 @@ import {MessagesModule} from "primeng/messages";
         SelectButtonModule,
         MessagesModule,
     ],
-  providers: [HttpClient, LoadingScreenService, RequestDataService, ConfirmationService, MessageService],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initConfig,
+      deps: [HttpClient, ConfigService],
+      multi: true,
+    },
+    HttpClient,
+    ConfigService,
+    LoadingScreenService,
+    RequestDataService,
+    ConfirmationService,
+    MessageService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

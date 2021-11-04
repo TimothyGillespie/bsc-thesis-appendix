@@ -11,6 +11,7 @@ import convertKeysToCamelCase from "../../../util/convertKeysToCamelCase";
 import {snakeCase} from "lodash";
 import {Observable} from "rxjs";
 import TypeLabelValue from "../../models/LabelValue";
+import {ConfigService} from "../config/config.service";
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,12 @@ export class ApiQueryService {
 
   constructor(
     private http: HttpClient,
+    private config: ConfigService,
   ) { }
 
   async prove(request: ProveRequest): Promise<ProveResponse> {
      return this.http
-       .post<ProveResponse>(environment.baseUrl + '/statement/prove/result', convertKeysToSnakeCase(request))
+       .post<ProveResponse>(this.config.obtainedConfig.apiUrl + '/statement/prove/result', convertKeysToSnakeCase(request))
        .pipe(
          timeout(10000),
          map((response) => convertKeysToCamelCase(response))
@@ -32,7 +34,7 @@ export class ApiQueryService {
   }
 
   getTypes(): Observable<TypeLabelValue[]> {
-    return this.http.get(environment.baseUrl + "/statement/types")
+    return this.http.get(this.config.obtainedConfig.apiUrl + "/statement/types")
       .pipe(
         timeout(10000),
         first(),
