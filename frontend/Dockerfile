@@ -4,6 +4,6 @@ COPY . .
 RUN ["npm", "ci"]
 RUN ["npm", "run", "build", "--prod"]
 
-FROM nginx:alpine
+FROM trion/nginx-angular
 COPY --from=build /frontend/dist/frontend /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 8080
