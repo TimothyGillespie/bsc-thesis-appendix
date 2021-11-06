@@ -11,7 +11,7 @@ export class ConfigService {
   public obtainedConfig: Config;
 
   public init(): Promise<void> {
-    return this.http.get('/assets/config.json').toPromise().then((config) => {
+    return this.http.get('/assets/config/config.json').toPromise().then((config) => {
       this.obtainedConfig = config as Config;
     });
   }

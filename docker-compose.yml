@@ -1,0 +1,12 @@
+version: "3"
+services:
+  frontend:
+    image: private.docker.gillespie.eu/repository/gillespie-private-docker/bsc-thesis-frontend:latest
+    ports:
+      - "10001:8080"
+    volumes:
+      - ./config:/usr/share/nginx/html/assets/config
+  backend:
+    image: private.docker.gillespie.eu/repository/gillespie-private-docker/bsc-thesis-backend:latest
+    ports:
+      - "10000:8080"
