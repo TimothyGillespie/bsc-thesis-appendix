@@ -50,12 +50,12 @@ export class FinishComponent implements OnInit {
     this.sentRequest = convertKeysToSnakeCase(request)
     this.api.prove(request).then((response) => {
       this.result = response;
+      this.loadingScreen.stop();
     }).catch((error) => {
       this.error = true
+      this.loadingScreen.stop();
     });
 
-
-    this.loadingScreen.stop();
   }
 
   getResponseKeys() {

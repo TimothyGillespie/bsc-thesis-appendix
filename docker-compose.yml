@@ -3,10 +3,12 @@ services:
   frontend:
     image: private.docker.gillespie.eu/repository/gillespie-private-docker/bsc-thesis-frontend:latest
     ports:
-      - "10001:8080"
+      - "127.0.0.1:10001:8080"
     volumes:
       - ./config:/usr/share/nginx/html/assets/config
+    restart: unless-stopped
   backend:
     image: private.docker.gillespie.eu/repository/gillespie-private-docker/bsc-thesis-backend:latest
     ports:
-      - "10000:8080"
+      - "127.0.0.1:10000:8080"
+    restart: unless-stopped
