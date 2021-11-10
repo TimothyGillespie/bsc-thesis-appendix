@@ -146,7 +146,7 @@ export class FunctionDefinitionsComponent implements OnInit, OnDestroy {
         const alreadyDefinedDefinition = givenValues?.definition?.find((givenDefinition) =>
           givenDefinition.inputConstructor
           && parseInt(givenDefinition.inputConstructor.arity, 10) === consFunc.arity
-          && givenDefinition.inputConstructor.name
+          && givenDefinition.inputConstructor.name === consFunc.symbol
         );
         if(alreadyDefinedDefinition == null) {
           return this.fb.group({
