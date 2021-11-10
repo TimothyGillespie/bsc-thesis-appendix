@@ -24,7 +24,7 @@ export class StatementEnteringComponent implements OnInit, OnDestroy {
   statement?: string = "";
 
   constructor(
-    private router: Router,
+    public router: Router,
     public requestData: RequestDataService,
     private fb: FormBuilder,
     private validationHint: ValidationHintService,

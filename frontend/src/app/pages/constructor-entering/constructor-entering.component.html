@@ -98,10 +98,8 @@
   </ng-container>
 </div>
 
-<div class="flex justify-content-center mt-4">
-  <button pButton (click)="onFinish()" class="p-button-success" data-test="constructor-function-def-next-button">Next</button>
-</div>
-
+  <div class="flex justify-content-center mt-4"><button pButton (click)="onFinish()" class="p-button-success" data-test="constructor-function-def-next-button">Next</button></div>
+  <div class="flex justify-content-center mt-4"><button pButton class="p-button-primary p-button-text" (click)="router.navigate(['/'])">Go to the Start Page</button></div>
 <p-overlayPanel #titleHelp>
   <ng-template pTemplate>
     <p>

@@ -1,11 +1,9 @@
-import {Component, ContentChild, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {RequestDataService} from "../../services/request-data-service/request-data.service";
-import {HttpClient} from "@angular/common/http";
 import {ApiQueryService, ProveRequest, ProveResponse} from "../../services/api-query/api-query.service";
 import {LoadingScreenService} from "../../services/loading-screen/loading-screen.service";
-import convertKeysToCamelCase from "../../../util/convertKeysToCamelCase";
 import toClipBoard from "../../../util/toClipBoard";
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {StepDisplayService} from "../../services/step-display/step-display.service";
 import convertKeysToSnakeCase from "../../../util/convertKeysToSnakeCase";
@@ -25,6 +23,8 @@ export class FinishComponent implements OnInit {
     private loadingScreen: LoadingScreenService,
     private messageService: MessageService,
     private stepDisplay: StepDisplayService,
+    public router: Router,
+    private confirmationService: ConfirmationService,
   ) {
     this.stepDisplay.showSteps = true;
     this.stepDisplay.activeIndex = 4;
@@ -79,6 +79,27 @@ export class FinishComponent implements OnInit {
       summary:'Success',
       detail: 'The sent request was successfully copied to your clipboard!'
     })
+  }
+
+  startNewProcess() {
+    this.requestData.reset();
+    this.router.navigate(['constructor-definitions']);
+  }
+
+  startNewButtonHandler(event: Event) {
+    if(!this.requestData.isPristine()) {
+      this.confirmationService.confirm({
+        target: event.target,
+        key: 'confirmPopup',
+        message: 'You currently have an on-going process which will be deleted if you continue.',
+        acceptLabel: 'Delete and Continue',
+        rejectLabel: 'Cancel',
+        acceptButtonStyleClass: 'p-button-danger',
+        accept: () => this.startNewProcess(),
+      })
+    } else {
+      this.startNewProcess()
+    }
   }
 
   convertForDataTest(name: string): string {

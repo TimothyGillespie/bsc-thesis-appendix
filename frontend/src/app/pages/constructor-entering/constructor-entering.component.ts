@@ -25,7 +25,7 @@ export class ConstructorEnteringComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private requestData: RequestDataService,
-    private router: Router,
+    public router: Router,
     private api: ApiQueryService,
     private validationHint: ValidationHintService,
     private stepDisplay: StepDisplayService,
